@@ -9,10 +9,11 @@
 #include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
+#include "nodes/Expression.h"
 
 namespace marex::parse {
 FuncCall::FuncCall(lex::Token&& token)
-    : AstNode(std::move(token)) {}
+    : Expression(std::move(token)) {}
 
 std::string FuncCall::as_c() {
     std::string result;
