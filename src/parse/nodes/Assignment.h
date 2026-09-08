@@ -5,11 +5,11 @@
 
 #include "ParserPack.h"
 #include "Token.h"
-#include "nodes/DuoOpNode.h"
 #include "nodes/Expression.h"
+#include "nodes/Statement.h"
 
 namespace marex::parse {
-class Assignment final : public DuoOpNode {
+class Assignment final : public Statement {
    public:
     explicit Assignment(lex::Token&& token);
 
