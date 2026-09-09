@@ -24,7 +24,7 @@ std::string ReturnNode::as_c() {
     return std::format("return {};\n", value.value());
 }
 
-void ReturnNode::parse(ParserPack& pack) {
+void ReturnNode::parse(TokenStream& pack) {
     core::log_info("pre parse return");
     pack.advance_if_matches_or_throw(
         lex::TokenKind::Return);

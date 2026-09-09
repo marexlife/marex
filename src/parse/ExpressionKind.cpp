@@ -33,7 +33,7 @@ end:
 
 parse::ExpressionKind
 parse::expression_kind_from_decl_or_throw(
-    const parse::ParserPack& pack,
+    const parse::TokenStream& pack,
     std::source_location cpp_source_location) {
     switch (pack.get_kind()) {
         case marex::lex::TokenKind::IntDecl:
@@ -52,7 +52,7 @@ parse::expression_kind_from_decl_or_throw(
 
 parse::ExpressionKind
 parse::expression_kind_from_literal_or_throw(
-    const parse::ParserPack& pack,
+    const parse::TokenStream& pack,
     std::source_location cpp_source_location) {
     switch (pack.get_kind()) {
         case marex::lex::TokenKind::IntLiteral:

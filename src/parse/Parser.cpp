@@ -3,18 +3,18 @@
 #include <sys/types.h>
 
 #include <utility>
+#include <vector>
 
 #include "ParserPack.h"
-#include "TokenStream.h"
 #include "TranslationUnit.h"
 
 namespace marex::parse {
 TranslationUnit Parser::run(
-    lex::TokenStream&& token_stream) {
-    return parse(ParserPack{std::move(token_stream)});
+    std::vector<lex::Token>&& tokens) {
+    return parse(TokenStream{std::move(tokens)});
 }
 
-TranslationUnit Parser::parse(ParserPack&& pack) {
+TranslationUnit Parser::parse(TokenStream&& pack) {
     TranslationUnit translation_unit{};
 
     translation_unit.parse(pack);

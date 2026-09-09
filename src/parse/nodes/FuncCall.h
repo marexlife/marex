@@ -5,7 +5,7 @@
 
 #include "ExpressionKind.h"
 #include "Token.h"
-#include "nodes/Expression.h"
+#include "nodes/Expr.h"
 
 namespace marex::parse {
 struct CallArg final {
@@ -19,7 +19,7 @@ class FuncCall final : public Expr {
 
     [[nodiscard]] std::string as_c() override;
 
-    void parse(ParserPack& pack) override;
+    void parse(TokenStream& pack) override;
 
    private:
     std::string func_name;

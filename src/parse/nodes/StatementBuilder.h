@@ -7,11 +7,11 @@
 namespace marex::parse {
 class StatementBuilder final {
    public:
-    static void build(ParserPack& pack);
+    static void build(TokenStream& pack);
 
    private:
     static void collect_rankings(
-        ParserPack& pack,
+        TokenStream& pack,
         std::list<std::list<
             std::reference_wrapper<const lex::Token>>>&
             binding_rankings);

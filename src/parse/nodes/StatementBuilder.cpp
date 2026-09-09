@@ -9,11 +9,11 @@
 #include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
-#include "nodes/Expression.h"
+#include "nodes/Expr.h"
 
 namespace marex::parse {
 void StatementBuilder::build(
-    [[maybe_unused]] ParserPack& pack) {
+    [[maybe_unused]] TokenStream& pack) {
     std::list<std::list<
         std::reference_wrapper<const lex::Token>>>
         binding_rankings;
@@ -29,7 +29,7 @@ void StatementBuilder::build(
 }
 
 void StatementBuilder::collect_rankings(
-    ParserPack& pack,
+    TokenStream& pack,
     std::list<std::list<
         std::reference_wrapper<const lex::Token>>>&
         binding_rankings) {

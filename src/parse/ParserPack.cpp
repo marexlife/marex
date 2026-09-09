@@ -6,22 +6,20 @@
 #include <stdexcept>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "Logging.h"
 #include "TokenKind.h"
 #include "nodes/exceptions/InvalidTokenException.h"
 
 namespace marex::parse {
-ParserPack::ParserPack(lex::TokenStream&& token_stream)
-    : ParserPack(std::move(token_stream), {}) {}
-
-ParserPack::ParserPack(lex::TokenStream&& token_stream,
+TokenStream::TokenStream(std::vector<lex::Token>&& token_stream,
                        bool is_in_lint_mode)
     : token_stream(std::move(token_stream)),
       progress(),
       is_in_lint_mode(is_in_lint_mode) {}
 
-lex::TokenKind ParserPack::get_next_kind(
+lex::TokenKind TokenStream::get_next_kind(
     std::string_view error_message_on_failure) const {
     try {
         return token_stream.at(progress + 1)
@@ -36,11 +34,11 @@ lex::TokenKind ParserPack::get_next_kind(
     }
 }
 
-std::string_view ParserPack::get_kind_string() const {
+std::string_view TokenStream::get_kind_string() const {
     return *get_kind();
 }
 
-[[nodiscard]] bool ParserPack::advance_if_matches(
+[[nodiscard]] bool TokenStream::advance_if_matches(
     lex::TokenKind token_kind) {
     const auto does_match = matches(token_kind);
 
@@ -51,7 +49,7 @@ std::string_view ParserPack::get_kind_string() const {
     return does_match;
 }
 
-std::string ParserPack::advance_if_matches_or_throw(
+std::string TokenStream::advance_if_matches_or_throw(
     lex::TokenKind token_kind,
     std::source_location cpp_source_location) {
     auto pre_increment_token_borrow = get_token();
@@ -73,7 +71,7 @@ std::string ParserPack::advance_if_matches_or_throw(
                                 cpp_source_location);
 }
 
-lex::Token ParserPack::copy_out_token_and_advance() {
+lex::Token TokenStream::copy_out_token_and_advance() {
     const auto token = copy_out_token();
 
     advance();
@@ -81,7 +79,7 @@ lex::Token ParserPack::copy_out_token_and_advance() {
     return token;
 }
 
-std::string_view ParserPack::get_lexeme_and_advance() {
+std::string_view TokenStream::get_lexeme_and_advance() {
     const auto lexeme = get_lexeme();
 
     advance();
@@ -90,7 +88,7 @@ std::string_view ParserPack::get_lexeme_and_advance() {
 }
 
 [[nodiscard]] lex::TokenKind
-ParserPack::get_kind_and_advance() {
+TokenStream::get_kind_and_advance() {
     const auto kind = get_kind();
 
     advance();
@@ -98,7 +96,7 @@ ParserPack::get_kind_and_advance() {
     return kind;
 }
 
-bool ParserPack::is_at_end() const {
+bool TokenStream::is_at_end() const {
     const auto is_finished =
         token_stream.size() <= progress;
 
@@ -106,7 +104,7 @@ bool ParserPack::is_at_end() const {
 }
 
 [[nodiscard]] std::string
-ParserPack::get_error_message() const {
+TokenStream::get_error_message() const {
     return std::format("invalid Token: '{}' at '{}'",
                        *get_kind(),
                        get_pos().as_string());

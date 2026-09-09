@@ -2,11 +2,11 @@
 #define MAREX_LEX_LEXER_H
 #include <cstddef>
 #include <string>
+#include <vector>
 
 #include "LastCharKind.h"
 #include "SourcePos.h"
 #include "TokenFactory.h"
-#include "TokenStream.h"
 
 namespace marex::lex {
 class [[nodiscard]] Lexer final {
@@ -21,18 +21,18 @@ class [[nodiscard]] Lexer final {
     Lexer& operator=(const Lexer&) = delete;
     ~Lexer() = default;
 
-    [[nodiscard]] TokenStream run(
+    [[nodiscard]] std::vector<Token> run(
         std::string&& source_text,
         std::optional<std::string> filename);
 
    private:
-    void push_token(TokenStream& result,
+    void push_token(std::vector<Token>& result,
                     SourcePos& source_pos);
     void reset(SourcePos& source_pos);
-    void push_current(TokenStream& result,
+    void push_current(std::vector<Token>& result,
                       char current,
                       SourcePos& source_pos);
-    void push_token_and_current(TokenStream& result,
+    void push_token_and_current(std::vector<Token>& result,
                                 char current,
                                 SourcePos& source_pos);
 

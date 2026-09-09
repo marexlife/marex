@@ -14,11 +14,11 @@ class Assignment final : public Expr {
 
     [[nodiscard]] std::string as_c() override;
 
-    void parse(ParserPack& pack) override;
+    void parse(TokenStream& pack) override;
 
    private:
-    void parse_lhs(ParserPack& pack);
-    void parse_rhs(ParserPack& pack);
+    void parse_lhs(TokenStream& pack);
+    void parse_rhs(TokenStream& pack);
 
     std::optional<std::unique_ptr<Expr>> lhs =
         std::nullopt;

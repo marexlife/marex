@@ -1,9 +1,10 @@
 #ifndef MAREX_PARSE_PARSER_H
 #define MAREX_PARSE_PARSER_H
 #include <cstddef>
+#include <vector>
 
 #include "ParserPack.h"
-#include "TokenStream.h"
+#include "Token.h"
 #include "TranslationUnit.h"
 
 namespace marex::parse {
@@ -20,11 +21,11 @@ public:
     ~Parser() = delete;
 
     [[nodiscard]] static TranslationUnit run(
-        lex::TokenStream&& token_stream);
+        std::vector<lex::Token>&& tokens);
 
 private:
     [[nodiscard]] static TranslationUnit parse(
-        ParserPack&& pack);
+        TokenStream&& pack);
 };
 } // namespace marex::parse
 #endif // MAREX_PARSE_PARSER_H

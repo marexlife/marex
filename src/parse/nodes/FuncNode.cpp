@@ -13,7 +13,7 @@
 #include "Logging.h"
 #include "ParserPack.h"
 #include "TokenKind.h"
-#include "VarNode.h"
+#include "VarDecl.h"
 #include "exceptions/InvalidTokenException.h"
 #include "nodes/FuncCall.h"
 #include "nodes/ReturnNode.h"
@@ -73,7 +73,7 @@ FuncNode::FuncNode(lex::Token&& token)
         }));
 }
 
-void FuncNode::parse_func_body(ParserPack& pack) {
+void FuncNode::parse_func_body(TokenStream& pack) {
     while (true) {
         if (pack.matches(lex::TokenKind::Return)) {
             this->return_node = std::invoke([&] {
@@ -104,7 +104,7 @@ void FuncNode::parse_func_body(ParserPack& pack) {
                                         AstNode> {
             switch (pack.get_kind()) {
                 case lex::TokenKind::Var:
-                    return std::make_unique<VarNode>(
+                    return std::make_unique<VarDecl>(
                         pack.copy_out_token());
                 case lex::TokenKind::Identifier: {
                     if (pack.get_next_kind() ==
@@ -137,12 +137,12 @@ void FuncNode::parse_func_body(ParserPack& pack) {
     }
 }
 
-void FuncNode::parse(ParserPack& pack) {
+void FuncNode::parse(TokenStream& pack) {
     parse_func_signature(pack);
     parse_func_body(pack);
 }
 
-void FuncNode::parse_func_signature(ParserPack& pack) {
+void FuncNode::parse_func_signature(TokenStream& pack) {
     pack.advance_if_matches_or_throw(
         lex::TokenKind::Func);
 
@@ -169,7 +169,7 @@ void FuncNode::parse_func_signature(ParserPack& pack) {
         lex::TokenKind::OpenBrace);
 }
 
-void FuncNode::parse_func_args(ParserPack& pack) {
+void FuncNode::parse_func_args(TokenStream& pack) {
     pack.advance_if_matches_or_throw(
         lex::TokenKind::OpenBracket);
 

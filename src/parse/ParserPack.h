@@ -4,21 +4,18 @@
 #include <source_location>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "BindingRank.h"
 #include "SourcePos.h"
 #include "Token.h"
 #include "TokenKind.h"
-#include "TokenStream.h"
 
 namespace marex::parse {
-class ParserPack final {
+class TokenStream final {
    public:
-    explicit ParserPack(
-        lex::TokenStream&& token_stream);
-
-    ParserPack(lex::TokenStream&& token_stream,
-               bool is_in_lint_mode);
+    TokenStream(std::vector<lex::Token>&& token_stream,
+               bool is_in_lint_mode = false);
 
     void advance() { ++progress; }
 
@@ -108,7 +105,7 @@ class ParserPack final {
         const;
 
    private:
-    lex::TokenStream token_stream;
+    std::vector<lex::Token> token_stream;
     std::size_t progress{};
     bool is_in_lint_mode{};
 };

@@ -1,4 +1,4 @@
-#include "VarNode.h"
+#include "VarDecl.h"
 
 #include <format>
 #include <string>
@@ -10,15 +10,15 @@
 #include "nodes/Statement.h"
 
 namespace marex::parse {
-VarNode::VarNode(lex::Token&& token)
+VarDecl::VarDecl(lex::Token&& token)
     : Statement(std::move(token)) {}
 
-std::string VarNode::as_c() {
+std::string VarDecl::as_c() {
     return std::format("{} {} = {};\n", *type_kind,
                        name, value);
 }
 
-void VarNode::parse(ParserPack& pack) {
+void VarDecl::parse(TokenStream& pack) {
     pack.advance_if_matches_or_throw(
         lex::TokenKind::Var);
     name = pack.advance_if_matches_or_throw(

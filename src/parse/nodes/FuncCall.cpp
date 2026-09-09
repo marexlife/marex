@@ -9,7 +9,6 @@
 #include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
-#include "nodes/Expression.h"
 
 namespace marex::parse {
 FuncCall::FuncCall(lex::Token&& token)
@@ -31,7 +30,7 @@ std::string FuncCall::as_c() {
     return std::format("{}({});\n", func_name, result);
 }
 
-void FuncCall::parse(ParserPack& pack) {
+void FuncCall::parse(TokenStream& pack) {
     func_name = pack.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 

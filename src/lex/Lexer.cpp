@@ -8,14 +8,13 @@
 #include "Logging.h"
 #include "SourcePos.h"
 #include "Token.h"
-#include "TokenStream.h"
 #include "exceptions/SourceCodeEmptyException.h"
 
 namespace marex::lex {
-TokenStream Lexer::run(
+std::vector<Token> Lexer::run(
     std::string&& source_text,
     std::optional<std::string> filename) {
-    TokenStream result;
+    std::vector<Token> result;
 
     SourcePos source_pos{filename};
 
@@ -104,7 +103,7 @@ void Lexer::reset(SourcePos& source_pos) {
     last_word.clear();
 }
 
-void Lexer::push_token(TokenStream& result,
+void Lexer::push_token(std::vector<Token>& result,
                        SourcePos& source_pos) {
     core::log_info("Lexer: push_token");
 
@@ -114,7 +113,7 @@ void Lexer::push_token(TokenStream& result,
     last_word.clear();
 }
 
-void Lexer::push_current(TokenStream& result,
+void Lexer::push_current(std::vector<Token>& result,
                          char current,
                          SourcePos& source_pos) {
     core::log_info("Lexer: push_current");
@@ -124,7 +123,7 @@ void Lexer::push_current(TokenStream& result,
 }
 
 void Lexer::push_token_and_current(
-    TokenStream& result, char current,
+    std::vector<Token>& result, char current,
     SourcePos& source_pos) {
     core::log_info("Lexer: push_token_and_current");
 

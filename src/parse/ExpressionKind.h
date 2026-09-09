@@ -5,7 +5,7 @@
 #include <string_view>
 
 namespace marex::parse {
-class ParserPack;
+class TokenStream;
 
 enum class [[nodiscard]] ExpressionKind : std::
     uint8_t {
@@ -22,12 +22,12 @@ enum class [[nodiscard]] ExpressionKind : std::
     ExpressionKind kind);
 
 ExpressionKind expression_kind_from_decl_or_throw(
-    const parse::ParserPack& pack,
+    const parse::TokenStream& pack,
     std::source_location cpp_source_location =
         std::source_location::current());
 
 ExpressionKind expression_kind_from_literal_or_throw(
-    const parse::ParserPack& pack,
+    const parse::TokenStream& pack,
     std::source_location cpp_source_location =
         std::source_location::current());
 }  // namespace marex::parse

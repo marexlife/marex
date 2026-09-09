@@ -11,6 +11,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "ActionPicker.h"
 #include "Fetcher.h"
@@ -19,7 +20,6 @@
 #include "LexerPrinter.h"
 #include "Logging.h"
 #include "Parser.h"
-#include "TokenStream.h"
 #include "Walker.h"
 
 namespace marex::app {
@@ -47,14 +47,14 @@ void App::show_help_screen() {
 void App::compile(
     std::string&& source_code,
     std::optional<std::string> filename) {
-    lex::TokenStream token_stream =
+    std::vector<lex::Token> tokens =
         lexer.run(std::move(source_code), filename);
 
-    lex::LexerPrinter::print_token_stream(
-        token_stream);
+    lex::LexerPrinter::print_tokens(
+        tokens);
 
     auto translation_unit =
-        parse::Parser::run(std::move(token_stream));
+        parse::Parser::run(std::move(tokens));
 
     walk::Walker::run(std::move(translation_unit));
 }

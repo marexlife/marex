@@ -13,10 +13,10 @@ add_library(${PROJECT_NAME}
     ParserPack.cpp
     TranslationUnit.cpp
     ExpressionKind.cpp
-    
+
     nodes/AstNode.cpp
     nodes/OpNode.cpp
-    nodes/VarNode.cpp
+    nodes/VarDecl.cpp
     nodes/IdentNode.cpp
     nodes/FuncNode.cpp
     nodes/FuncCall.cpp
@@ -26,7 +26,7 @@ add_library(${PROJECT_NAME}
     nodes/Statement.cpp
     nodes/exceptions/InvalidTokenException.cpp
     ExprFactory.cpp
-    
+
     linter/CaseCheck.cpp
     linter/exceptions/WrongCaseException.cpp
 )

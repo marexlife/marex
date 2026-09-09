@@ -36,7 +36,7 @@ class AstNode {
         return token.get_lexeme();
     }
 
-    virtual void parse(ParserPack& pack) = 0;
+    virtual void parse(TokenStream& pack) = 0;
 
    private:
     lex::Token token;

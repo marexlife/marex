@@ -33,7 +33,7 @@ int main(void) {
     return result;
 }
 
-void TranslationUnit::parse(ParserPack& pack) {
+void TranslationUnit::parse(TokenStream& pack) {
     while (!pack.is_at_end()) {
         std::unique_ptr<AstNode> file_item =
             create_file_item(pack);
@@ -45,7 +45,7 @@ void TranslationUnit::parse(ParserPack& pack) {
 }
 
 std::unique_ptr<AstNode>
-TranslationUnit::create_file_item(ParserPack& pack) {
+TranslationUnit::create_file_item(TokenStream& pack) {
     switch (pack.get_kind()) {
         case lex::TokenKind::Func:
             return std::make_unique<FuncNode>(

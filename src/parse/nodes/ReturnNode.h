@@ -15,7 +15,7 @@ class ReturnNode final : public AstNode {
 
     [[nodiscard]] std::string as_c() override;
 
-    void parse(ParserPack& pack) override;
+    void parse(TokenStream& pack) override;
 
    private:
     ExpressionKind expression_kind{};

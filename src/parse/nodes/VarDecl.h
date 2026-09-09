@@ -7,16 +7,15 @@
 #include "Token.h"
 #include "nodes/Statement.h"
 
-
 namespace marex::parse {
-class VarNode final : public Statement {
+class VarDecl final : public Statement {
    public:
-    explicit VarNode(lex::Token&& token);
+    explicit VarDecl(lex::Token&& token);
 
    protected:
     [[nodiscard]] std::string as_c() override;
 
-    void parse(ParserPack& pack) override;
+    void parse(TokenStream& pack) override;
 
    private:
     std::string name;

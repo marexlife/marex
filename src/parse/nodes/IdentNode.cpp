@@ -16,7 +16,7 @@ IdentNode::IdentNode(lex::Token&& token)
 }
 
 void IdentNode::parse(
-    [[maybe_unused]] ParserPack& pack) {
+    [[maybe_unused]] TokenStream& pack) {
     value = pack.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 }

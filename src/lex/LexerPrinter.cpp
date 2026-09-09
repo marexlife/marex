@@ -1,14 +1,14 @@
 #include "LexerPrinter.h"
 
 #include <format>
+#include <vector>
 
 #include "Logging.h"
 #include "Token.h"
-#include "TokenStream.h"
 
 namespace marex::lex {
-void LexerPrinter::print_token_stream(
-    lex::TokenStream& token_stream) {
+void LexerPrinter::print_tokens(
+    std::vector<lex::Token>& token_stream) {
     core::log_info("\nLexer print start\n");
 
     for (lex::Token& token : token_stream) {

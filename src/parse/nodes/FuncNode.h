@@ -22,13 +22,13 @@ class FuncNode final : public AstNode {
 
    protected:
     [[nodiscard]] std::string as_c() override;
-    void parse(ParserPack& pack) override;
+    void parse(TokenStream& pack) override;
 
    private:
-    void parse_func_signature(ParserPack& pack);
-    void parse_func_body(ParserPack& pack);
+    void parse_func_signature(TokenStream& pack);
+    void parse_func_body(TokenStream& pack);
 
-    void parse_func_args(ParserPack& pack);
+    void parse_func_args(TokenStream& pack);
 
     std::string func_name;
     ExpressionKind return_type{};
