@@ -3,6 +3,7 @@
 #include <cstddef>
 
 #include "ParserPack.h"
+#include "Token.h"
 #include "TokenKind.h"
 
 namespace marex::parse {
@@ -12,6 +13,8 @@ void StatementBuilder::build(
          pack.token_kind_at(i) !=
          lex::TokenKind::StatementEnd;
          ++i) {
+        [[maybe_unused]] const lex::Token&
+            current_token = pack.borrow_token_at(i);
     }
 }
 }  // namespace marex::parse
