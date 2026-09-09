@@ -5,6 +5,7 @@
 #include <string>
 #include <string_view>
 
+#include "BindingPowerKind.h"
 #include "SourcePos.h"
 #include "Token.h"
 #include "TokenKind.h"
@@ -36,6 +37,12 @@ class ParserPack final {
     [[nodiscard]] const lex::Token& borrow_token_at(
         std::size_t index) const {
         return token_stream.at(index);
+    }
+
+    [[nodiscard]] lex::BindingPowerKind
+    get_binding_power_at(std::size_t index) const {
+        return borrow_token_at(index)
+            .get_binding_power();
     }
 
     [[nodiscard]] std::size_t get_progress() const {
