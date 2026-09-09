@@ -39,8 +39,8 @@ class ParserPack final {
         return token_stream.at(index);
     }
 
-    [[nodiscard]] lex::BindingRank
-    get_binding_power_at(std::size_t index) const {
+    [[nodiscard]] lex::BindingRank get_binding_rank_at(
+        std::size_t index) const {
         return borrow_token_at(index)
             .get_binding_rank();
     }
