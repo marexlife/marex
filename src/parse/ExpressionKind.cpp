@@ -3,7 +3,7 @@
 #include <source_location>
 #include <stdexcept>
 
-#include "ParserPack.h"
+#include "TokenStream.h"
 #include "TokenKind.h"
 #include "nodes/exceptions/InvalidTokenException.h"
 

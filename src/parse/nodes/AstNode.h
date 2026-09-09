@@ -2,9 +2,9 @@
 #define MAREX_PARSE_ASTNODE_H
 #include <string_view>
 
-#include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
+#include "TokenStream.h"
 
 namespace marex::parse {
 class AstNode {
@@ -36,7 +36,7 @@ class AstNode {
         return token.get_lexeme();
     }
 
-    virtual void parse(TokenStream& pack) = 0;
+    virtual void parse(TokenStream& stream) = 0;
 
    private:
     lex::Token token;

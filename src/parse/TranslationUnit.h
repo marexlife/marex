@@ -3,14 +3,14 @@
 #include <memory>
 #include <vector>
 
-#include "ParserPack.h"
+#include "TokenStream.h"
 #include "nodes/AstNode.h"
 
 namespace marex::parse {
 class TranslationUnit final {
    public:
     [[nodiscard]] std::string as_c();
-    void parse(TokenStream& pack);
+    void parse(TokenStream& stream);
 
    private:
     [[nodiscard]] static std::unique_ptr<AstNode>

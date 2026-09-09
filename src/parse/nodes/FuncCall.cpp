@@ -6,7 +6,6 @@
 
 #include "Defer.h"
 #include "ExpressionKind.h"
-#include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
 
@@ -30,34 +29,34 @@ std::string FuncCall::as_c() {
     return std::format("{}({});\n", func_name, result);
 }
 
-void FuncCall::parse(TokenStream& pack) {
-    func_name = pack.advance_if_matches_or_throw(
+void FuncCall::parse(TokenStream& stream) {
+    func_name = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
-    pack.advance_if_matches_or_throw(
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::OpenBracket);
 
-    if (pack.advance_if_matches(
+    if (stream.advance_if_matches(
             lex::TokenKind::CloseBracket)) {
         return;
     }
 
     do {
-        auto lexeme = pack.get_lexeme();
+        auto lexeme = stream.get_lexeme();
         auto expression_kind =
             expression_kind_from_literal_or_throw(
-                pack);
+                stream);
 
-        pack.advance();
+        stream.advance();
 
         args.emplace_back(CallArg{
             .name = std::string{lexeme},
             .expression_kind = expression_kind,
         });
-    } while (pack.advance_if_matches(
+    } while (stream.advance_if_matches(
         lex::TokenKind::Comma));
 
-    pack.advance_if_matches_or_throw(
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::CloseBracket);
 }
 }  // namespace marex::parse

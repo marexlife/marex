@@ -3,7 +3,7 @@
 #include <string>
 
 #include "AstNode.h"
-#include "ParserPack.h"
+#include "TokenStream.h"
 
 namespace marex::parse {
 class IdentNode final : public AstNode {
@@ -12,7 +12,7 @@ class IdentNode final : public AstNode {
 
     [[nodiscard]] std::string as_c() override;
 
-    void parse(TokenStream& pack) override;
+    void parse(TokenStream& stream) override;
 
    private:
     std::string value;

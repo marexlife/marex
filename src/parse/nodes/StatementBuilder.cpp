@@ -6,7 +6,6 @@
 #include <list>
 #include <utility>
 
-#include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
 #include "nodes/Expr.h"
@@ -29,7 +28,7 @@ void StatementBuilder::build(
 }
 
 void StatementBuilder::collect_rankings(
-    TokenStream& pack,
+    TokenStream& stream,
     std::list<std::list<
         std::reference_wrapper<const lex::Token>>>&
         binding_rankings) {
@@ -42,15 +41,15 @@ void StatementBuilder::collect_rankings(
             ranking_row;
 
         for (std::size_t token_id = 0;
-             pack.token_kind_at(token_id) !=
+             stream.token_kind_at(token_id) !=
              lex::TokenKind::StatementEnd;
              ++token_id) {
             if (to_be_collected_rank ==
                 std::to_underlying(
-                    pack.get_binding_rank_at(
+                    stream.get_binding_rank_at(
                         token_id))) {
                 ranking_row.emplace_back(
-                    pack.borrow_token_at(token_id));
+                    stream.borrow_token_at(token_id));
             }
 
             binding_rankings.emplace_back(

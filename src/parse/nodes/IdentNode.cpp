@@ -3,9 +3,9 @@
 #include <string>
 #include <utility>
 
-#include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
+#include "TokenStream.h"
 
 namespace marex::parse {
 IdentNode::IdentNode(lex::Token&& token)
@@ -15,9 +15,8 @@ IdentNode::IdentNode(lex::Token&& token)
     return std::string{IdentNode::get_lexeme()};
 }
 
-void IdentNode::parse(
-    [[maybe_unused]] TokenStream& pack) {
-    value = pack.advance_if_matches_or_throw(
+void IdentNode::parse(TokenStream& stream) {
+    value = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 }
 }  // namespace marex::parse

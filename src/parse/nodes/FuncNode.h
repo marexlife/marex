@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "ExpressionKind.h"
-#include "ParserPack.h"
+#include "TokenStream.h"
 #include "Token.h"
 #include "nodes/ReturnNode.h"
 
@@ -22,13 +22,13 @@ class FuncNode final : public AstNode {
 
    protected:
     [[nodiscard]] std::string as_c() override;
-    void parse(TokenStream& pack) override;
+    void parse(TokenStream& stream) override;
 
    private:
-    void parse_func_signature(TokenStream& pack);
-    void parse_func_body(TokenStream& pack);
+    void parse_func_signature(TokenStream& stream);
+    void parse_func_body(TokenStream& stream);
 
-    void parse_func_args(TokenStream& pack);
+    void parse_func_args(TokenStream& stream);
 
     std::string func_name;
     ExpressionKind return_type{};

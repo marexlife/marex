@@ -3,7 +3,7 @@
 #include <memory>
 #include <stdexcept>
 
-#include "ParserPack.h"
+#include "TokenStream.h"
 #include "TokenKind.h"
 #include "nodes/Assignment.h"
 #include "nodes/Expr.h"

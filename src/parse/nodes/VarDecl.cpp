@@ -5,7 +5,6 @@
 #include <utility>
 
 #include "ExpressionKind.h"
-#include "ParserPack.h"
 #include "TokenKind.h"
 #include "nodes/Statement.h"
 
@@ -18,26 +17,26 @@ std::string VarDecl::as_c() {
                        name, value);
 }
 
-void VarDecl::parse(TokenStream& pack) {
-    pack.advance_if_matches_or_throw(
+void VarDecl::parse(TokenStream& stream) {
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::Var);
-    name = pack.advance_if_matches_or_throw(
+    name = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
-    pack.advance_if_matches_or_throw(
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::Colon);
     type_kind =
-        expression_kind_from_decl_or_throw(pack);
-    pack.advance();
+        expression_kind_from_decl_or_throw(stream);
+    stream.advance();
 
-    pack.advance_if_matches_or_throw(
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::Assignment);
 
     [[maybe_unused]] auto not_needed =
-        expression_kind_from_literal_or_throw(pack);
+        expression_kind_from_literal_or_throw(stream);
 
-    value = pack.get_lexeme();
+    value = stream.get_lexeme();
 
-    pack.advance();
+    stream.advance();
 }
 }  // namespace marex::parse

@@ -2,7 +2,7 @@
 #define MAREX_PARSE_STATEMENTBUILDER_H
 #include <list>
 
-#include "ParserPack.h"
+#include "TokenStream.h"
 
 namespace marex::parse {
 class StatementBuilder final {
@@ -11,7 +11,7 @@ class StatementBuilder final {
 
    private:
     static void collect_rankings(
-        TokenStream& pack,
+        TokenStream& stream,
         std::list<std::list<
             std::reference_wrapper<const lex::Token>>>&
             binding_rankings);

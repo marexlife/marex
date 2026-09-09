@@ -11,7 +11,7 @@
 
 #include "Defer.h"
 #include "Logging.h"
-#include "ParserPack.h"
+#include "TokenStream.h"
 #include "TokenKind.h"
 #include "VarDecl.h"
 #include "exceptions/InvalidTokenException.h"
@@ -73,15 +73,15 @@ FuncNode::FuncNode(lex::Token&& token)
         }));
 }
 
-void FuncNode::parse_func_body(TokenStream& pack) {
+void FuncNode::parse_func_body(TokenStream& stream) {
     while (true) {
-        if (pack.matches(lex::TokenKind::Return)) {
+        if (stream.matches(lex::TokenKind::Return)) {
             this->return_node = std::invoke([&] {
                 auto return_node =
                     std::make_unique<ReturnNode>(
-                        pack.copy_out_token());
+                        stream.copy_out_token());
 
-                return_node->parse(pack);
+                return_node->parse(stream);
 
                 return return_node;
             });
@@ -95,26 +95,26 @@ void FuncNode::parse_func_body(TokenStream& pack) {
             }
         }
 
-        if (pack.advance_if_matches(
+        if (stream.advance_if_matches(
                 lex::TokenKind::CloseBrace)) {
             break;
         }
 
         auto node = std::invoke([&] -> std::unique_ptr<
                                         AstNode> {
-            switch (pack.get_kind()) {
+            switch (stream.get_kind()) {
                 case lex::TokenKind::Var:
                     return std::make_unique<VarDecl>(
-                        pack.copy_out_token());
+                        stream.copy_out_token());
                 case lex::TokenKind::Identifier: {
-                    if (pack.get_next_kind() ==
+                    if (stream.get_next_kind() ==
                         lex::TokenKind::OpenBracket) {
                         core::log_info(
                             "function call");
 
                         return std::make_unique<
                             FuncCall>(
-                            pack.copy_out_token());
+                            stream.copy_out_token());
                     }
 
                     throw std::runtime_error(
@@ -128,55 +128,55 @@ void FuncNode::parse_func_body(TokenStream& pack) {
 
         end:
             throw InvalidTokenException(
-                pack.get_pos(), pack.get_kind());
+                stream.get_pos(), stream.get_kind());
         });
 
-        node->parse(pack);
+        node->parse(stream);
 
         func_items.emplace_back(std::move(node));
     }
 }
 
-void FuncNode::parse(TokenStream& pack) {
-    parse_func_signature(pack);
-    parse_func_body(pack);
+void FuncNode::parse(TokenStream& stream) {
+    parse_func_signature(stream);
+    parse_func_body(stream);
 }
 
-void FuncNode::parse_func_signature(TokenStream& pack) {
-    pack.advance_if_matches_or_throw(
+void FuncNode::parse_func_signature(TokenStream& stream) {
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::Func);
 
-    func_name = pack.advance_if_matches_or_throw(
+    func_name = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
-    parse_func_args(pack);
+    parse_func_args(stream);
 
-    if (pack.advance_if_matches(
+    if (stream.advance_if_matches(
             lex::TokenKind::OpenBrace)) {
         return_type = ExpressionKind::EmptyType;
         return;
     }
 
-    pack.advance_if_matches_or_throw(
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::Arrow);
 
     return_type =
-        expression_kind_from_decl_or_throw(pack);
+        expression_kind_from_decl_or_throw(stream);
 
-    pack.advance();
+    stream.advance();
 
-    pack.advance_if_matches_or_throw(
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::OpenBrace);
 }
 
-void FuncNode::parse_func_args(TokenStream& pack) {
-    pack.advance_if_matches_or_throw(
+void FuncNode::parse_func_args(TokenStream& stream) {
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::OpenBracket);
 
     core::log_info("pre: parsed func args");
     std::uintmax_t arg_count = 1;
 
-    if (pack.advance_if_matches(
+    if (stream.advance_if_matches(
             lex::TokenKind::CloseBracket)) {
         return;
     }
@@ -191,14 +191,14 @@ void FuncNode::parse_func_args(TokenStream& pack) {
 
         auto func_arg = std::invoke([&] -> FuncArg {
             auto name =
-                pack.advance_if_matches_or_throw(
+                stream.advance_if_matches_or_throw(
                     lex::TokenKind::Identifier);
-            pack.advance_if_matches_or_throw(
+            stream.advance_if_matches_or_throw(
                 lex::TokenKind::Colon);
             auto type =
                 expression_kind_from_decl_or_throw(
-                    pack);
-            pack.advance();
+                    stream);
+            stream.advance();
 
             return FuncArg{
                 .arg_name = name,
@@ -207,10 +207,10 @@ void FuncNode::parse_func_args(TokenStream& pack) {
         });
 
         args.emplace_back(std::move(func_arg));
-    } while (pack.advance_if_matches(
+    } while (stream.advance_if_matches(
         lex::TokenKind::Comma));
 
-    pack.advance_if_matches_or_throw(
+    stream.advance_if_matches_or_throw(
         lex::TokenKind::CloseBracket);
 
     core::log_info("post: parsed func args");

@@ -3,8 +3,8 @@
 #include <string>
 
 #include "ExpressionKind.h"
-#include "ParserPack.h"
 #include "Token.h"
+#include "TokenStream.h"
 #include "nodes/Statement.h"
 
 namespace marex::parse {
@@ -15,7 +15,7 @@ class VarDecl final : public Statement {
    protected:
     [[nodiscard]] std::string as_c() override;
 
-    void parse(TokenStream& pack) override;
+    void parse(TokenStream& stream) override;
 
    private:
     std::string name;

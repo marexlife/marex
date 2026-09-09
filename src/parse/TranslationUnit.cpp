@@ -33,12 +33,12 @@ int main(void) {
     return result;
 }
 
-void TranslationUnit::parse(TokenStream& pack) {
-    while (!pack.is_at_end()) {
+void TranslationUnit::parse(TokenStream& stream) {
+    while (!stream.is_at_end()) {
         std::unique_ptr<AstNode> file_item =
-            create_file_item(pack);
+            create_file_item(stream);
 
-        file_item->parse(pack);
+        file_item->parse(stream);
 
         file_items.emplace_back(std::move(file_item));
     }

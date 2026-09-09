@@ -3,7 +3,7 @@
 #include <memory>
 #include <optional>
 
-#include "ParserPack.h"
+#include "TokenStream.h"
 #include "Token.h"
 #include "nodes/Expr.h"
 
@@ -14,11 +14,11 @@ class Assignment final : public Expr {
 
     [[nodiscard]] std::string as_c() override;
 
-    void parse(TokenStream& pack) override;
+    void parse(TokenStream& stream) override;
 
    private:
-    void parse_lhs(TokenStream& pack);
-    void parse_rhs(TokenStream& pack);
+    void parse_lhs(TokenStream& stream);
+    void parse_rhs(TokenStream& stream);
 
     std::optional<std::unique_ptr<Expr>> lhs =
         std::nullopt;

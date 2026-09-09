@@ -1,4 +1,4 @@
-#include "ParserPack.h"
+#include "TokenStream.h"
 
 #include <exception>
 #include <format>
@@ -13,8 +13,9 @@
 #include "nodes/exceptions/InvalidTokenException.h"
 
 namespace marex::parse {
-TokenStream::TokenStream(std::vector<lex::Token>&& token_stream,
-                       bool is_in_lint_mode)
+TokenStream::TokenStream(
+    std::vector<lex::Token>&& token_stream,
+    bool is_in_lint_mode)
     : token_stream(std::move(token_stream)),
       progress(),
       is_in_lint_mode(is_in_lint_mode) {}
@@ -79,7 +80,8 @@ lex::Token TokenStream::copy_out_token_and_advance() {
     return token;
 }
 
-std::string_view TokenStream::get_lexeme_and_advance() {
+std::string_view
+TokenStream::get_lexeme_and_advance() {
     const auto lexeme = get_lexeme();
 
     advance();

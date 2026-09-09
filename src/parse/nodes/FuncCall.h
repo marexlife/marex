@@ -19,7 +19,7 @@ class FuncCall final : public Expr {
 
     [[nodiscard]] std::string as_c() override;
 
-    void parse(TokenStream& pack) override;
+    void parse(TokenStream& stream) override;
 
    private:
     std::string func_name;

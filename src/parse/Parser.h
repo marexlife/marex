@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <vector>
 
-#include "ParserPack.h"
+#include "TokenStream.h"
 #include "Token.h"
 #include "TranslationUnit.h"
 
@@ -25,7 +25,7 @@ public:
 
 private:
     [[nodiscard]] static TranslationUnit parse(
-        TokenStream&& pack);
+        TokenStream&& stream);
 };
 } // namespace marex::parse
 #endif // MAREX_PARSE_PARSER_H

@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-#include "ParserPack.h"
+#include "TokenStream.h"
 #include "TranslationUnit.h"
 
 namespace marex::parse {
@@ -14,10 +14,10 @@ TranslationUnit Parser::run(
     return parse(TokenStream{std::move(tokens)});
 }
 
-TranslationUnit Parser::parse(TokenStream&& pack) {
+TranslationUnit Parser::parse(TokenStream&& stream) {
     TranslationUnit translation_unit{};
 
-    translation_unit.parse(pack);
+    translation_unit.parse(stream);
 
     return translation_unit;
 }
