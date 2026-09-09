@@ -2,7 +2,6 @@
 #define MAREX_PARSE_ASTNODE_H
 #include <string_view>
 
-#include "BindingPowerKind.h"
 #include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
@@ -24,9 +23,9 @@ class AstNode {
         return token;
     }
 
-    [[nodiscard]] lex::BindingPowerKind
-    get_binding_power() const {
-        return token.get_binding_power();
+    [[nodiscard]] lex::BindingRank get_binding_rank()
+        const {
+        return token.get_binding_rank();
     }
 
     [[nodiscard]] lex::TokenKind get_kind() const {

@@ -5,7 +5,7 @@
 #include <string>
 #include <string_view>
 
-#include "BindingPowerKind.h"
+#include "BindingRank.h"
 #include "SourcePos.h"
 #include "Token.h"
 #include "TokenKind.h"
@@ -39,10 +39,10 @@ class ParserPack final {
         return token_stream.at(index);
     }
 
-    [[nodiscard]] lex::BindingPowerKind
+    [[nodiscard]] lex::BindingRank
     get_binding_power_at(std::size_t index) const {
         return borrow_token_at(index)
-            .get_binding_power();
+            .get_binding_rank();
     }
 
     [[nodiscard]] std::size_t get_progress() const {

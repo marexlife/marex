@@ -3,7 +3,7 @@
 #include <optional>
 #include <utility>
 
-#include "BindingPowerKind.h"
+#include "BindingRank.h"
 #include "Logging.h"
 #include "SourcePos.h"
 #include "TokenKind.h"
@@ -18,13 +18,13 @@ Token::Token(
       kind(token_kind),
       source_pos(source_pos) {}
 
-[[nodiscard]] BindingPowerKind
-Token::get_binding_power() const {
+[[nodiscard]] BindingRank Token::get_binding_rank()
+    const {
     switch (kind) {
         case lex::TokenKind::Var:
-            return BindingPowerKind::Var;
+            return BindingRank::Var;
         case lex::TokenKind::Identifier:
-            return BindingPowerKind::Invalid;
+            return BindingRank::Invalid;
         case TokenKind::None:
             core::log_fatal_error("TokenKind is none");
         default:

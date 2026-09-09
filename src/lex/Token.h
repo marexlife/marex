@@ -9,8 +9,7 @@
 #include "TokenKind.h"
 
 namespace marex::lex {
-enum struct [[nodiscard]] BindingPowerKind : std::
-    uint8_t;
+enum struct [[nodiscard]] BindingRank : std::uint8_t;
 
 class [[nodiscard]] TokenFactory;
 class [[nodiscard]] Token final {
@@ -28,8 +27,7 @@ class [[nodiscard]] Token final {
         return kind;
     }
 
-    [[nodiscard]] BindingPowerKind get_binding_power()
-        const;
+    [[nodiscard]] BindingRank get_binding_rank() const;
     [[nodiscard]] SourcePos get_pos() const {
         return source_pos;
     }
