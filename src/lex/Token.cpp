@@ -1,5 +1,6 @@
 #include "Token.h"
 
+#include <optional>
 #include <utility>
 
 #include "Logging.h"
@@ -16,14 +17,11 @@ Token::Token(
       kind(token_kind),
       source_pos(source_pos) {}
 
-[[nodiscard]] std::uint8_t Token::get_binding_power()
+[[nodiscard]] std::optional<std::uint8_t> Token::get_binding_power()
     const {
     switch (kind) {
         case lex::TokenKind::Var: {
-            static const std::uint8_t binding_power =
-                30;
-
-            return binding_power;
+            return 30;
         } break;
         case lex::TokenKind::Identifier: {
             static const std::uint8_t binding_power =

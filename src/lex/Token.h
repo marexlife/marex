@@ -25,8 +25,8 @@ class [[nodiscard]] Token final {
         return kind;
     }
 
-    [[nodiscard]] std::uint8_t get_binding_power()
-        const;
+    [[nodiscard]] std::optional<std::uint8_t>
+    get_binding_power() const;
     [[nodiscard]] SourcePos get_pos() const {
         return source_pos;
     }
