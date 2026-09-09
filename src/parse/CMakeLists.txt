@@ -21,7 +21,7 @@ add_library(${PROJECT_NAME}
     nodes/FuncNode.cpp
     nodes/FuncCall.cpp
     nodes/ReturnNode.cpp
-    nodes/Expression.cpp
+    nodes/Expr.cpp
     nodes/StatementBuilder.cpp
     nodes/Statement.cpp
     nodes/exceptions/InvalidTokenException.cpp

@@ -2,5 +2,5 @@
 
 namespace marex::parse {
 OpNode::OpNode(lex::Token&& token)
-    : Expression(std::move(token)) {}
+    : Expr(std::move(token)) {}
 }  // namespace marex::parse

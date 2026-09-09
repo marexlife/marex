@@ -4,9 +4,9 @@
 #include "Token.h"
 
 namespace marex::parse {
-class OpNode : public Expression {
+class OpNode : public Expr {
    public:
-    explicit OpNode(lex::Token &&token);
+    explicit OpNode(lex::Token&& token);
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_OPNODE_H

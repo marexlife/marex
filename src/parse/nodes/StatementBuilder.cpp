@@ -20,7 +20,7 @@ void StatementBuilder::build(
 
     collect_rankings(pack, binding_rankings);
 
-    std::list<Expression> expressions_row;
+    std::list<Expr> expressions_row;
 
     for (auto& rank_row : binding_rankings) {
         for ([[maybe_unused]] auto token : rank_row) {
