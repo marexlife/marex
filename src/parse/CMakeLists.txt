@@ -22,10 +22,10 @@ add_library(${PROJECT_NAME}
     nodes/FuncCall.cpp
     nodes/ReturnNode.cpp
     nodes/Expression.cpp
-    nodes/ExpressionFactory.cpp
     nodes/StatementBuilder.cpp
     nodes/Statement.cpp
     nodes/exceptions/InvalidTokenException.cpp
+    ExpressionFactory.cpp
     
     linter/CaseCheck.cpp
     linter/exceptions/WrongCaseException.cpp

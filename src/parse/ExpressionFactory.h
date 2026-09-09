@@ -1,5 +1,6 @@
 #ifdef MAREX_PARSE_EXPRESSIONFACTORY_H
 #define MAREX_PARSE_EXPRESSIONFACTORY_H
+
 namespace marex::parse {
 class Expression;
 
