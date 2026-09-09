@@ -96,7 +96,7 @@ class ParserPack final {
         return token_stream.at(progress);
     }
 
-    [[nodiscard]] lex::Token copy_out_token() {
+    [[nodiscard]] lex::Token copy_out_token() const {
         return lex::Token(token_stream.at(progress));
     }
 

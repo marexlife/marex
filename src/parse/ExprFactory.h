@@ -7,8 +7,8 @@
 namespace marex::parse {
 class ExprFactory final {
    public:
-    [[nodiscard]] std::unique_ptr<Expr>
-    new_expression();
+    [[nodiscard]] static std::unique_ptr<Expr>
+    new_expression(const ParserPack& pack);
 
    private:
 };
