@@ -8,7 +8,7 @@ namespace marex::parse {
 class ExprFactory final {
    public:
     [[nodiscard]] static std::unique_ptr<Expr>
-    new_expression(const TokenStream& stream);
+    new_expr(lex::Token &&token);
 
    private:
 };

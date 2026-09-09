@@ -2,19 +2,20 @@
 
 #include <memory>
 #include <stdexcept>
+#include <utility>
 
-#include "TokenStream.h"
+#include "Token.h"
 #include "TokenKind.h"
 #include "nodes/Assignment.h"
 #include "nodes/Expr.h"
 
 namespace marex::parse {
-std::unique_ptr<Expr> ExprFactory::new_expression(
-    const TokenStream& stream) {
-    switch (stream.get_kind()) {
+std::unique_ptr<Expr> ExprFactory::new_expr(
+    lex::Token&& token) {
+    switch (token.get_kind()) {
         case marex::lex::TokenKind::Assignment:
             return std::make_unique<Assignment>(
-                stream.copy_out_token());
+                std::move(token));
         default:
             throw std::runtime_error(
                 "not implemented");
