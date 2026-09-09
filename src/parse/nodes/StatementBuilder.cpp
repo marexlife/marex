@@ -4,27 +4,28 @@
 #include <limits>
 #include <list>
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include "ExprFactory.h"
 #include "Token.h"
 #include "TokenKind.h"
+#include "nodes/Assignment.h"
 #include "nodes/Expr.h"
 
 namespace marex::parse {
-void StatementBuilder::build(
-    [[maybe_unused]] TokenStream& stream) {
+void StatementBuilder::build(TokenStream& stream) {
     std::list<std::list<lex::Token>> binding_rankings;
 
     collect_rankings(stream, binding_rankings);
 
     std::list<std::list<std::unique_ptr<Expr>>>
-        expressions_rows;
+        expr_rows;
 
     for (auto& rank_row : binding_rankings) {
         std::list<std::unique_ptr<Expr>>
             expressions_row;
-        for ([[maybe_unused]] auto token : rank_row) {
+        for (auto token : rank_row) {
             auto expr = ExprFactory::new_expr(
                 std::move(token));
 
@@ -32,8 +33,27 @@ void StatementBuilder::build(
                 std::move(expr));
         }
 
-        expressions_rows.emplace_back(
+        expr_rows.emplace_back(
             std::move(expressions_row));
+    }
+
+    // TODO! get the meta-data for Token where it is
+    // in the TokenStream for plugging it into an Ast here after
+
+    throw std::runtime_error(
+        "expression parsing not implemented yet");
+
+    for (auto& expr_row : expr_rows) {
+        for (auto& expr : expr_row) {
+            if ([[maybe_unused]] Assignment* const
+                    assignment =
+                        dynamic_cast<Assignment*>(
+                            expr.get())) {
+                // assignment->set_lhs(std::move());
+                // assignment->set_rhs(
+                //    std::move(Tp && t));
+            }
+        }
     }
 }
 

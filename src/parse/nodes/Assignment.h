@@ -3,7 +3,6 @@
 #include <memory>
 #include <optional>
 
-#include "TokenStream.h"
 #include "Token.h"
 #include "nodes/Expr.h"
 
@@ -12,14 +11,10 @@ class Assignment final : public Expr {
    public:
     explicit Assignment(lex::Token&& token);
 
-    [[nodiscard]] std::string as_c() override;
-
-    void parse(TokenStream& stream) override;
+    void set_lhs(std::unique_ptr<Expr> lhs);
+    void set_rhs(std::unique_ptr<Expr> rhs);
 
    private:
-    void parse_lhs(TokenStream& stream);
-    void parse_rhs(TokenStream& stream);
-
     std::optional<std::unique_ptr<Expr>> lhs =
         std::nullopt;
     std::optional<std::unique_ptr<Expr>> rhs =

@@ -5,6 +5,7 @@
 
 #include "ExpressionKind.h"
 #include "Token.h"
+#include "nodes/AstNode.h"
 #include "nodes/Expr.h"
 
 namespace marex::parse {
@@ -13,7 +14,7 @@ struct CallArg final {
     ExpressionKind expression_kind{};
 };
 
-class FuncCall final : public Expr {
+class FuncCall final : public Expr, public AstNode {
    public:
     explicit FuncCall(lex::Token&& token);
 
