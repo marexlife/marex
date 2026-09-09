@@ -7,10 +7,11 @@
 #include "ExpressionKind.h"
 #include "ParserPack.h"
 #include "TokenKind.h"
+#include "nodes/Statement.h"
 
 namespace marex::parse {
 VarNode::VarNode(lex::Token&& token)
-    : AstNode(std::move(token)) {}
+    : Statement(std::move(token)) {}
 
 std::string VarNode::as_c() {
     return std::format("{} {} = {};\n", *type_kind,
