@@ -25,7 +25,7 @@ add_library(${PROJECT_NAME}
     nodes/StatementBuilder.cpp
     nodes/Statement.cpp
     nodes/exceptions/InvalidTokenException.cpp
-    ExpressionFactory.cpp
+    ExprFactory.cpp
     
     linter/CaseCheck.cpp
     linter/exceptions/WrongCaseException.cpp
