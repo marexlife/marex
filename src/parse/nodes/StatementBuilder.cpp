@@ -17,6 +17,14 @@ void StatementBuilder::build(
         std::reference_wrapper<const lex::Token>>>
         binding_rankings;
 
+    collect_rankings(pack, binding_rankings);
+}
+
+void StatementBuilder::collect_rankings(
+    ParserPack& pack,
+    std::vector<std::vector<
+        std::reference_wrapper<const lex::Token>>>&
+        binding_rankings) {
     for (std::uint8_t to_be_collected_rank = 0;
          to_be_collected_rank <
          std::numeric_limits<std::uint8_t>::max();
