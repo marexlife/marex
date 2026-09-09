@@ -5,8 +5,8 @@
 namespace marex::lex {
 enum struct [[nodiscard]] BindingPowerKind : std::
     uint8_t {
-        None = 0,
-        
+        Invalid = 0,
+        Var = 30,
     };
 }
 #endif  // MAREX_LEX_BINDINGPOWERKIND_H

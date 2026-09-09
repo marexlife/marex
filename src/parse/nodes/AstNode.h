@@ -1,8 +1,8 @@
 #ifndef MAREX_PARSE_ASTNODE_H
 #define MAREX_PARSE_ASTNODE_H
-#include <cstdint>
 #include <string_view>
 
+#include "BindingPowerKind.h"
 #include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
@@ -24,8 +24,8 @@ class AstNode {
         return token;
     }
 
-    [[nodiscard]] std::uint8_t get_binding_power()
-        const {
+    [[nodiscard]] lex::BindingPowerKind
+    get_binding_power() const {
         return token.get_binding_power();
     }
 

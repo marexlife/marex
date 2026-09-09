@@ -3,6 +3,7 @@
 #include <optional>
 #include <utility>
 
+#include "BindingPowerKind.h"
 #include "Logging.h"
 #include "SourcePos.h"
 #include "TokenKind.h"
@@ -17,18 +18,13 @@ Token::Token(
       kind(token_kind),
       source_pos(source_pos) {}
 
-[[nodiscard]] std::optional<std::uint8_t> Token::get_binding_power()
-    const {
+[[nodiscard]] BindingPowerKind
+Token::get_binding_power() const {
     switch (kind) {
-        case lex::TokenKind::Var: {
-            return 30;
-        } break;
-        case lex::TokenKind::Identifier: {
-            static const std::uint8_t binding_power =
-                10;
-
-            return binding_power;
-        } break;
+        case lex::TokenKind::Var:
+            return BindingPowerKind::Var;
+        case lex::TokenKind::Identifier:
+            return BindingPowerKind::Invalid;
         case TokenKind::None:
             core::log_fatal_error("TokenKind is none");
         default:

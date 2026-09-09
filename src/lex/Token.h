@@ -9,6 +9,9 @@
 #include "TokenKind.h"
 
 namespace marex::lex {
+enum struct [[nodiscard]] BindingPowerKind : std::
+    uint8_t;
+
 class [[nodiscard]] TokenFactory;
 class [[nodiscard]] Token final {
    public:
@@ -25,8 +28,8 @@ class [[nodiscard]] Token final {
         return kind;
     }
 
-    [[nodiscard]] std::optional<std::uint8_t>
-    get_binding_power() const;
+    [[nodiscard]] BindingPowerKind get_binding_power()
+        const;
     [[nodiscard]] SourcePos get_pos() const {
         return source_pos;
     }
