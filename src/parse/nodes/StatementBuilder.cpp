@@ -9,6 +9,7 @@
 #include "ParserPack.h"
 #include "Token.h"
 #include "TokenKind.h"
+#include "nodes/Expression.h"
 
 namespace marex::parse {
 void StatementBuilder::build(
@@ -18,6 +19,8 @@ void StatementBuilder::build(
         binding_rankings;
 
     collect_rankings(pack, binding_rankings);
+
+    std::list<Expression> expressions_row;
 
     for (auto& rank_row : binding_rankings) {
         for ([[maybe_unused]] auto token : rank_row) {

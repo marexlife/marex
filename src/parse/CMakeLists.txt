@@ -11,7 +11,6 @@ set(CXX_CLANG_TIDY ON)
 add_library(${PROJECT_NAME}
     Parser.cpp
     ParserPack.cpp
-    NodeFactory.cpp
     TranslationUnit.cpp
     ExpressionKind.cpp
     
@@ -24,6 +23,7 @@ add_library(${PROJECT_NAME}
     nodes/ReturnNode.cpp
     nodes/Expression.cpp
     nodes/StatementBuilder.cpp
+    nodes/Statement.cpp
     nodes/exceptions/InvalidTokenException.cpp
     
     linter/CaseCheck.cpp
