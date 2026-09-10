@@ -5,13 +5,10 @@
 
 #include "Token.h"
 #include "nodes/AstNode.h"
-#include "nodes/Statement.h"
-
 namespace marex::parse {
 enum struct ExpressionKind : std::uint8_t;
 
-class ReturnNode final : public AstNode,
-                         public Statement {
+class ReturnNode final : public AstNode {
    public:
     explicit ReturnNode(lex::Token&& token);
 

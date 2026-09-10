@@ -15,12 +15,13 @@
 #include "TokenStream.h"
 #include "VarDecl.h"
 #include "exceptions/InvalidTokenException.h"
+#include "nodes/Expr.h"
 #include "nodes/FuncCall.h"
 #include "nodes/ReturnNode.h"
 
 namespace marex::parse {
 FuncNode::FuncNode(lex::Token&& token)
-    : AstNode(std::move(token)) {}
+    : Expr(std::move(token)) {}
 
 [[nodiscard]] std::string FuncNode::as_c() {
     auto get_func_args = [&] -> std::string {

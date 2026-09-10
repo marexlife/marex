@@ -6,11 +6,11 @@
 #include <vector>
 
 #include "ExpressionKind.h"
-#include "TokenStream.h"
 #include "Token.h"
+#include "TokenStream.h"
 #include "nodes/AstNode.h"
+#include "nodes/Expr.h"
 #include "nodes/ReturnNode.h"
-#include "nodes/Statement.h"
 
 namespace marex::parse {
 struct FuncArg final {
@@ -18,7 +18,7 @@ struct FuncArg final {
     ExpressionKind arg_type{};
 };
 
-class FuncNode final : public AstNode, public Statement {
+class FuncNode final : public Expr {
    public:
     explicit FuncNode(lex::Token&& token);
 
