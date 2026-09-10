@@ -44,12 +44,13 @@ void ExprBuilder::build(TokenStream& stream) {
             std::move(expressions_row));
     }
 
-    throw std::runtime_error(
-        "expression parsing not implemented yet");
-
     for (auto& expr_row : expr_rows) {
-        for ([[maybe_unused]] auto& [expr, progress] :
-             expr_row) {
+        for (auto& [expr, progress] : expr_row) {
+            switch (expr->get_kind()) {
+                default:
+                    throw std::runtime_error(
+                        "not implemented yet");
+            }
         }
     }
 }
