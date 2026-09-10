@@ -14,8 +14,10 @@
 namespace marex::parse {
 class TokenStream final {
    public:
+    using ProgressType = std::size_t;
+
     TokenStream(std::vector<lex::Token>&& token_stream,
-               bool is_in_lint_mode = false);
+                bool is_in_lint_mode = false);
 
     void advance() { ++progress; }
 
@@ -106,7 +108,7 @@ class TokenStream final {
 
    private:
     std::vector<lex::Token> token_stream;
-    std::size_t progress{};
+    ProgressType progress{};
     bool is_in_lint_mode{};
 };
 }  // namespace marex::parse

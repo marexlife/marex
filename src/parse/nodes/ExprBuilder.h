@@ -12,7 +12,8 @@ class ExprBuilder final {
    private:
     static void collect_rankings(
         TokenStream& stream,
-        std::list<std::list<lex::Token>>&
+        std::list<std::list<std::pair<
+            lex::Token, TokenStream::ProgressType>>>&
             binding_rankings);
 };
 }  // namespace marex::parse
