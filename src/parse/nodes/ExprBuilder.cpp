@@ -5,16 +5,17 @@
 #include <list>
 #include <memory>
 #include <stdexcept>
+#include <type_traits>
 #include <utility>
 
+#include "BindingRank.h"
 #include "ExprFactory.h"
 #include "Token.h"
 #include "TokenKind.h"
-#include "nodes/Assignment.h"
 #include "nodes/Expr.h"
 
 namespace marex::parse {
-void StatementBuilder::build(TokenStream& stream) {
+void ExprBuilder::build(TokenStream& stream) {
     std::list<std::list<lex::Token>> binding_rankings;
 
     collect_rankings(stream, binding_rankings);
@@ -38,32 +39,26 @@ void StatementBuilder::build(TokenStream& stream) {
     }
 
     // TODO! get the meta-data for Token where it is
-    // in the TokenStream for plugging it into an Ast here after
+    // in the TokenStream for plugging it into an Ast
+    // here after
 
     throw std::runtime_error(
         "expression parsing not implemented yet");
 
     for (auto& expr_row : expr_rows) {
-        for (auto& expr : expr_row) {
-            if ([[maybe_unused]] Assignment* const
-                    assignment =
-                        dynamic_cast<Assignment*>(
-                            expr.get())) {
-                // assignment->set_lhs(std::move());
-                // assignment->set_rhs(
-                //    std::move(Tp && t));
-            }
+        for ([[maybe_unused]] auto& expr : expr_row) {
         }
     }
 }
 
-void StatementBuilder::collect_rankings(
+void ExprBuilder::collect_rankings(
     TokenStream& stream,
     std::list<std::list<lex::Token>>&
         binding_rankings) {
     for (std::uint8_t to_be_collected_rank = 0;
          to_be_collected_rank <
-         std::numeric_limits<std::uint8_t>::max();
+         std::numeric_limits<std::underlying_type_t<
+             lex::BindingRank>>::max();
          ++to_be_collected_rank) {
         std::list<lex::Token> ranking_row;
 

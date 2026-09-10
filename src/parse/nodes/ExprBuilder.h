@@ -5,7 +5,7 @@
 #include "TokenStream.h"
 
 namespace marex::parse {
-class StatementBuilder final {
+class ExprBuilder final {
    public:
     static void build(TokenStream& stream);
 

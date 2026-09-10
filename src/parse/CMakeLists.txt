@@ -22,7 +22,7 @@ add_library(${PROJECT_NAME}
     nodes/FuncCall.cpp
     nodes/ReturnNode.cpp
     nodes/Expr.cpp
-    nodes/StatementBuilder.cpp
+    nodes/ExprBuilder.cpp
     nodes/Statement.cpp
     nodes/exceptions/InvalidTokenException.cpp
     ExprFactory.cpp
