@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include "BindingRank.h"
 #include "ExprFactory.h"
@@ -18,20 +19,21 @@
 namespace marex::parse {
 std::unique_ptr<Expr> ExprBuilder::build(
     TokenStream& stream) {
-    std::list<std::list<std::pair<
+    std::vector<std::vector<std::pair<
         lex::Token, TokenStream::ProgressType>>>
         binding_rankings;
 
     collect_rankings(stream, binding_rankings);
 
-    std::list<std::list<
+    std::vector<std::vector<
         std::pair<std::unique_ptr<Expr>,
                   TokenStream::ProgressType>>>
         expr_rows;
 
     for (auto& rank_row : binding_rankings) {
-        std::list<std::pair<std::unique_ptr<Expr>,
-                            TokenStream::ProgressType>>
+        std::vector<
+            std::pair<std::unique_ptr<Expr>,
+                      TokenStream::ProgressType>>
             expressions_row;
         for (auto [token, progress] : rank_row) {
             auto expr = ExprFactory::new_expr(
@@ -60,7 +62,7 @@ std::unique_ptr<Expr> ExprBuilder::build(
 
 void ExprBuilder::collect_rankings(
     TokenStream& stream,
-    std::list<std::list<std::pair<
+    std::vector<std::vector<std::pair<
         lex::Token, TokenStream::ProgressType>>>&
         binding_rankings) {
     for (std::uint8_t to_be_collected_rank = 0;
@@ -68,8 +70,8 @@ void ExprBuilder::collect_rankings(
          std::numeric_limits<std::underlying_type_t<
              lex::BindingRank>>::max();
          ++to_be_collected_rank) {
-        std::list<std::pair<lex::Token,
-                            TokenStream::ProgressType>>
+        std::vector<std::pair<
+            lex::Token, TokenStream::ProgressType>>
             ranking_row;
 
         for (std::size_t token_id = 0;
