@@ -1,5 +1,6 @@
 #ifndef MAREX_PARSE_ASTNODE_H
 #define MAREX_PARSE_ASTNODE_H
+#include <stdexcept>
 #include <string_view>
 
 #include "Token.h"
@@ -17,8 +18,19 @@ class AstNode {
     AstNode& operator=(const AstNode&) = delete;
     virtual ~AstNode() = default;
 
-    [[nodiscard]] virtual std::string as_c() = 0;
+    virtual void parse(
+        [[maybe_unused]] TokenStream& stream) {
+        throw std::runtime_error(
+            "this shouldn't have been called.");
+    }
 
+    // deliberately not = 0;
+    [[nodiscard]] virtual std::string as_c() {
+        throw std::runtime_error(
+            "this shouldn't have been called.");
+    }
+
+    // deliberately not = 0;
     [[nodiscard]] const lex::Token& get_token() const {
         return token;
     }
@@ -35,8 +47,6 @@ class AstNode {
     [[nodiscard]] std::string_view get_lexeme() const {
         return token.get_lexeme();
     }
-
-    virtual void parse(TokenStream& stream) = 0;
 
    private:
     lex::Token token;

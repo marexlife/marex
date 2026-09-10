@@ -11,8 +11,8 @@
 
 #include "Defer.h"
 #include "Logging.h"
-#include "TokenStream.h"
 #include "TokenKind.h"
+#include "TokenStream.h"
 #include "VarDecl.h"
 #include "exceptions/InvalidTokenException.h"
 #include "nodes/FuncCall.h"
@@ -142,7 +142,8 @@ void FuncNode::parse(TokenStream& stream) {
     parse_func_body(stream);
 }
 
-void FuncNode::parse_func_signature(TokenStream& stream) {
+void FuncNode::parse_func_signature(
+    TokenStream& stream) {
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Func);
 

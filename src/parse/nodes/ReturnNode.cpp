@@ -10,6 +10,7 @@
 #include "Token.h"
 #include "TokenKind.h"
 #include "TokenStream.h"
+#include "nodes/AstNode.h"
 
 namespace marex::parse {
 ReturnNode::ReturnNode(lex::Token&& token)

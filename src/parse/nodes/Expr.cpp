@@ -2,9 +2,9 @@
 
 #include <utility>
 
-#include "Token.h"
+#include "nodes/AstNode.h"
 
 namespace marex::parse {
 Expr::Expr(lex::Token&& token)
-    : token(std::move(token)) {}
+    : AstNode(std::move(token)) {}
 }  // namespace marex::parse

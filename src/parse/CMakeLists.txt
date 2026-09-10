@@ -17,13 +17,11 @@ add_library(${PROJECT_NAME}
     nodes/AstNode.cpp
     nodes/OpNode.cpp
     nodes/VarDecl.cpp
-    nodes/IdentNode.cpp
     nodes/FuncNode.cpp
     nodes/FuncCall.cpp
     nodes/ReturnNode.cpp
     nodes/Expr.cpp
     nodes/ExprBuilder.cpp
-    nodes/Statement.cpp
     nodes/exceptions/InvalidTokenException.cpp
     ExprFactory.cpp
 

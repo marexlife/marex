@@ -5,10 +5,10 @@
 #include "ExpressionKind.h"
 #include "Token.h"
 #include "TokenStream.h"
-#include "nodes/Statement.h"
+#include "nodes/AstNode.h"
 
 namespace marex::parse {
-class VarDecl final : public Statement {
+class VarDecl final : public AstNode {
    public:
     explicit VarDecl(lex::Token&& token);
 
