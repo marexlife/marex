@@ -16,6 +16,7 @@ add_library(${PROJECT_NAME}
 
     nodes/AstNode.cpp
     nodes/OpNode.cpp
+    nodes/BinaryOp.cpp
     nodes/VarDecl.cpp
     nodes/FuncNode.cpp
     nodes/FuncCall.cpp
