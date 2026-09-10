@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <limits>
-#include <list>
 #include <memory>
 #include <stdexcept>
 #include <type_traits>
