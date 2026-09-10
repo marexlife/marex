@@ -1,13 +1,15 @@
 #ifndef MAREX_PARSE_STATEMENTBUILDER_H
 #define MAREX_PARSE_STATEMENTBUILDER_H
 #include <list>
+#include <memory>
 
 #include "TokenStream.h"
+#include "nodes/Expr.h"
 
 namespace marex::parse {
 class ExprBuilder final {
    public:
-    static void build(TokenStream& stream);
+    static std::unique_ptr<Expr> build(TokenStream& stream);
 
    private:
     static void collect_rankings(

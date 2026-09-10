@@ -16,7 +16,8 @@
 #include "nodes/Expr.h"
 
 namespace marex::parse {
-void ExprBuilder::build(TokenStream& stream) {
+std::unique_ptr<Expr> ExprBuilder::build(
+    TokenStream& stream) {
     std::list<std::list<std::pair<
         lex::Token, TokenStream::ProgressType>>>
         binding_rankings;
@@ -53,6 +54,8 @@ void ExprBuilder::build(TokenStream& stream) {
             }
         }
     }
+
+    throw std::runtime_error("not implemented yet");
 }
 
 void ExprBuilder::collect_rankings(
