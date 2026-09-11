@@ -1,11 +1,13 @@
+DIR=mrx
+
 rm -rf build
-rm -rf tests/main.c
+rm -rf ${DIR}/main.c
 cmake . -B build -GNinja
 cmake --build build
-cd mrx
+cd ${DIR}
 ./../build/src/main/main main.mrx
 clang main.c -o app
 cd ..
-chmod +x tests/app
-./tests/app
+chmod +x ${DIR}/app
+./${DIR}/app
 echo ""
