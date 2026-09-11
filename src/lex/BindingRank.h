@@ -3,7 +3,7 @@
 #include <cstdint>
 
 namespace marex::lex {
-enum struct [[nodiscard]] BindingRank : std::uint8_t {
+enum struct BindingRank : std::uint8_t {
     Div = 0,
     Mul = 0,
     Add = 1,
