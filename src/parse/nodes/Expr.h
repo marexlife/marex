@@ -1,5 +1,6 @@
 #ifndef MAREX_PARSE_EXPR_H
 #define MAREX_PARSE_EXPR_H
+#include <concepts>
 #include <cstdint>
 
 #include "Token.h"
@@ -15,7 +16,12 @@ enum struct [[nodiscard]] ExprKind : std::uint8_t {
 class Expr : public AstNode {
    public:
     explicit Expr(lex::Token&& token);
-    
+
+    template <std::derived_from<Expr> Target>
+    [[nodiscard]] Target& cast() {
+        return static_cast<Target&>(*this);
+    }
+
     Expr(Expr&&) = delete;
     Expr& operator=(Expr&&) = delete;
     Expr& operator=(const Expr&) = delete;
