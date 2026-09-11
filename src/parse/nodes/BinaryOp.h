@@ -2,7 +2,6 @@
 #define MAREX_PARSE_BINARYOP_H
 #include <cstdint>
 #include <memory>
-#include <utility>
 
 #include "Token.h"
 #include "nodes/Expr.h"
@@ -19,9 +18,7 @@ enum struct [[nodiscard]] BinaryOpKind : std::uint8_t {
 class BinaryOp final : public Expr {
    public:
     explicit BinaryOp(lex::Token&& token,
-                      BinaryOpKind binary_op_kind)
-        : Expr(std::move(token)),
-          binary_op_kind(binary_op_kind) {}
+                      BinaryOpKind binary_op_kind);
 
     void set(std::unique_ptr<Expr> lhs,
              std::unique_ptr<Expr> rhs);
