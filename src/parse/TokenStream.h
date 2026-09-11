@@ -11,15 +11,20 @@
 #include "Token.h"
 #include "TokenKind.h"
 
-namespace marex::parse {
-class TokenStream final {
-   public:
+namespace marex::parse
+{
+class TokenStream final
+{
+  public:
     using ProgressType = std::size_t;
 
-    TokenStream(std::vector<lex::Token>&& token_stream,
+    TokenStream(std::vector<lex::Token> &&token_stream,
                 bool is_in_lint_mode = false);
 
-    void advance() { ++progress; }
+    void advance()
+    {
+        ++progress;
+    }
 
     [[nodiscard]] lex::TokenKind get_next_kind(
         std::string_view error_message_on_failure =
@@ -29,22 +34,26 @@ class TokenStream final {
     [[nodiscard]] bool is_at_end() const;
 
     [[nodiscard]] lex::TokenKind token_kind_at(
-        std::size_t index) const {
-        return borrow_token_at(index).get_kind();
+        std::size_t index) const
+    {
+        return borrow_token_at(index).GetKind();
     }
 
-    [[nodiscard]] const lex::Token& borrow_token_at(
-        std::size_t index) const {
+    [[nodiscard]] const lex::Token &borrow_token_at(
+        std::size_t index) const
+    {
         return token_stream.at(index);
     }
 
     [[nodiscard]] lex::BindingRank get_binding_rank_at(
-        std::size_t index) const {
+        std::size_t index) const
+    {
         return borrow_token_at(index)
             .get_binding_rank();
     }
 
-    [[nodiscard]] std::size_t get_progress() const {
+    [[nodiscard]] std::size_t get_progress() const
+    {
         return progress;
     }
 
@@ -55,12 +64,13 @@ class TokenStream final {
         lex::TokenKind token_kind);
 
     [[nodiscard]] bool matches(
-        lex::TokenKind token_kind) const {
+        lex::TokenKind token_kind) const
+    {
         return get_kind() == token_kind;
     }
 
-    [[nodiscard]] lex::Token
-    copy_out_previous_token() {
+    [[nodiscard]] lex::Token copy_out_previous_token()
+    {
         return token_stream.at(progress - 1);
     }
 
@@ -70,8 +80,9 @@ class TokenStream final {
         std::source_location cpp_source_location =
             std::source_location::current());
 
-    [[nodiscard]] lex::TokenKind get_kind() const {
-        return get_token().get_kind();
+    [[nodiscard]] lex::TokenKind get_kind() const
+    {
+        return get_token().GetKind();
     }
 
     [[nodiscard]] lex::Token
@@ -83,33 +94,38 @@ class TokenStream final {
     [[nodiscard]] lex::TokenKind
     get_kind_and_advance();
 
-    [[nodiscard]] lex::SourcePos get_pos() const {
+    [[nodiscard]] lex::SourcePos get_pos() const
+    {
         return get_token().get_pos();
     }
 
-    [[nodiscard]] std::string_view get_lexeme() const {
+    [[nodiscard]] std::string_view get_lexeme() const
+    {
         return get_token().get_lexeme();
     }
 
-    [[nodiscard]] const lex::Token& get_token() const {
+    [[nodiscard]] const lex::Token &get_token() const
+    {
         return token_stream.at(progress);
     }
 
-    [[nodiscard]] lex::Token copy_out_token() const {
+    [[nodiscard]] lex::Token copy_out_token() const
+    {
         return lex::Token(token_stream.at(progress));
     }
 
-    [[nodiscard]] bool get_is_in_lint_mode() const {
+    [[nodiscard]] bool get_is_in_lint_mode() const
+    {
         return is_in_lint_mode;
     }
 
     [[nodiscard]] std::string get_error_message()
         const;
 
-   private:
+  private:
     std::vector<lex::Token> token_stream;
     ProgressType progress{};
     bool is_in_lint_mode{};
 };
-}  // namespace marex::parse
-#endif  // MAREX_PARSE_PARSERPACK_H
+} // namespace marex::parse
+#endif // MAREX_PARSE_PARSERPACK_H

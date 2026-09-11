@@ -30,7 +30,6 @@ class AstNode {
             "this shouldn't have been called.");
     }
 
-    // deliberately not = 0;
     [[nodiscard]] const lex::Token& get_token() const {
         return token;
     }
@@ -41,7 +40,7 @@ class AstNode {
     }
 
     [[nodiscard]] lex::TokenKind get_kind() const {
-        return token.get_kind();
+        return token.GetKind();
     }
 
     [[nodiscard]] std::string_view get_lexeme() const {

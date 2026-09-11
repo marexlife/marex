@@ -26,6 +26,10 @@ class BinaryOp final : public Expr {
     void set(std::unique_ptr<Expr> lhs,
              std::unique_ptr<Expr> rhs);
 
+    [[nodiscard]] BinaryOpKind get_binary_op() const {
+        return binary_op_kind;
+    }
+
    private:
     BinaryOpKind binary_op_kind{};
     std::unique_ptr<Expr> lhs;
