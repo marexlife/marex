@@ -3,6 +3,8 @@ project(lex)
 
 include(${CMAKE_SOURCE_DIR}/cmake/flags.cmake)
 
+set(CMAKE_BUILD_TYPE Release)
+
 add_library(${PROJECT_NAME}
     Lexer.cpp
     TokenFactory.cpp

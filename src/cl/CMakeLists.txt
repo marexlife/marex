@@ -3,6 +3,8 @@ project(cl)
 
 include(${CMAKE_SOURCE_DIR}/cmake/flags.cmake)
 
+set(CMAKE_BUILD_TYPE Release)
+
 add_library(${PROJECT_NAME}
     Cli.cpp
 )
