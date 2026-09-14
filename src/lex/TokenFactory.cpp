@@ -53,15 +53,8 @@ Token TokenFactory::create_token(
         return TokenKind::StringLiteral;
     }
 
-    if (auto result = try_convert_to_number<
-            float, TokenKind::IntLiteral>(
-            source_word)) {
-        return result.value();
-    }
-
-    if (auto result = try_convert_to_number<
-            std::int32_t, TokenKind::IntLiteral>(
-            source_word)) {
+    if (auto result =
+            try_convert_to_number(source_word)) {
         return result.value();
     }
 

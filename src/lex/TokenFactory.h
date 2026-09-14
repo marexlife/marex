@@ -1,7 +1,9 @@
 #ifndef MAREX_LEX_TOKENFACTORY_H
 #define MAREX_LEX_TOKENFACTORY_H
 #include <charconv>
+#include <exception>
 #include <optional>
+#include <string>
 #include <string_view>
 #include <system_error>
 #include <type_traits>
@@ -30,23 +32,19 @@ class TokenFactory final {
     [[nodiscard]] TokenKind map(
         std::string_view source_word);
 
-    template <typename NumberType,
-              TokenKind OutputValue>
-        requires std::is_arithmetic_v<NumberType>
-    [[nodiscard]] std::optional<TokenKind>
+    [[nodiscard]] static std::optional<TokenKind>
     try_convert_to_number(
         std::string_view source_word) {
-        NumberType target{};
+        try {
+            [[maybe_unused]] auto ignored =
+                std::stoi(source_word.data());
 
-        if (std::from_chars(source_word.begin(),
-                            source_word.end(), target)
-                .ec == std::errc{}) {
             return std::optional<TokenKind>{
-                OutputValue,
+                TokenKind::IntLiteral,
             };
+        } catch (...) {
+            return std::nullopt;
         }
-
-        return std::nullopt;
     }
 
     std::unordered_map<std::string_view, TokenKind>
