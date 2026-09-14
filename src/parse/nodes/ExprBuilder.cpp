@@ -49,6 +49,9 @@ std::unique_ptr<Expr> ExprBuilder::build(
     for (auto& expr_row : expr_rows) {
         for (auto& [expr, progress] : expr_row) {
             switch (expr->get_kind()) {
+                case marex::lex::TokenKind::Assignment:
+                  
+                    break;
                 default:
                     throw std::runtime_error(
                         "not implemented yet");

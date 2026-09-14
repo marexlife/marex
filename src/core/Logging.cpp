@@ -9,7 +9,7 @@
 
 namespace marex {
 namespace core {
-static const bool log_infos = true;
+static const bool log_infos = false;
 }
 
 void core::flush() { std::cout.flush(); }
