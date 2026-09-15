@@ -24,10 +24,9 @@ namespace marex {
         case ExpressionKind::Identifier:
             return "identifier";
         case ExpressionKind::None:
-            goto end;
+            break;
     }
-
-end:
+    
     throw std::out_of_range("Not a valid TypeKind");
 }
 
