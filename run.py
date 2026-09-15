@@ -1,7 +1,11 @@
 from subprocess import run
 import os
 
-run(["cmake", ".", "-B", "build"], check=True)
+try:
+    run(["cmake", ".", "-B", "build", "-GNinja"], check=True)
+except:
+    run(["cmake", ".", "-B", "build"], check=True)
+
 run(["cmake", "--build", "build"], check=True)
 
 ARGUMENTS=["./mrx/main.mrx"]
