@@ -7,7 +7,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 add_library(${PROJECT_NAME}
     Logging.cpp
-    ErrorFormatter.cpp
+    ErrorFormat.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC

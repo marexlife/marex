@@ -6,7 +6,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/flags.cmake)
 set(CMAKE_BUILD_TYPE Release)
 
 add_library(${PROJECT_NAME}
-    App.cpp
+    app.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC
