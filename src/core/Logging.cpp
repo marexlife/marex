@@ -5,7 +5,7 @@
 #include <print>
 #include <string>
 
-#include "ErrorFormatter.h"
+#include "ErrorFormat.h"
 
 namespace marex {
 namespace core {

@@ -1,5 +1,5 @@
-#ifndef MAREX_CORE_ERRORFROMATER_H
-#define MAREX_CORE_ERRORFROMATER_H
+#ifndef MAREX_CORE_ERRORFROMAT_H
+#define MAREX_CORE_ERRORFROMAT_H
 #include <source_location>
 #include <string>
 
@@ -12,4 +12,4 @@ merge_message_with_source_location(
 [[nodiscard]] std::string source_location_to_string(
     const std::source_location& source_location);
 }  // namespace marex::core
-#endif  // MAREX_CORE_ERRORFROMATER_H
+#endif  // MAREX_CORE_ERRORFROMAT_H
