@@ -22,14 +22,15 @@ class App final {
     void compile_files(int argc, char* argv[]);
     void compile_file(std::string_view argument);
 
-    void compile(std::string&& source_code,
-                 std::optional<std::string> filename =
-                     std::nullopt);
+    void compile(std::pmr::string&& source_code,
+                 std::optional<std::pmr::string>
+                     filename = std::nullopt);
     void run_shell_mode();
     void run_shell_iteration();
-    [[nodiscard]] static std::string
+    [[nodiscard]] static std::pmr::string
     query_user_command();
-    void execute_user_command(std::string&&);
+    void execute_user_command(
+        std::pmr::string&& user_command);
 
     lex::Lexer lexer;
 };

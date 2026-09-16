@@ -5,10 +5,10 @@
 #include <string_view>
 
 namespace marex::fetch {
-[[nodiscard]] std::string Fetcher::run(
+[[nodiscard]] std::pmr::string Fetcher::run(
     std::string_view filepath) {
     std::ifstream stream{filepath.data()};
-    std::string result;
+    std::pmr::string result;
 
     result.reserve(result_reserve_amount);
 

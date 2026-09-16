@@ -15,7 +15,7 @@ public:
     Fetcher& operator=(const Fetcher&) = delete;
     ~Fetcher() = delete;
 
-    [[nodiscard]] static std::string run(
+    [[nodiscard]] static std::pmr::string run(
         std::string_view filepath);
 };
 } // namespace marex::fetch

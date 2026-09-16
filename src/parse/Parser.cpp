@@ -10,7 +10,7 @@
 
 namespace marex::parse {
 TranslationUnit Parser::run(
-    std::vector<lex::Token>&& tokens) {
+    std::pmr::vector<lex::Token>&& tokens) {
     return parse(TokenStream{std::move(tokens)});
 }
 

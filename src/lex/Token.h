@@ -37,7 +37,7 @@ class [[nodiscard]] Token final
     }
 
   private:
-    std::optional<std::string> lexeme = std::nullopt;
+    std::optional<std::pmr::string> lexeme = std::nullopt;
     TokenKind kind{};
     SourcePos source_pos;
 };

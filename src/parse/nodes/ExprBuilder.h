@@ -15,7 +15,7 @@ class ExprBuilder final {
    private:
     static void collect_rankings(
         TokenStream& stream,
-        std::vector<std::vector<std::pair<
+        std::pmr::vector<std::vector<std::pair<
             lex::Token, TokenStream::ProgressType>>>&
             binding_rankings);
 };

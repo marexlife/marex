@@ -49,7 +49,8 @@ class TokenFactory final {
         return std::nullopt;
     }
 
-    std::unordered_map<std::string_view, TokenKind>
+    std::pmr::unordered_map<std::string_view,
+                            TokenKind>
         mapping;
 };
 }  // namespace marex::lex
