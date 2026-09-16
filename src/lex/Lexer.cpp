@@ -3,7 +3,6 @@
 #include <optional>
 #include <string>
 
-#include "LastCharKind.h"
 #include "SourcePos.h"
 #include "Token.h"
 #include "defer.h"

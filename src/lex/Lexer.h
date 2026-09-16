@@ -4,11 +4,16 @@
 #include <string>
 #include <vector>
 
-#include "LastCharKind.h"
 #include "SourcePos.h"
 #include "TokenFactory.h"
 
 namespace marex::lex {
+enum class [[nodiscard]] LastCharKind : std::uint8_t {
+    None,
+    WasDefault,
+    WasNotDefault,
+};
+
 class [[nodiscard]] Lexer final {
     constexpr static std::size_t vector_default_size =
         100;
