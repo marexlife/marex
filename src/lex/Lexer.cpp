@@ -3,12 +3,11 @@
 #include <optional>
 #include <string>
 
-#include "defer.h"
 #include "LastCharKind.h"
-#include "logging.h"
 #include "SourcePos.h"
 #include "Token.h"
-#include "exceptions/SourceCodeEmptyException.h"
+#include "defer.h"
+#include "logging.h"
 
 namespace marex::lex {
 std::pmr::vector<Token> Lexer::run(
@@ -87,10 +86,6 @@ std::pmr::vector<Token> Lexer::run(
                 last_word.push_back(source_text_char);
                 break;
         }
-    }
-
-    if (!last_char_optional.has_value()) [[unlikely]] {
-        throw SourceCodeEmptyException();
     }
 
     return result;
