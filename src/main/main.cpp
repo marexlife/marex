@@ -2,7 +2,7 @@
 #include <format>
 #include <print>
 
-#include "App.h"
+#include "app.h"
 
 int main(int argc, char* argv[]) {
     try {

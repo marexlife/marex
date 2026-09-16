@@ -3,18 +3,16 @@
 #include <optional>
 #include <string>
 
-#include "Defer.h"
-#include "LastCharKind.h"
-#include "Logging.h"
 #include "SourcePos.h"
 #include "Token.h"
-#include "exceptions/SourceCodeEmptyException.h"
+#include "defer.h"
+#include "logging.h"
 
 namespace marex::lex {
-std::vector<Token> Lexer::run(
-    std::string&& source_text,
-    std::optional<std::string> filename) {
-    std::vector<Token> result;
+std::pmr::vector<Token> Lexer::run(
+    std::pmr::string&& source_text,
+    std::optional<std::pmr::string> filename) {
+    std::pmr::vector<Token> result;
 
     SourcePos source_pos{filename};
 
@@ -89,10 +87,6 @@ std::vector<Token> Lexer::run(
         }
     }
 
-    if (!last_char_optional.has_value()) [[unlikely]] {
-        throw SourceCodeEmptyException();
-    }
-
     return result;
 }
 
@@ -103,7 +97,7 @@ void Lexer::reset(SourcePos& source_pos) {
     last_word.clear();
 }
 
-void Lexer::push_token(std::vector<Token>& result,
+void Lexer::push_token(std::pmr::vector<Token>& result,
                        SourcePos& source_pos) {
     core::log_info("Lexer: push_token");
 
@@ -113,9 +107,9 @@ void Lexer::push_token(std::vector<Token>& result,
     last_word.clear();
 }
 
-void Lexer::push_current(std::vector<Token>& result,
-                         char current,
-                         SourcePos& source_pos) {
+void Lexer::push_current(
+    std::pmr::vector<Token>& result, char current,
+    SourcePos& source_pos) {
     core::log_info("Lexer: push_current");
 
     result.emplace_back(token_factory.create_token(
@@ -123,7 +117,7 @@ void Lexer::push_current(std::vector<Token>& result,
 }
 
 void Lexer::push_token_and_current(
-    std::vector<Token>& result, char current,
+    std::pmr::vector<Token>& result, char current,
     SourcePos& source_pos) {
     core::log_info("Lexer: push_token_and_current");
 

@@ -1,11 +1,11 @@
-#include "Logging.h"
+#include "logging.h"
 
 #include <exception>
 #include <iostream>
 #include <print>
 #include <string>
 
-#include "ErrorFormatter.h"
+#include "error_format.h"
 
 namespace marex {
 namespace core {
@@ -23,7 +23,7 @@ void core::log_info(std::string&& message) {
 void core::log_error(
     std::string&& message,
     std::source_location source_location) {
-    std::string format_result = ErrorFormater::
+    std::string format_result =
         merge_message_with_source_location(
             message, source_location);
 
@@ -41,7 +41,7 @@ void core::log_fatal_error(
 void core::log_fatal_internal_error(
     std::string&& message,
     std::source_location source_location) {
-    std::string format_result = ErrorFormater::
+    std::string format_result =
         merge_message_with_source_location(
             message, source_location);
 

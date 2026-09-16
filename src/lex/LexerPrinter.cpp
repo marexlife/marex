@@ -3,13 +3,13 @@
 #include <format>
 #include <vector>
 
-#include "Logging.h"
+#include "logging.h"
 #include "Token.h"
 
 namespace marex::lex
 {
 void LexerPrinter::print_tokens(
-    std::vector<lex::Token> &token_stream)
+    std::pmr::vector<lex::Token> &token_stream)
 {
     core::log_info("\nLexer print start\n");
 

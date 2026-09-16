@@ -6,7 +6,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/flags.cmake)
 set(CMAKE_BUILD_TYPE Release)
 
 add_library(${PROJECT_NAME}
-    App.cpp
+    app.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC
@@ -16,9 +16,8 @@ target_compile_options(${PROJECT_NAME} PUBLIC
 target_link_libraries(${PROJECT_NAME} PUBLIC
     lex
     parse
-    cl
     fetch
-    walk
+    write
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

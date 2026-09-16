@@ -3,8 +3,8 @@
 #include <optional>
 #include <utility>
 
-#include "BindingRank.h"
-#include "Logging.h"
+#include "binding_rank.h"
+#include "logging.h"
 #include "SourcePos.h"
 #include "TokenKind.h"
 
@@ -43,7 +43,8 @@ Token::Token(
     return *lexeme;
 }
 
-[[nodiscard]] std::string Token::move_out_lexeme() {
+[[nodiscard]] std::pmr::string
+Token::move_out_lexeme() {
     if (!lexeme) [[unlikely]] {
         core::log_fatal_internal_error(
             "trying to move out a lexeme when none "

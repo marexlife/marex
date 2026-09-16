@@ -1,14 +1,16 @@
-#include "Fetcher.h"
+#include "fetch.h"
 
 #include <fstream>
 #include <string>
 #include <string_view>
 
-namespace marex::fetch {
-[[nodiscard]] std::string Fetcher::run(
+namespace marex {
+static const std::size_t result_reserve_amount = 100;
+
+[[nodiscard]] std::pmr::string fetch::fetch(
     std::string_view filepath) {
     std::ifstream stream{filepath.data()};
-    std::string result;
+    std::pmr::string result;
 
     result.reserve(result_reserve_amount);
 
@@ -20,4 +22,4 @@ namespace marex::fetch {
 
     return result;
 }
-}  // namespace marex::fetch
+}  // namespace marex

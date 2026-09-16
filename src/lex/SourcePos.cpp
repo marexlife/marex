@@ -5,7 +5,7 @@
 
 namespace marex::lex {
 SourcePos::SourcePos(
-    std::optional<std::string> filename)
+    std::optional<std::pmr::string> filename)
     : filename(filename) {}
 
 void SourcePos::advance_column() { ++column; }

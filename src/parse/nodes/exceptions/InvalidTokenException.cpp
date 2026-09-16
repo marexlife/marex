@@ -3,7 +3,7 @@
 #include <format>
 #include <utility>
 
-#include "ErrorFormatter.h"
+#include "error_format.h"
 #include "TokenKind.h"
 
 namespace marex::parse {
@@ -17,9 +17,8 @@ InvalidTokenException::InvalidTokenException(
           "{}, from {}",
           source_pos.as_string(), *expected_token_kind,
           *got_token_kind,
-          core::ErrorFormater::
-              source_location_to_string(
-                  cpp_source_location))) {}
+          core::source_location_to_string(
+              cpp_source_location))) {}
 
 InvalidTokenException::InvalidTokenException(
     lex::SourcePos source_pos,
@@ -31,9 +30,8 @@ InvalidTokenException::InvalidTokenException(
           "from {}",
           source_pos.as_string(),
           *unexpected_token_kind, message,
-          core::ErrorFormater::
-              source_location_to_string(
-                  cpp_source_location))) {}
+          core::source_location_to_string(
+              cpp_source_location))) {}
 
 InvalidTokenException::InvalidTokenException(
     lex::SourcePos source_pos,
@@ -43,9 +41,8 @@ InvalidTokenException::InvalidTokenException(
           "at: {}, unexpected token kind: {}, from {}",
           source_pos.as_string(),
           *unexpected_token_kind,
-          core::ErrorFormater::
-              source_location_to_string(
-                  cpp_source_location))) {}
+          core::source_location_to_string(
+              cpp_source_location))) {}
 
 InvalidTokenException::InvalidTokenException(
     lex::SourcePos source_pos,
@@ -55,9 +52,8 @@ InvalidTokenException::InvalidTokenException(
           "at {}\nInvalid token: {}, from {}",
           source_pos.as_string(),
           std::move(full_message),
-          core::ErrorFormater::
-              source_location_to_string(
-                  cpp_source_location))) {}
+          core::source_location_to_string(
+              cpp_source_location))) {}
 
 const char* InvalidTokenException::what()
     const noexcept {

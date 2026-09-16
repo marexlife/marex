@@ -21,7 +21,7 @@ public:
     ~Parser() = delete;
 
     [[nodiscard]] static TranslationUnit run(
-        std::vector<lex::Token>&& tokens);
+        std::pmr::vector<lex::Token>&& tokens);
 
 private:
     [[nodiscard]] static TranslationUnit parse(

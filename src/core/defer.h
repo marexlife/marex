@@ -1,5 +1,6 @@
 #ifndef MAREX_CORE_DEFER_H
 #define MAREX_CORE_DEFER_H
+#include <functional>
 #include <type_traits>
 
 namespace marex::core {
@@ -15,10 +16,10 @@ class Defer final {
     Defer(const Defer&) = delete;
     Defer& operator=(const Defer&) = delete;
 
-    ~Defer() { defer_func(); }
+    ~Defer() { std::invoke(defer_func); }
 
    private:
-    Functor defer_func;
+    Functor defer_func = []() {};
 };
 }  // namespace marex::core
 #endif  // MAREX_CORE_DEFER_H

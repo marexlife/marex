@@ -12,7 +12,6 @@ add_library(${PROJECT_NAME}
     Token.cpp
     SourcePos.cpp
     TokenKind.cpp
-    exceptions/SourceCodeEmptyException.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC

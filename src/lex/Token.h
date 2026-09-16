@@ -4,7 +4,7 @@
 #include <string>
 #include <string_view>
 
-#include "Passkey.h"
+#include "passkey.h"
 #include "SourcePos.h"
 #include "TokenKind.h"
 
@@ -21,7 +21,7 @@ class [[nodiscard]] Token final {
 
     [[nodiscard]] std::string_view get_lexeme() const;
 
-    [[nodiscard]] std::string move_out_lexeme();
+    [[nodiscard]] std::pmr::string move_out_lexeme();
 
     [[nodiscard]] TokenKind GetKind() const {
         return kind;
@@ -32,8 +32,8 @@ class [[nodiscard]] Token final {
         return source_pos;
     }
 
-   private:
-    std::optional<std::string> lexeme = std::nullopt;
+  private:
+    std::optional<std::pmr::string> lexeme = std::nullopt;
     TokenKind kind{};
     SourcePos source_pos;
 };

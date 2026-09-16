@@ -26,9 +26,6 @@ add_library(${PROJECT_NAME}
     nodes/ExprBuilder.cpp
     nodes/exceptions/InvalidTokenException.cpp
     ExprFactory.cpp
-
-    linter/CaseCheck.cpp
-    linter/exceptions/WrongCaseException.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC

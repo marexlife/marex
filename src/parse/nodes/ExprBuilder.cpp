@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "BindingRank.h"
+#include "binding_rank.h"
 #include "ExprFactory.h"
 #include "Token.h"
 #include "TokenKind.h"
@@ -18,7 +18,7 @@
 namespace marex::parse {
 std::unique_ptr<Expr> ExprBuilder::build(
     TokenStream& stream) {
-    std::vector<std::vector<std::pair<
+    std::pmr::vector<std::vector<std::pair<
         lex::Token, TokenStream::ProgressType>>>
         binding_rankings;
 
@@ -50,7 +50,7 @@ std::unique_ptr<Expr> ExprBuilder::build(
         for (auto& [expr, progress] : expr_row) {
             switch (expr->get_kind()) {
                 case marex::lex::TokenKind::Assignment:
-                  
+
                     break;
                 default:
                     throw std::runtime_error(
@@ -64,7 +64,7 @@ std::unique_ptr<Expr> ExprBuilder::build(
 
 void ExprBuilder::collect_rankings(
     TokenStream& stream,
-    std::vector<std::vector<std::pair<
+    std::pmr::vector<std::vector<std::pair<
         lex::Token, TokenStream::ProgressType>>>&
         binding_rankings) {
     for (std::uint8_t to_be_collected_rank = 0;

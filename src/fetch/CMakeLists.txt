@@ -8,7 +8,7 @@ set(CXX_CLANG_TIDY ON)
 set(CMAKE_BUILD_TYPE Release)
 
 add_library(${PROJECT_NAME}
-    Fetcher.cpp
+    fetch.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC

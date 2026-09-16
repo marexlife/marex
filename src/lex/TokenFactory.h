@@ -1,12 +1,8 @@
 #ifndef MAREX_LEX_TOKENFACTORY_H
 #define MAREX_LEX_TOKENFACTORY_H
-#include <charconv>
-#include <exception>
 #include <optional>
 #include <string>
 #include <string_view>
-#include <system_error>
-#include <type_traits>
 #include <unordered_map>
 
 #include "Token.h"
@@ -47,7 +43,8 @@ class TokenFactory final {
         }
     }
 
-    std::unordered_map<std::string_view, TokenKind>
+    std::pmr::unordered_map<std::string_view,
+                            TokenKind>
         mapping;
 };
 }  // namespace marex::lex
