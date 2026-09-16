@@ -17,7 +17,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     lex
     parse
     fetch
-    walk
+    write
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

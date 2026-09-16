@@ -1,4 +1,4 @@
-#include "Walker.h"
+#include "write.h"
 
 #include <format>
 #include <fstream>
@@ -6,8 +6,8 @@
 
 #include "logging.h"
 
-namespace marex::walk {
-void Walker::run(
+namespace marex {
+void write::write(
     parse::TranslationUnit&& translation_unit) {
     static const std::string_view output_file =
         "main.c";
@@ -19,4 +19,4 @@ void Walker::run(
     core::log_info(
         std::format("wrote {}", output_file));
 }
-}  // namespace marex::walk
+}  // namespace marex
