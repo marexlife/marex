@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "BindingRank.h"
-#include "Logging.h"
+#include "logging.h"
 #include "SourcePos.h"
 #include "TokenKind.h"
 

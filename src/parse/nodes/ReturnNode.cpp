@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "ExpressionKind.h"
-#include "Logging.h"
+#include "logging.h"
 #include "Token.h"
 #include "TokenKind.h"
 #include "TokenStream.h"

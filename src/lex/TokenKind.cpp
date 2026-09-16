@@ -2,7 +2,7 @@
 
 #include <string_view>
 
-#include "Logging.h"
+#include "logging.h"
 
 namespace marex {
 [[nodiscard]] std::string_view lex::operator*(

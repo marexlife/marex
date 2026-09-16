@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 
-#include "Defer.h"
+#include "defer.h"
 #include "ExpressionKind.h"
 #include "Token.h"
 #include "TokenKind.h"

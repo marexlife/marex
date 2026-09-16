@@ -3,9 +3,9 @@
 #include <optional>
 #include <string>
 
-#include "Defer.h"
+#include "defer.h"
 #include "LastCharKind.h"
-#include "Logging.h"
+#include "logging.h"
 #include "SourcePos.h"
 #include "Token.h"
 #include "exceptions/SourceCodeEmptyException.h"

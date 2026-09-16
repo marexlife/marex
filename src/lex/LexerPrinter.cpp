@@ -3,7 +3,7 @@
 #include <format>
 #include <vector>
 
-#include "Logging.h"
+#include "logging.h"
 #include "Token.h"
 
 namespace marex::lex

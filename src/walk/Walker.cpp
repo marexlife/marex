@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string_view>
 
-#include "Logging.h"
+#include "logging.h"
 
 namespace marex::walk {
 void Walker::run(

@@ -8,8 +8,8 @@
 #include <utility>
 #include <vector>
 
-#include "Logging.h"
 #include "TokenKind.h"
+#include "logging.h"
 #include "nodes/exceptions/InvalidTokenException.h"
 
 namespace marex::parse {
@@ -49,7 +49,8 @@ std::string_view TokenStream::get_kind_string() const {
     return does_match;
 }
 
-std::pmr::string TokenStream::advance_if_matches_or_throw(
+std::pmr::string
+TokenStream::advance_if_matches_or_throw(
     lex::TokenKind token_kind,
     std::source_location cpp_source_location) {
     auto pre_increment_token_borrow = get_token();

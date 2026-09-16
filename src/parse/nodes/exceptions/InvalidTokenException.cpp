@@ -3,7 +3,7 @@
 #include <format>
 #include <utility>
 
-#include "ErrorFormat.h"
+#include "error_format.h"
 #include "TokenKind.h"
 
 namespace marex::parse {

@@ -9,12 +9,12 @@
 #include <string>
 #include <utility>
 
-#include "Defer.h"
-#include "Logging.h"
 #include "TokenKind.h"
 #include "TokenStream.h"
 #include "VarDecl.h"
+#include "defer.h"
 #include "exceptions/InvalidTokenException.h"
+#include "logging.h"
 #include "nodes/Expr.h"
 #include "nodes/FuncCall.h"
 #include "nodes/ReturnNode.h"

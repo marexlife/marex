@@ -1,11 +1,11 @@
-#include "Logging.h"
+#include "logging.h"
 
 #include <exception>
 #include <iostream>
 #include <print>
 #include <string>
 
-#include "ErrorFormat.h"
+#include "error_format.h"
 
 namespace marex {
 namespace core {
