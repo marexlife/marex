@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "BindingRank.h"
+#include "binding_rank.h"
 #include "ExprFactory.h"
 #include "Token.h"
 #include "TokenKind.h"
