@@ -14,7 +14,7 @@
 
 namespace marex::parse {
 struct FuncArg final {
-    std::string arg_name;
+    std::pmr::string arg_name;
     ExpressionKind arg_type{};
 };
 

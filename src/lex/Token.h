@@ -21,7 +21,7 @@ class [[nodiscard]] Token final {
 
     [[nodiscard]] std::string_view get_lexeme() const;
 
-    [[nodiscard]] std::string move_out_lexeme();
+    [[nodiscard]] std::pmr::string move_out_lexeme();
 
     [[nodiscard]] TokenKind GetKind() const {
         return kind;

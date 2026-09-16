@@ -65,7 +65,7 @@ class TokenStream final {
         return token_stream.at(progress - 1);
     }
 
-    /* NOT [[nodiscard]] */ std::string
+    /* NOT [[nodiscard]] */ std::pmr::string
     advance_if_matches_or_throw(
         lex::TokenKind token_kind,
         std::source_location cpp_source_location =

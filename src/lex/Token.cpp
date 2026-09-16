@@ -43,7 +43,8 @@ Token::Token(
     return *lexeme;
 }
 
-[[nodiscard]] std::string Token::move_out_lexeme() {
+[[nodiscard]] std::pmr::string
+Token::move_out_lexeme() {
     if (!lexeme) [[unlikely]] {
         core::log_fatal_internal_error(
             "trying to move out a lexeme when none "
