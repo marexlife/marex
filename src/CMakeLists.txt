@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(app)
-add_subdirectory(cl)
 add_subdirectory(core)
 add_subdirectory(fetch)
 add_subdirectory(lex)
