@@ -29,7 +29,7 @@ class [[nodiscard]] Lexer final {
     [[nodiscard]] std::pmr::vector<Token> run(
         this Lexer& self,
         std::pmr::string&& source_text,
-        std::optional<std::pmr::string> filename);
+        std::optional<std::string_view> filename);
 
    private:
     void push_token(this Lexer& self,

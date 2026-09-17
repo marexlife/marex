@@ -2,10 +2,11 @@
 
 #include <format>
 #include <string>
+#include <string_view>
 
 namespace marex::lex {
 SourcePos::SourcePos(
-    std::optional<std::pmr::string> filename)
+    std::optional<std::string_view> filename)
     : filename(filename) {}
 
 void SourcePos::advance_column() { ++column; }

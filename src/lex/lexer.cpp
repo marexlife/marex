@@ -11,7 +11,7 @@
 namespace marex::lex {
 std::pmr::vector<Token> Lexer::run(
     this Lexer& self, std::pmr::string&& source_text,
-    std::optional<std::pmr::string> filename) {
+    std::optional<std::string_view> filename) {
     std::pmr::vector<Token> result;
 
     SourcePos source_pos{filename};
