@@ -5,7 +5,7 @@
 
 #include "TokenStream.h"
 #include "token_kind.h"
-#include "nodes/exceptions/InvalidTokenException.h"
+#include "nodes/exceptions/invalid_token_exception.h"
 
 namespace marex {
 [[nodiscard]] std::string_view parse::operator*(

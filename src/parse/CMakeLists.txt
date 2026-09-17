@@ -14,6 +14,7 @@ add_library(${PROJECT_NAME}
     TokenStream.cpp
     TranslationUnit.cpp
     ExpressionKind.cpp
+    ExprFactory.cpp
 
     nodes/AstNode.cpp
     nodes/OpNode.cpp
@@ -24,8 +25,8 @@ add_library(${PROJECT_NAME}
     nodes/ReturnNode.cpp
     nodes/Expr.cpp
     nodes/ExprBuilder.cpp
-    nodes/exceptions/InvalidTokenException.cpp
-    ExprFactory.cpp
+
+    nodes/exceptions/invalid_token_exception.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC
