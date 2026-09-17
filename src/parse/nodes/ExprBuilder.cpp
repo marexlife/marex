@@ -8,12 +8,12 @@
 #include <utility>
 #include <vector>
 
-#include "binding_rank.h"
 #include "ExprFactory.h"
+#include "binding_rank.h"
+#include "nodes/Expr.h"
 #include "token.h"
 #include "token_kind.h"
-#include "TokenStream.h"
-#include "nodes/Expr.h"
+#include "token_stream.h"
 
 namespace marex::parse {
 std::unique_ptr<Expr> ExprBuilder::build(

@@ -1,4 +1,4 @@
-#include "TokenStream.h"
+#include "token_stream.h"
 
 #include <exception>
 #include <format>
@@ -8,9 +8,9 @@
 #include <utility>
 #include <vector>
 
-#include "token_kind.h"
 #include "logging.h"
 #include "nodes/exceptions/invalid_token_exception.h"
+#include "token_kind.h"
 
 namespace marex::parse {
 TokenStream::TokenStream(

@@ -3,8 +3,8 @@
 #include <memory>
 #include <vector>
 
-#include "TokenStream.h"
 #include "nodes/AstNode.h"
+#include "token_stream.h"
 
 namespace marex::parse {
 class TranslationUnit final {

@@ -7,7 +7,6 @@
 
 #include "ExpressionKind.h"
 #include "token.h"
-#include "TokenStream.h"
 #include "nodes/AstNode.h"
 #include "nodes/Expr.h"
 #include "nodes/ReturnNode.h"

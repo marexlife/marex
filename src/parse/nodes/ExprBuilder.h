@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "TokenStream.h"
+#include "token_stream.h"
 #include "nodes/Expr.h"
 #include "token.h"
 

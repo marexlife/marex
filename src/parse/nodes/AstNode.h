@@ -5,7 +5,7 @@
 
 #include "token.h"
 #include "token_kind.h"
-#include "TokenStream.h"
+#include "token_stream.h"
 
 namespace marex::parse {
 class AstNode {

@@ -3,7 +3,7 @@
 #include <source_location>
 #include <stdexcept>
 
-#include "TokenStream.h"
+#include "token_stream.h"
 #include "token_kind.h"
 #include "nodes/exceptions/invalid_token_exception.h"
 

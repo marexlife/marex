@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "TokenStream.h"
 #include "VarDecl.h"
 #include "defer.h"
 #include "exceptions/invalid_token_exception.h"

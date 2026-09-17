@@ -3,7 +3,7 @@
 #include <utility>
 #include <vector>
 
-#include "TokenStream.h"
+#include "token_stream.h"
 #include "TranslationUnit.h"
 
 namespace marex {
