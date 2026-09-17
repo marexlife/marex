@@ -1,6 +1,6 @@
 #ifndef MAREX_WALK_WRITE_H
 #define MAREX_WALK_WRITE_H
-#include "TranslationUnit.h"
+#include "translation_unit.h"
 
 namespace marex::write {
 void write(parse::TranslationUnit&& translation_unit);

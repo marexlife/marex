@@ -12,7 +12,7 @@ set(CXX_CLANG_TIDY ON)
 add_library(${PROJECT_NAME}
     parse.cpp
     token_stream.cpp
-    TranslationUnit.cpp
+    translation_unit.cpp
     ExpressionKind.cpp
     ExprFactory.cpp
 
