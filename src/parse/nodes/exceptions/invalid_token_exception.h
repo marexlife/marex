@@ -1,5 +1,5 @@
-#ifndef MAREX_PARSE_EXCEPTIONS_INVALIDTOKENEXCEPTION_H
-#define MAREX_PARSE_EXCEPTIONS_INVALIDTOKENEXCEPTION_H
+#ifndef MAREX_PARSE_INVALIDTOKENEXCEPTION_H
+#define MAREX_PARSE_INVALIDTOKENEXCEPTION_H
 #include <exception>
 #include <source_location>
 #include <string>
@@ -43,4 +43,4 @@ class InvalidTokenException final
     std::string full_message;
 };
 }  // namespace marex::parse
-#endif  // MAREX_PARSE_EXCEPTIONS_INVALIDTOKENEXCEPTION_H
+#endif  // MAREX_PARSE_INVALIDTOKENEXCEPTION_H
