@@ -19,7 +19,7 @@ add_library(${PROJECT_NAME}
     nodes/ast_node.cpp
     nodes/op_node.cpp
     nodes/binary_op.cpp
-    nodes/VarDecl.cpp
+    nodes/var_decl.cpp
     nodes/return_node.cpp
     nodes/func_node.cpp
     nodes/func_call.cpp
