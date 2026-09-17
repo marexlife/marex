@@ -9,15 +9,15 @@
 #include <string>
 #include <utility>
 
-#include "token_kind.h"
 #include "TokenStream.h"
 #include "VarDecl.h"
 #include "defer.h"
-#include "exceptions/InvalidTokenException.h"
+#include "exceptions/invalid_token_exception.h"
 #include "logging.h"
 #include "nodes/Expr.h"
 #include "nodes/FuncCall.h"
 #include "nodes/ReturnNode.h"
+#include "token_kind.h"
 
 namespace marex::parse {
 FuncNode::FuncNode(lex::Token&& token)

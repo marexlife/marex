@@ -10,7 +10,7 @@
 
 #include "token_kind.h"
 #include "logging.h"
-#include "nodes/exceptions/InvalidTokenException.h"
+#include "nodes/exceptions/invalid_token_exception.h"
 
 namespace marex::parse {
 TokenStream::TokenStream(
