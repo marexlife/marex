@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "ExprFactory.h"
+#include "expr_factory.h"
 #include "binding_rank.h"
 #include "nodes/Expr.h"
 #include "token.h"

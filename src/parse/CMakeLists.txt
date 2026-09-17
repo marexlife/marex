@@ -14,7 +14,7 @@ add_library(${PROJECT_NAME}
     token_stream.cpp
     translation_unit.cpp
     ExpressionKind.cpp
-    ExprFactory.cpp
+    expr_factory.cpp
 
     nodes/AstNode.cpp
     nodes/OpNode.cpp
