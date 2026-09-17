@@ -6,8 +6,8 @@
 
 #include "defer.h"
 #include "ExpressionKind.h"
-#include "Token.h"
-#include "TokenKind.h"
+#include "token.h"
+#include "token_kind.h"
 
 namespace marex::parse {
 FuncCall::FuncCall(lex::Token&& token)

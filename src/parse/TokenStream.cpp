@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "logging.h"
 #include "nodes/exceptions/InvalidTokenException.h"
 
@@ -23,7 +23,8 @@ TokenStream::TokenStream(
 lex::TokenKind TokenStream::get_next_kind(
     std::string_view error_message_on_failure) const {
     try {
-        return token_stream.at(progress + 1).GetKind();
+        return token_stream.at(progress + 1)
+            .get_kind();
     } catch (const std::exception& exception) {
         throw std::runtime_error(
             error_message_on_failure.data());
@@ -55,13 +56,13 @@ TokenStream::advance_if_matches_or_throw(
     std::source_location cpp_source_location) {
     auto pre_increment_token_borrow = get_token();
     const auto got_token_kind =
-        pre_increment_token_borrow.GetKind();
+        pre_increment_token_borrow.get_kind();
 
     if (got_token_kind == token_kind) {
         advance();
 
-        core::log_info(std::format(
-            "TokenKind {} matched", *token_kind));
+        core::log_info("TokenKind {} matched",
+                       *token_kind);
 
         return pre_increment_token_borrow
             .move_out_lexeme();

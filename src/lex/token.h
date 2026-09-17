@@ -4,9 +4,9 @@
 #include <string>
 #include <string_view>
 
+#include "token_kind.h"
 #include "passkey.h"
-#include "SourcePos.h"
-#include "TokenKind.h"
+#include "source_pos.h"
 
 namespace marex::lex {
 enum struct BindingRank : std::uint8_t;
@@ -23,7 +23,7 @@ class [[nodiscard]] Token final {
 
     [[nodiscard]] std::pmr::string move_out_lexeme();
 
-    [[nodiscard]] TokenKind GetKind() const {
+    [[nodiscard]] TokenKind get_kind() const {
         return kind;
     }
 
@@ -32,8 +32,9 @@ class [[nodiscard]] Token final {
         return source_pos;
     }
 
-  private:
-    std::optional<std::pmr::string> lexeme = std::nullopt;
+   private:
+    std::optional<std::pmr::string> lexeme =
+        std::nullopt;
     TokenKind kind{};
     SourcePos source_pos;
 };

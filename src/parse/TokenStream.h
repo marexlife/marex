@@ -6,10 +6,10 @@
 #include <string_view>
 #include <vector>
 
-#include "SourcePos.h"
-#include "Token.h"
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "binding_rank.h"
+#include "source_pos.h"
+#include "token.h"
 
 namespace marex::parse {
 class TokenStream final {
@@ -31,7 +31,7 @@ class TokenStream final {
 
     [[nodiscard]] lex::TokenKind token_kind_at(
         std::size_t index) const {
-        return borrow_token_at(index).GetKind();
+        return borrow_token_at(index).get_kind();
     }
 
     [[nodiscard]] const lex::Token& borrow_token_at(
@@ -72,7 +72,7 @@ class TokenStream final {
             std::source_location::current());
 
     [[nodiscard]] lex::TokenKind get_kind() const {
-        return get_token().GetKind();
+        return get_token().get_kind();
     }
 
     [[nodiscard]] lex::Token

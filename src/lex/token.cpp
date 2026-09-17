@@ -1,12 +1,12 @@
-#include "Token.h"
+#include "token.h"
 
 #include <optional>
 #include <utility>
 
+#include "token_kind.h"
 #include "binding_rank.h"
 #include "logging.h"
-#include "SourcePos.h"
-#include "TokenKind.h"
+#include "source_pos.h"
 
 namespace marex::lex {
 Token::Token(

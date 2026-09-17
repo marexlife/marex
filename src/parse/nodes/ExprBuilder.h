@@ -5,8 +5,14 @@
 
 #include "TokenStream.h"
 #include "nodes/Expr.h"
+#include "token.h"
 
 namespace marex::parse {
+struct Ranking final {
+    lex::Token token;
+    TokenStream::ProgressType progress_type;
+};
+
 class ExprBuilder final {
    public:
     static std::unique_ptr<Expr> build(

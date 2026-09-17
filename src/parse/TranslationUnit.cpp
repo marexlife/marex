@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "nodes/FuncNode.h"
 #include "nodes/exceptions/InvalidTokenException.h"
 

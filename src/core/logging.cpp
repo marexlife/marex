@@ -1,24 +1,14 @@
 #include "logging.h"
 
-#include <exception>
 #include <iostream>
 #include <print>
+#include <stdexcept>
 #include <string>
 
 #include "error_format.h"
 
 namespace marex {
-namespace core {
-static const bool log_infos = false;
-}
-
 void core::flush() { std::cout.flush(); }
-
-void core::log_info(std::string&& message) {
-    if (log_infos) {
-        std::println("info: {}", message);
-    }
-}
 
 void core::log_error(
     std::string&& message,
@@ -27,26 +17,22 @@ void core::log_error(
         merge_message_with_source_location(
             message, source_location);
 
-    std::println("error: {}", format_result);
+    std::println("{}", format_result);
 }
 
 void core::log_fatal_error(
     std::string&& message,
     std::source_location source_location) {
-    core::log_error(std::move(message),
-                    source_location);
-    throw std::exception();
+    throw std::runtime_error(
+        merge_message_with_source_location(
+            message, source_location));
 }
 
 void core::log_fatal_internal_error(
     std::string&& message,
     std::source_location source_location) {
-    std::string format_result =
+    throw std::runtime_error(
         merge_message_with_source_location(
-            message, source_location);
-
-    std::println("Internal error: {}", format_result);
-
-    throw std::exception();
+            message, source_location));
 }
 }  // namespace marex

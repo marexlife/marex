@@ -5,8 +5,8 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "Token.h"
-#include "TokenKind.h"
+#include "token.h"
+#include "token_kind.h"
 
 namespace marex::lex {
 class TokenFactory final {

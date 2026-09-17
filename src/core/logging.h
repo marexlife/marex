@@ -1,12 +1,26 @@
 #ifndef MAREX_CORE_LOGGER_H
 #define MAREX_CORE_LOGGER_H
+#include <format>
+#include <print>
 #include <source_location>
 #include <string>
+#include <utility>
 
 namespace marex::core {
+namespace detail {
+inline const bool log_infos = false;
+}
+
 void flush();
 
-void log_info(std::string&& message);
+template <typename... Ts>
+void log_info(std::format_string<Ts...> message,
+              Ts... args) {
+    if (detail::log_infos) {
+        std::println(message,
+                     std::forward<Ts>(args)...);
+    }
+}
 
 void log_error(std::string&& message,
                std::source_location source_location =

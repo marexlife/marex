@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "TokenStream.h"
 #include "VarDecl.h"
 #include "defer.h"
@@ -124,10 +124,9 @@ void FuncNode::parse_func_body(TokenStream& stream) {
                         "are not supported yet");
                 } break;
                 default:
-                    goto end;
+                    break;
             }
 
-        end:
             throw InvalidTokenException(
                 stream.get_pos(), stream.get_kind());
         });
@@ -188,8 +187,7 @@ void FuncNode::parse_func_args(TokenStream& stream) {
             ++arg_count;
         };
 
-        core::log_info(
-            std::format("arg count: {}", arg_count));
+        core::log_info("arg count: {}", arg_count);
 
         auto func_arg = std::invoke([&] -> FuncArg {
             auto name =

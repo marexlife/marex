@@ -6,12 +6,12 @@ include(${CMAKE_SOURCE_DIR}/cmake/flags.cmake)
 set(CMAKE_BUILD_TYPE Release)
 
 add_library(${PROJECT_NAME}
-    Lexer.cpp
-    TokenFactory.cpp
-    LexerPrinter.cpp
-    Token.cpp
-    SourcePos.cpp
-    TokenKind.cpp
+    lexer.cpp
+    lex_print.cpp
+    token.cpp
+    source_pos.cpp
+    token_factory.cpp
+    token_kind.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC

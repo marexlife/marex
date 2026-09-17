@@ -3,8 +3,8 @@
 #include <stdexcept>
 #include <string_view>
 
-#include "Token.h"
-#include "TokenKind.h"
+#include "token.h"
+#include "token_kind.h"
 #include "TokenStream.h"
 
 namespace marex::parse {
@@ -40,7 +40,7 @@ class AstNode {
     }
 
     [[nodiscard]] lex::TokenKind get_kind() const {
-        return token.GetKind();
+        return token.get_kind();
     }
 
     [[nodiscard]] std::string_view get_lexeme() const {

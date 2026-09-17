@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CXX_CLANG_TIDY ON)
 
 add_library(${PROJECT_NAME}
-    Parser.cpp
+    parse.cpp
     TokenStream.cpp
     TranslationUnit.cpp
     ExpressionKind.cpp

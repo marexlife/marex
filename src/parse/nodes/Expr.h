@@ -3,7 +3,7 @@
 #include <concepts>
 #include <cstdint>
 
-#include "Token.h"
+#include "token.h"
 #include "nodes/AstNode.h"
 
 namespace marex::parse {
