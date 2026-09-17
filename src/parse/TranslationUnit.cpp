@@ -4,9 +4,9 @@
 #include <string>
 #include <utility>
 
+#include "token_kind.h"
 #include "nodes/FuncNode.h"
 #include "nodes/exceptions/invalid_token_exception.h"
-#include "token_kind.h"
 
 namespace marex::parse {
 std::string TranslationUnit::as_c() {
