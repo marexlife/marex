@@ -2,7 +2,7 @@
 #define MAREX_PARSE_VAR_NODE_H
 #include <string>
 
-#include "ExpressionKind.h"
+#include "expr_kind.h"
 #include "token.h"
 #include "nodes/AstNode.h"
 

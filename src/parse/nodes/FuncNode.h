@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "ExpressionKind.h"
+#include "expr_kind.h"
 #include "token.h"
 #include "nodes/AstNode.h"
 #include "nodes/Expr.h"

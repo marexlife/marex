@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 
-#include "ExpressionKind.h"
+#include "expr_kind.h"
 #include "token_kind.h"
 #include "nodes/AstNode.h"
 

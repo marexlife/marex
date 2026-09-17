@@ -13,7 +13,7 @@ add_library(${PROJECT_NAME}
     parse.cpp
     token_stream.cpp
     translation_unit.cpp
-    ExpressionKind.cpp
+    expr_kind.cpp
     expr_factory.cpp
 
     nodes/AstNode.cpp

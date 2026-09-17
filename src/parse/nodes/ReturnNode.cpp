@@ -5,7 +5,7 @@
 #include <string>
 #include <utility>
 
-#include "ExpressionKind.h"
+#include "expr_kind.h"
 #include "logging.h"
 #include "nodes/AstNode.h"
 #include "token.h"
