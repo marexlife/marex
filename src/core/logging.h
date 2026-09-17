@@ -14,10 +14,11 @@ inline const bool log_infos = false;
 void flush();
 
 template <typename... Ts>
-void log_info(std::format_string<Ts...>&& message,
+void log_info(std::format_string<Ts...> message,
               Ts... args) {
     if (detail::log_infos) {
-        std::println(message, std::forward<Ts>(args)...);
+        std::println(message,
+                     std::forward<Ts>(args)...);
     }
 }
 

@@ -16,7 +16,6 @@ void write::write(
 
     stream << translation_unit.as_c();
 
-    core::log_info(
-        std::format("wrote {}", output_file));
+    core::log_info("wrote {}", output_file);
 }
 }  // namespace marex

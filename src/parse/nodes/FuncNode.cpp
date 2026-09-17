@@ -188,8 +188,7 @@ void FuncNode::parse_func_args(TokenStream& stream) {
             ++arg_count;
         };
 
-        core::log_info(
-            std::format("arg count: {}", arg_count));
+        core::log_info("arg count: {}", arg_count);
 
         auto func_arg = std::invoke([&] -> FuncArg {
             auto name =

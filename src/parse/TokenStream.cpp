@@ -61,8 +61,8 @@ TokenStream::advance_if_matches_or_throw(
     if (got_token_kind == token_kind) {
         advance();
 
-        core::log_info(std::format(
-            "TokenKind {} matched", *token_kind));
+        core::log_info("TokenKind {} matched",
+                       *token_kind);
 
         return pre_increment_token_borrow
             .move_out_lexeme();
