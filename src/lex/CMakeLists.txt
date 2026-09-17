@@ -8,7 +8,7 @@ set(CMAKE_BUILD_TYPE Release)
 add_library(${PROJECT_NAME}
     lexer.cpp
     TokenFactory.cpp
-    LexerPrinter.cpp
+    lex_print.cpp
     Token.cpp
     SourcePos.cpp
     TokenKind.cpp
