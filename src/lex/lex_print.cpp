@@ -3,8 +3,8 @@
 #include <format>
 #include <vector>
 
-#include "Token.h"
 #include "logging.h"
+#include "token.h"
 
 namespace marex {
 void lex::print_tokens(

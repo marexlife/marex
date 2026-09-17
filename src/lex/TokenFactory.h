@@ -5,7 +5,7 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "Token.h"
+#include "token.h"
 #include "TokenKind.h"
 
 namespace marex::lex {

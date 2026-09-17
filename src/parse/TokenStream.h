@@ -6,10 +6,10 @@
 #include <string_view>
 #include <vector>
 
-#include "source_pos.h"
-#include "Token.h"
 #include "TokenKind.h"
 #include "binding_rank.h"
+#include "source_pos.h"
+#include "token.h"
 
 namespace marex::parse {
 class TokenStream final {

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "ExpressionKind.h"
-#include "Token.h"
+#include "token.h"
 #include "nodes/Expr.h"
 
 namespace marex::parse {

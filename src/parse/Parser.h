@@ -2,7 +2,7 @@
 #define MAREX_PARSE_PARSER_H
 #include <vector>
 
-#include "Token.h"
+#include "token.h"
 #include "TranslationUnit.h"
 
 namespace marex::parse {

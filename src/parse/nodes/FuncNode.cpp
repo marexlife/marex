@@ -124,10 +124,9 @@ void FuncNode::parse_func_body(TokenStream& stream) {
                         "are not supported yet");
                 } break;
                 default:
-                    goto end;
+                    break;
             }
 
-        end:
             throw InvalidTokenException(
                 stream.get_pos(), stream.get_kind());
         });

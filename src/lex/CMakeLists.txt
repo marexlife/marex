@@ -9,7 +9,7 @@ add_library(${PROJECT_NAME}
     lexer.cpp
     TokenFactory.cpp
     lex_print.cpp
-    Token.cpp
+    token.cpp
     source_pos.cpp
     TokenKind.cpp
 )

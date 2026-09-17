@@ -6,7 +6,7 @@
 
 #include "defer.h"
 #include "ExpressionKind.h"
-#include "Token.h"
+#include "token.h"
 #include "TokenKind.h"
 
 namespace marex::parse {

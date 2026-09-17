@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <string_view>
 
-#include "Token.h"
+#include "token.h"
 #include "TokenKind.h"
 #include "TokenStream.h"
 

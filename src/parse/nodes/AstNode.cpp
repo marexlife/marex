@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "Token.h"
+#include "token.h"
 
 namespace marex::parse {
 AstNode::AstNode(lex::Token&& token)

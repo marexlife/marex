@@ -3,7 +3,7 @@
 #include <optional>
 #include <string>
 
-#include "Token.h"
+#include "token.h"
 #include "defer.h"
 #include "logging.h"
 #include "source_pos.h"
