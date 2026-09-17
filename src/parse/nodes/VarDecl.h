@@ -6,7 +6,6 @@
 #include "nodes/AstNode.h"
 #include "token.h"
 
-
 namespace marex::parse {
 class VarDecl final : public AstNode {
    public:
@@ -18,9 +17,9 @@ class VarDecl final : public AstNode {
     void parse(TokenStream& stream) override;
 
    private:
-    std::string name;
-    ExprKind type_kind{};
-    std::string value;
+    std::string name_;
+    ExprKind type_kind_{};
+    std::string value_;
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_VAR_NODE_H

@@ -28,14 +28,14 @@ FuncNode::FuncNode(lex::Token&& token)
 
         std::size_t count{};
 
-        for (auto& [arg_name, arg_type] : args) {
+        for (auto& [arg_name, arg_type] : args_) {
             core::Defer iter_end = [&] { ++count; };
 
             func_args_string += *arg_type;
             func_args_string += ' ';
             func_args_string += arg_name;
 
-            if (count != args.size() - 1) {
+            if (count != args_.size() - 1) {
                 func_args_string += ", ";
             }
         }
@@ -50,7 +50,7 @@ FuncNode::FuncNode(lex::Token&& token)
     auto get_func_code = [&] -> std::string {
         std::string func_content_string;
 
-        for (auto& func_item : func_items) {
+        for (auto& func_item : func_items_) {
             func_content_string += std::format(
                 "    {}", func_item->as_c());
         }
@@ -59,14 +59,14 @@ FuncNode::FuncNode(lex::Token&& token)
     };
 
     return std::format(
-        "{} {}({}) {{\n{}{}}}\n\n", *return_type,
-        func_name, std::invoke(get_func_args),
+        "{} {}({}) {{\n{}{}}}\n\n", *return_type_,
+        func_name_, std::invoke(get_func_args),
         std::invoke(get_func_code),
         std::invoke([&] -> std::string {
-            if (return_node) {
+            if (return_node_) {
                 return std::format(
                     "\n    {}",
-                    return_node.value()->as_c());
+                    return_node_.value()->as_c());
             }
 
             return "";
@@ -76,7 +76,7 @@ FuncNode::FuncNode(lex::Token&& token)
 void FuncNode::parse_func_body(TokenStream& stream) {
     while (true) {
         if (stream.matches(lex::TokenKind::Return)) {
-            this->return_node = std::invoke([&] {
+            this->return_node_ = std::invoke([&] {
                 auto return_node =
                     std::make_unique<ReturnNode>(
                         stream.copy_out_token());
@@ -86,7 +86,7 @@ void FuncNode::parse_func_body(TokenStream& stream) {
                 return return_node;
             });
 
-            if (this->return_node) {
+            if (this->return_node_) {
                 core::log_info(
                     "succeeded to set return node");
             } else {
@@ -132,7 +132,7 @@ void FuncNode::parse_func_body(TokenStream& stream) {
 
         node->parse(stream);
 
-        func_items.emplace_back(std::move(node));
+        func_items_.emplace_back(std::move(node));
     }
 }
 
@@ -146,21 +146,21 @@ void FuncNode::parse_func_signature(
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Func);
 
-    func_name = stream.advance_if_matches_or_throw(
+    func_name_ = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
     parse_func_args(stream);
 
     if (stream.advance_if_matches(
             lex::TokenKind::OpenBrace)) {
-        return_type = ExprKind::EmptyType;
+        return_type_ = ExprKind::EmptyType;
         return;
     }
 
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Arrow);
 
-    return_type =
+    return_type_ =
         expression_kind_from_decl_or_throw(stream);
 
     stream.advance();
@@ -205,7 +205,7 @@ void FuncNode::parse_func_args(TokenStream& stream) {
             };
         });
 
-        args.emplace_back(std::move(func_arg));
+        args_.emplace_back(std::move(func_arg));
     } while (stream.advance_if_matches(
         lex::TokenKind::Comma));
 

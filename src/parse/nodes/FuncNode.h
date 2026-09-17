@@ -5,13 +5,15 @@
 #include <string>
 #include <vector>
 
+#include "ReturnNode.h"
 #include "expr_kind.h"
 #include "nodes/AstNode.h"
 #include "nodes/Expr.h"
-#include "nodes/ReturnNode.h"
 #include "token.h"
 
 namespace marex::parse {
+class ReturnNode;
+
 struct FuncArg final {
     std::pmr::string arg_name;
     ExprKind arg_type{};
@@ -31,12 +33,12 @@ class FuncNode final : public Expr {
 
     void parse_func_args(TokenStream& stream);
 
-    std::string func_name;
-    ExprKind return_type{};
-    std::vector<std::unique_ptr<AstNode>> func_items;
+    std::string func_name_;
+    ExprKind return_type_{};
+    std::vector<std::unique_ptr<AstNode>> func_items_;
     std::optional<std::unique_ptr<ReturnNode>>
-        return_node = std::nullopt;
-    std::vector<FuncArg> args;
+        return_node_;
+    std::vector<FuncArg> args_;
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_FUNCNODE_H

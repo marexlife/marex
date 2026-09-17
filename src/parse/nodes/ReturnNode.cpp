@@ -16,12 +16,12 @@ ReturnNode::ReturnNode(lex::Token&& token)
     : AstNode(std::move(token)) {}
 
 std::string ReturnNode::as_c() {
-    if (!value) {
+    if (!value_) {
         throw std::runtime_error(
             "no value in return node");
     }
 
-    return std::format("return {};\n", value.value());
+    return std::format("return {};\n", value_.value());
 }
 
 void ReturnNode::parse(TokenStream& stream) {
@@ -29,10 +29,10 @@ void ReturnNode::parse(TokenStream& stream) {
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Return);
 
-    expression_kind =
+    expression_kind_ =
         expression_kind_from_literal_or_throw(stream);
 
-    value = stream.get_lexeme_and_advance();
+    value_ = stream.get_lexeme_and_advance();
 
     core::log_info("post parse return");
 }

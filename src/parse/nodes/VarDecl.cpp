@@ -5,27 +5,27 @@
 #include <utility>
 
 #include "expr_kind.h"
-#include "token_kind.h"
 #include "nodes/AstNode.h"
+#include "token_kind.h"
 
 namespace marex::parse {
 VarDecl::VarDecl(lex::Token&& token)
     : AstNode(std::move(token)) {}
 
 std::string VarDecl::as_c() {
-    return std::format("{} {} = {};\n", *type_kind,
-                       name, value);
+    return std::format("{} {} = {};\n", *type_kind_,
+                       name_, value_);
 }
 
 void VarDecl::parse(TokenStream& stream) {
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Var);
-    name = stream.advance_if_matches_or_throw(
+    name_ = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Colon);
-    type_kind =
+    type_kind_ =
         expression_kind_from_decl_or_throw(stream);
     stream.advance();
 
@@ -35,7 +35,7 @@ void VarDecl::parse(TokenStream& stream) {
     [[maybe_unused]] auto not_needed =
         expression_kind_from_literal_or_throw(stream);
 
-    value = stream.get_lexeme();
+    value_ = stream.get_lexeme();
 
     stream.advance();
 }
