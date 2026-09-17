@@ -3,10 +3,10 @@
 #include <optional>
 #include <string>
 
-#include "token.h"
 #include "nodes/AstNode.h"
+#include "token.h"
 namespace marex::parse {
-enum struct ExpressionKind : std::uint8_t;
+enum struct ExprKind : std::uint8_t;
 
 class ReturnNode final : public AstNode {
    public:
@@ -17,7 +17,7 @@ class ReturnNode final : public AstNode {
     void parse(TokenStream& stream) override;
 
    private:
-    ExpressionKind expression_kind{};
+    ExprKind expression_kind{};
     std::optional<std::string> value;
 };
 }  // namespace marex::parse

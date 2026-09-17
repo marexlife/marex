@@ -3,27 +3,27 @@
 #include <source_location>
 #include <stdexcept>
 
-#include "token_stream.h"
-#include "token_kind.h"
 #include "nodes/exceptions/invalid_token_exception.h"
+#include "token_kind.h"
+#include "token_stream.h"
 
 namespace marex {
 [[nodiscard]] std::string_view parse::operator*(
-    ExpressionKind token_kind) {
+    ExprKind token_kind) {
     switch (token_kind) {
-        case ExpressionKind::EmptyType:
+        case ExprKind::EmptyType:
             return "void";
-        case ExpressionKind::IntType:
+        case ExprKind::IntType:
             return "int32_t";
-        case ExpressionKind::FloatType:
+        case ExprKind::FloatType:
             return "float";
-        case ExpressionKind::BoolType:
+        case ExprKind::BoolType:
             return "bool";
-        case marex::parse::ExpressionKind::StringType:
+        case marex::parse::ExprKind::StringType:
             return "str";
-        case ExpressionKind::Identifier:
+        case ExprKind::Identifier:
             return "identifier";
-        case ExpressionKind::None:
+        case ExprKind::None:
             goto end;
     }
 
@@ -31,17 +31,17 @@ end:
     throw std::out_of_range("Not a valid TypeKind");
 }
 
-parse::ExpressionKind
+parse::ExprKind
 parse::expression_kind_from_decl_or_throw(
     const parse::TokenStream& pack,
     std::source_location cpp_source_location) {
     switch (pack.get_kind()) {
         case marex::lex::TokenKind::IntDecl:
-            return ExpressionKind::IntType;
+            return ExprKind::IntType;
         case marex::lex::TokenKind::BoolDecl:
-            return ExpressionKind::BoolType;
+            return ExprKind::BoolType;
         case marex::lex::TokenKind::FloatDecl:
-            return ExpressionKind::FloatType;
+            return ExprKind::FloatType;
         default:
             throw InvalidTokenException(
                 pack.get_pos(), pack.get_kind(),
@@ -50,19 +50,19 @@ parse::expression_kind_from_decl_or_throw(
     }
 }
 
-parse::ExpressionKind
+parse::ExprKind
 parse::expression_kind_from_literal_or_throw(
     const parse::TokenStream& pack,
     std::source_location cpp_source_location) {
     switch (pack.get_kind()) {
         case marex::lex::TokenKind::IntLiteral:
-            return ExpressionKind::IntType;
+            return ExprKind::IntType;
         case marex::lex::TokenKind::BoolLiteral:
-            return ExpressionKind::BoolType;
+            return ExprKind::BoolType;
         case marex::lex::TokenKind::FloatLiteral:
-            return ExpressionKind::FloatType;
+            return ExprKind::FloatType;
         case marex::lex::TokenKind::StringLiteral:
-            return ExpressionKind::StringType;
+            return ExprKind::StringType;
         default:
             throw InvalidTokenException(
                 pack.get_pos(), pack.get_kind(),

@@ -6,15 +6,15 @@
 #include <vector>
 
 #include "expr_kind.h"
-#include "token.h"
 #include "nodes/AstNode.h"
 #include "nodes/Expr.h"
 #include "nodes/ReturnNode.h"
+#include "token.h"
 
 namespace marex::parse {
 struct FuncArg final {
     std::pmr::string arg_name;
-    ExpressionKind arg_type{};
+    ExprKind arg_type{};
 };
 
 class FuncNode final : public Expr {
@@ -32,7 +32,7 @@ class FuncNode final : public Expr {
     void parse_func_args(TokenStream& stream);
 
     std::string func_name;
-    ExpressionKind return_type{};
+    ExprKind return_type{};
     std::vector<std::unique_ptr<AstNode>> func_items;
     std::optional<std::unique_ptr<ReturnNode>>
         return_node = std::nullopt;

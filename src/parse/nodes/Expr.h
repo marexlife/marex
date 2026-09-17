@@ -1,18 +1,11 @@
 #ifndef MAREX_PARSE_EXPR_H
 #define MAREX_PARSE_EXPR_H
 #include <concepts>
-#include <cstdint>
 
 #include "token.h"
 #include "nodes/AstNode.h"
 
 namespace marex::parse {
-enum struct [[nodiscard]] ExprKind : std::uint8_t {
-    Assignment,
-    FuncCall,
-    Var,
-};
-
 class Expr : public AstNode {
    public:
     explicit Expr(lex::Token&& token);

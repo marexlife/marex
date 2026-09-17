@@ -153,7 +153,7 @@ void FuncNode::parse_func_signature(
 
     if (stream.advance_if_matches(
             lex::TokenKind::OpenBrace)) {
-        return_type = ExpressionKind::EmptyType;
+        return_type = ExprKind::EmptyType;
         return;
     }
 

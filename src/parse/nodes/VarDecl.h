@@ -3,8 +3,9 @@
 #include <string>
 
 #include "expr_kind.h"
-#include "token.h"
 #include "nodes/AstNode.h"
+#include "token.h"
+
 
 namespace marex::parse {
 class VarDecl final : public AstNode {
@@ -18,7 +19,7 @@ class VarDecl final : public AstNode {
 
    private:
     std::string name;
-    ExpressionKind type_kind{};
+    ExprKind type_kind{};
     std::string value;
 };
 }  // namespace marex::parse

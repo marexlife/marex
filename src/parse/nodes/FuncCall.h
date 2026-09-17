@@ -4,13 +4,13 @@
 #include <vector>
 
 #include "expr_kind.h"
-#include "token.h"
 #include "nodes/Expr.h"
+#include "token.h"
 
 namespace marex::parse {
 struct CallArg final {
     std::string name;
-    ExpressionKind expression_kind{};
+    ExprKind expression_kind{};
 };
 
 class FuncCall final : public Expr {
