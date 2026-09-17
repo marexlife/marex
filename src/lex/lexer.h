@@ -27,22 +27,28 @@ class [[nodiscard]] Lexer final {
     ~Lexer() = default;
 
     [[nodiscard]] std::pmr::vector<Token> run(
+        this Lexer& self,
         std::pmr::string&& source_text,
         std::optional<std::pmr::string> filename);
 
    private:
-    void push_token(std::pmr::vector<Token>& result,
+    void push_token(this Lexer& self,
+                    std::pmr::vector<Token>& result,
                     SourcePos& source_pos);
-    void reset(SourcePos& source_pos);
-    void push_current(std::pmr::vector<Token>& result,
+    void reset(this Lexer& self,
+               SourcePos& source_pos);
+    void push_current(this Lexer& self,
+                      std::pmr::vector<Token>& result,
                       char current,
                       SourcePos& source_pos);
     void push_token_and_current(
+        this Lexer& self,
         std::pmr::vector<Token>& result, char current,
         SourcePos& source_pos);
 
-    [[nodiscard]] bool is_flushable() const {
-        return last_char_kind ==
+    [[nodiscard]] bool is_flushable(
+        this const Lexer& self) {
+        return self.last_char_kind ==
                LastCharKind::WasDefault;
     }
 
