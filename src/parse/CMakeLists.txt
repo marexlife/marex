@@ -17,10 +17,10 @@ add_library(${PROJECT_NAME}
     expr_factory.cpp
 
     nodes/ast_node.cpp
-    nodes/OpNode.cpp
+    nodes/op_node.cpp
     nodes/binary_op.cpp
     nodes/VarDecl.cpp
-    nodes/ReturnNode.cpp
+    nodes/return_node.cpp
     nodes/func_node.cpp
     nodes/func_call.cpp
     nodes/expr.cpp

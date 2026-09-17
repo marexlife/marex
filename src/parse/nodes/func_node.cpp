@@ -9,13 +9,13 @@
 #include <string>
 #include <utility>
 
-#include "VarDecl.h"
+#include "var_decl.h"
 #include "defer.h"
 #include "exceptions/invalid_token_exception.h"
 #include "logging.h"
 #include "nodes/expr.h"
 #include "nodes/func_call.h"
-#include "nodes/ReturnNode.h"
+#include "nodes/return_node.h"
 #include "token_kind.h"
 
 namespace marex::parse {
