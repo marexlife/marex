@@ -40,7 +40,7 @@ class AstNode {
     }
 
     [[nodiscard]] lex::TokenKind get_kind() const {
-        return token.GetKind();
+        return token.get_kind();
     }
 
     [[nodiscard]] std::string_view get_lexeme() const {

@@ -5,12 +5,7 @@
 namespace marex::lex {
 class Token;
 
-class LexerPrinter final {
-   public:
-    LexerPrinter() = delete;
-
-    static void print_tokens(
-        std::pmr::vector<lex::Token>& token_stream);
-};
+void print_tokens(
+    std::pmr::vector<lex::Token>& token_stream);
 }  // namespace marex::lex
 #endif  // MAREX_DEBUG_LEXPRINER_H
