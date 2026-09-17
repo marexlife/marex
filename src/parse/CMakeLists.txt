@@ -16,14 +16,14 @@ add_library(${PROJECT_NAME}
     expr_kind.cpp
     expr_factory.cpp
 
-    nodes/AstNode.cpp
+    nodes/ast_node.cpp
     nodes/OpNode.cpp
     nodes/binary_op.cpp
     nodes/VarDecl.cpp
-    nodes/FuncNode.cpp
-    nodes/FuncCall.cpp
     nodes/ReturnNode.cpp
-    nodes/Expr.cpp
+    nodes/func_node.cpp
+    nodes/func_call.cpp
+    nodes/expr.cpp
     nodes/expr_builder.cpp
 
     nodes/exceptions/invalid_token_exception.cpp

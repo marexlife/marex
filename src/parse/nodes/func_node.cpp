@@ -1,4 +1,4 @@
-#include "FuncNode.h"
+#include "func_node.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -13,8 +13,8 @@
 #include "defer.h"
 #include "exceptions/invalid_token_exception.h"
 #include "logging.h"
-#include "nodes/Expr.h"
-#include "nodes/FuncCall.h"
+#include "nodes/expr.h"
+#include "nodes/func_call.h"
 #include "nodes/ReturnNode.h"
 #include "token_kind.h"
 

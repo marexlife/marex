@@ -7,7 +7,7 @@
 
 #include "expr_kind.h"
 #include "logging.h"
-#include "nodes/AstNode.h"
+#include "nodes/ast_node.h"
 #include "token.h"
 #include "token_kind.h"
 

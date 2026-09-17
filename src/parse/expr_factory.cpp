@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 #include "token.h"
-#include "nodes/Expr.h"
+#include "nodes/expr.h"
 
 namespace marex::parse {
 std::unique_ptr<Expr> ExprFactory::new_expr(

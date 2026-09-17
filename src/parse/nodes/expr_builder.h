@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "token_stream.h"
-#include "nodes/Expr.h"
+#include "nodes/expr.h"
 #include "token.h"
 
 namespace marex::parse {

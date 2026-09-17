@@ -8,7 +8,7 @@
 #include "ReturnNode.h"
 #include "expr_kind.h"
 #include "nodes/ast_node.h"
-#include "nodes/Expr.h"
+#include "nodes/expr.h"
 #include "token.h"
 
 namespace marex::parse {

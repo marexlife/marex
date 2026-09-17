@@ -2,7 +2,7 @@
 #define MAREX_PARSE_EXPRFACTORY_H
 #include <memory>
 
-#include "nodes/Expr.h"
+#include "nodes/expr.h"
 
 namespace marex::parse {
 class ExprFactory final {

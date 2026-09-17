@@ -10,7 +10,7 @@
 
 #include "expr_factory.h"
 #include "binding_rank.h"
-#include "nodes/Expr.h"
+#include "nodes/expr.h"
 #include "token.h"
 #include "token_kind.h"
 #include "token_stream.h"

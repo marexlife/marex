@@ -1,6 +1,6 @@
 #ifndef MAREX_PARSE_OPNODE_H
 #define MAREX_PARSE_OPNODE_H
-#include "Expr.h"
+#include "expr.h"
 #include "token.h"
 
 namespace marex::parse {

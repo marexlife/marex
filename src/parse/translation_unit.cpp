@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "token_kind.h"
-#include "nodes/FuncNode.h"
+#include "nodes/func_node.h"
 #include "nodes/exceptions/invalid_token_exception.h"
 
 namespace marex::parse {
