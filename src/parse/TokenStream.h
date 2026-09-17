@@ -6,7 +6,7 @@
 #include <string_view>
 #include <vector>
 
-#include "SourcePos.h"
+#include "source_pos.h"
 #include "Token.h"
 #include "TokenKind.h"
 #include "binding_rank.h"

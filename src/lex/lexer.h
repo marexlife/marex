@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "SourcePos.h"
+#include "source_pos.h"
 #include "TokenFactory.h"
 
 namespace marex::lex {

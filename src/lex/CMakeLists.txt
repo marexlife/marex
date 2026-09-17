@@ -10,7 +10,7 @@ add_library(${PROJECT_NAME}
     TokenFactory.cpp
     lex_print.cpp
     Token.cpp
-    SourcePos.cpp
+    source_pos.cpp
     TokenKind.cpp
 )
 

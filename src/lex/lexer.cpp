@@ -3,10 +3,11 @@
 #include <optional>
 #include <string>
 
-#include "SourcePos.h"
 #include "Token.h"
 #include "defer.h"
 #include "logging.h"
+#include "source_pos.h"
+
 
 namespace marex::lex {
 std::pmr::vector<Token> Lexer::run(

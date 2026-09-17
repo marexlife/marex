@@ -4,10 +4,9 @@
 #include <string>
 #include <string_view>
 
-#include "SourcePos.h"
 #include "TokenKind.h"
 #include "passkey.h"
-
+#include "source_pos.h"
 
 namespace marex::lex {
 enum struct BindingRank : std::uint8_t;

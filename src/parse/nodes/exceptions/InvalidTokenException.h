@@ -4,7 +4,7 @@
 #include <source_location>
 #include <string>
 
-#include "SourcePos.h"
+#include "source_pos.h"
 #include "TokenKind.h"
 
 namespace marex::parse {

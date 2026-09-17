@@ -2,10 +2,11 @@
 
 #include <string_view>
 
-#include "passkey.h"
-#include "SourcePos.h"
 #include "Token.h"
 #include "TokenKind.h"
+#include "passkey.h"
+#include "source_pos.h"
+
 
 namespace marex::lex {
 TokenFactory::TokenFactory()
