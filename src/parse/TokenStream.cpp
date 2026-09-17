@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "logging.h"
 #include "nodes/exceptions/InvalidTokenException.h"
 

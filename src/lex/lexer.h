@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "source_pos.h"
-#include "TokenFactory.h"
+#include "token_factory.h"
 
 namespace marex::lex {
 enum class [[nodiscard]] LastCharKind : std::uint8_t {

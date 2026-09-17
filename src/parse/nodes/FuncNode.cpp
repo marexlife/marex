@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "TokenStream.h"
 #include "VarDecl.h"
 #include "defer.h"

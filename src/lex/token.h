@@ -4,7 +4,7 @@
 #include <string>
 #include <string_view>
 
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "passkey.h"
 #include "source_pos.h"
 

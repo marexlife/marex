@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 #include "TokenStream.h"
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "nodes/exceptions/InvalidTokenException.h"
 
 namespace marex {

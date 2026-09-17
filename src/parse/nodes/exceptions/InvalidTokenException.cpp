@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "error_format.h"
-#include "TokenKind.h"
+#include "token_kind.h"
 
 namespace marex::parse {
 InvalidTokenException::InvalidTokenException(

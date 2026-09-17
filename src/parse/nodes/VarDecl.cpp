@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "ExpressionKind.h"
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "nodes/AstNode.h"
 
 namespace marex::parse {

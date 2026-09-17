@@ -7,11 +7,11 @@ set(CMAKE_BUILD_TYPE Release)
 
 add_library(${PROJECT_NAME}
     lexer.cpp
-    TokenFactory.cpp
     lex_print.cpp
     token.cpp
     source_pos.cpp
-    TokenKind.cpp
+    token_factory.cpp
+    token_kind.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC

@@ -3,7 +3,7 @@
 #include <optional>
 #include <utility>
 
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "binding_rank.h"
 #include "logging.h"
 #include "source_pos.h"

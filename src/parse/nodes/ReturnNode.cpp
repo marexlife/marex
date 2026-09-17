@@ -8,7 +8,7 @@
 #include "ExpressionKind.h"
 #include "logging.h"
 #include "token.h"
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "TokenStream.h"
 #include "nodes/AstNode.h"
 

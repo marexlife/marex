@@ -5,7 +5,7 @@
 #include <string>
 
 #include "source_pos.h"
-#include "TokenKind.h"
+#include "token_kind.h"
 
 namespace marex::parse {
 class InvalidTokenException final

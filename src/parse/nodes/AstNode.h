@@ -4,7 +4,7 @@
 #include <string_view>
 
 #include "token.h"
-#include "TokenKind.h"
+#include "token_kind.h"
 #include "TokenStream.h"
 
 namespace marex::parse {
