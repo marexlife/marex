@@ -24,7 +24,7 @@ add_library(${PROJECT_NAME}
     nodes/FuncCall.cpp
     nodes/ReturnNode.cpp
     nodes/Expr.cpp
-    nodes/ExprBuilder.cpp
+    nodes/expr_builder.cpp
 
     nodes/exceptions/invalid_token_exception.cpp
 )
