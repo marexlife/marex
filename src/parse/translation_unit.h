@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "nodes/AstNode.h"
+#include "nodes/ast_node.h"
 #include "token_stream.h"
 
 namespace marex::parse {

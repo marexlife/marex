@@ -2,7 +2,7 @@
 #define MAREX_PARSE_EXPR_H
 #include <concepts>
 
-#include "nodes/AstNode.h"
+#include "nodes/ast_node.h"
 #include "token.h"
 
 namespace marex::parse {

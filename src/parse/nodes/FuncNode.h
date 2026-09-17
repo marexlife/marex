@@ -7,7 +7,7 @@
 
 #include "ReturnNode.h"
 #include "expr_kind.h"
-#include "nodes/AstNode.h"
+#include "nodes/ast_node.h"
 #include "nodes/Expr.h"
 #include "token.h"
 

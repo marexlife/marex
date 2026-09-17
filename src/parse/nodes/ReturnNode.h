@@ -3,7 +3,7 @@
 #include <optional>
 #include <string>
 
-#include "nodes/AstNode.h"
+#include "nodes/ast_node.h"
 #include "token.h"
 namespace marex::parse {
 enum struct ExprKind : std::uint8_t;
