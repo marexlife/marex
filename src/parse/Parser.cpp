@@ -8,17 +8,13 @@
 #include "TokenStream.h"
 #include "TranslationUnit.h"
 
-namespace marex::parse {
-TranslationUnit Parser::run(
+namespace marex {
+parse::TranslationUnit parse::parse(
     std::pmr::vector<lex::Token>&& tokens) {
-    return parse(TokenStream{std::move(tokens)});
-}
-
-TranslationUnit Parser::parse(TokenStream&& stream) {
     TranslationUnit translation_unit{};
-
-    translation_unit.parse(stream);
+    TokenStream token_stream{std::move(tokens)};
+    translation_unit.parse(token_stream);
 
     return translation_unit;
 }
-}  // namespace marex::parse
+}  // namespace marex
