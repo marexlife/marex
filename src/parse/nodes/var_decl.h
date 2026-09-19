@@ -1,7 +1,10 @@
 #ifndef MAREX_PARSE_VAR_NODE_H
 #define MAREX_PARSE_VAR_NODE_H
+#include <expected>
+#include <memory>
 #include <string>
 
+#include "error.h"
 #include "expr_kind.h"
 #include "nodes/ast_node.h"
 #include "token.h"
@@ -14,7 +17,9 @@ class VarDecl final : public AstNode {
    protected:
     [[nodiscard]] std::string as_c() override;
 
-    void parse(TokenStream& stream) override;
+    [[nodiscard]] std::expected<
+        void, std::unique_ptr<core::Error>>
+    parse(TokenStream& stream) override;
 
    private:
     std::string name_;

@@ -13,6 +13,7 @@
 #include "defer.h"
 #include "exceptions/invalid_token_exception.h"
 #include "logging.h"
+#include "nodes/ast_node.h"
 #include "nodes/expr.h"
 #include "nodes/func_call.h"
 #include "nodes/return_node.h"
@@ -78,15 +79,31 @@ std::expected<void, std::unique_ptr<core::Error>>
 FuncNode::parse_func_body(TokenStream& stream) {
     while (true) {
         if (stream.matches(lex::TokenKind::Return)) {
-            this->return_node_ = std::invoke([&] {
-                auto return_node =
-                    std::make_unique<ReturnNode>(
-                        stream.copy_out_token());
+            auto result = std::invoke(
+                [&] -> std::expected<
+                        std::unique_ptr<ReturnNode>,
+                        std::unique_ptr<core::Error>> {
+                    auto return_node =
+                        std::make_unique<ReturnNode>(
+                            stream.copy_out_token());
 
-                return_node->parse(stream);
+                    auto result =
+                        return_node->parse(stream);
 
-                return return_node;
-            });
+                    if (!result) {
+                        return std::unexpected(
+                            std::move(result.error()));
+                    }
+
+                    return return_node;
+                });
+
+            if (!result) {
+                return std::unexpected(
+                    std::move(result.error()));
+            }
+
+            this->return_node_ = std::move(*result);
 
             if (this->return_node_) {
                 core::log_info(
@@ -132,10 +149,18 @@ FuncNode::parse_func_body(TokenStream& stream) {
                 stream.get_pos(), stream.get_kind());
         });
 
-        node->parse(stream);
+        auto result = node->parse(stream);
+
+        if (!result) {
+            return std::unexpected(
+                std::move(result.error()));
+        }
 
         func_items_.emplace_back(std::move(node));
     }
+
+    return std::expected<
+        void, std::unique_ptr<core::Error>>();
 }
 
 std::expected<void, std::unique_ptr<core::Error>>
@@ -155,6 +180,9 @@ FuncNode::parse(TokenStream& stream) {
         return std::unexpected(
             std::move(parse_func_body_result.error()));
     }
+
+    return std::expected<
+        void, std::unique_ptr<core::Error>>();
 }
 
 std::expected<void, std::unique_ptr<core::Error>>
@@ -241,5 +269,8 @@ FuncNode::parse_func_args(TokenStream& stream) {
         lex::TokenKind::CloseBracket);
 
     core::log_info("post: parsed func args");
+
+    return std::expected<
+        void, std::unique_ptr<core::Error>>();
 }
 }  // namespace marex::parse

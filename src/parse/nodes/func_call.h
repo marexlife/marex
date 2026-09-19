@@ -1,8 +1,11 @@
 #ifndef MAREX_PARSE_FUNCCALL_H
 #define MAREX_PARSE_FUNCCALL_H
+#include <expected>
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "error.h"
 #include "expr_kind.h"
 #include "nodes/expr.h"
 #include "token.h"
@@ -19,7 +22,8 @@ class FuncCall final : public Expr {
 
     [[nodiscard]] std::string as_c() override;
 
-    void parse(TokenStream& stream) override;
+    std::expected<void, std::unique_ptr<core::Error>>
+    parse(TokenStream& stream) override;
 
    private:
     std::string func_name;

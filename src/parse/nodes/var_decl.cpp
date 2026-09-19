@@ -17,7 +17,8 @@ std::string VarDecl::as_c() {
                        name_, value_);
 }
 
-void VarDecl::parse(TokenStream& stream) {
+std::expected<void, std::unique_ptr<core::Error>>
+VarDecl::parse(TokenStream& stream) {
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Var);
     name_ = stream.advance_if_matches_or_throw(
@@ -38,5 +39,8 @@ void VarDecl::parse(TokenStream& stream) {
     value_ = stream.get_lexeme();
 
     stream.advance();
+
+    return std::expected<
+        void, std::unique_ptr<core::Error>>();
 }
 }  // namespace marex::parse

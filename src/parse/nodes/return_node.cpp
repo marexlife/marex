@@ -24,7 +24,8 @@ std::string ReturnNode::as_c() {
     return std::format("return {};\n", value_.value());
 }
 
-void ReturnNode::parse(TokenStream& stream) {
+std::expected<void, std::unique_ptr<core::Error>>
+ReturnNode::parse(TokenStream& stream) {
     core::log_info("pre parse return");
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Return);
@@ -35,5 +36,8 @@ void ReturnNode::parse(TokenStream& stream) {
     value_ = stream.get_lexeme_and_advance();
 
     core::log_info("post parse return");
+
+    return std::expected<
+        void, std::unique_ptr<core::Error>>();
 }
 }  // namespace marex::parse
