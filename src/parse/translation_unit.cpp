@@ -1,12 +1,14 @@
 #include "translation_unit.h"
 
+#include <expected>
 #include <memory>
 #include <string>
 #include <utility>
 
-#include "token_kind.h"
-#include "nodes/func_node.h"
+#include "error.h"
 #include "nodes/exceptions/invalid_token_exception.h"
+#include "nodes/func_node.h"
+#include "token_kind.h"
 
 namespace marex::parse {
 std::string TranslationUnit::as_c() {
@@ -33,12 +35,21 @@ int main(void) {
     return result;
 }
 
-void TranslationUnit::parse(TokenStream& stream) {
+std::expected<void, std::unique_ptr<core::Error>>
+TranslationUnit::parse(TokenStream& stream) {
     while (!stream.is_at_end()) {
         std::unique_ptr<AstNode> file_item =
             create_file_item(stream);
 
-        file_item->parse(stream);
+        std::expected<void,
+                      std::unique_ptr<core::Error>>
+            result = file_item->parse(stream);
+
+        if (!result) {
+            return std::unexpected<
+                std::unique_ptr<core::Error>>(
+                std::move(result.error()));
+        }
 
         file_items.emplace_back(std::move(file_item));
     }

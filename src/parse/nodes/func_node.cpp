@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <expected>
 #include <format>
 #include <functional>
 #include <memory>
@@ -9,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "var_decl.h"
 #include "defer.h"
 #include "exceptions/invalid_token_exception.h"
 #include "logging.h"
@@ -17,6 +17,7 @@
 #include "nodes/func_call.h"
 #include "nodes/return_node.h"
 #include "token_kind.h"
+#include "var_decl.h"
 
 namespace marex::parse {
 FuncNode::FuncNode(lex::Token&& token)
@@ -73,7 +74,8 @@ FuncNode::FuncNode(lex::Token&& token)
         }));
 }
 
-void FuncNode::parse_func_body(TokenStream& stream) {
+std::expected<void, std::unique_ptr<core::Error>>
+FuncNode::parse_func_body(TokenStream& stream) {
     while (true) {
         if (stream.matches(lex::TokenKind::Return)) {
             this->return_node_ = std::invoke([&] {
@@ -136,25 +138,46 @@ void FuncNode::parse_func_body(TokenStream& stream) {
     }
 }
 
-void FuncNode::parse(TokenStream& stream) {
-    parse_func_signature(stream);
-    parse_func_body(stream);
+std::expected<void, std::unique_ptr<core::Error>>
+FuncNode::parse(TokenStream& stream) {
+    auto func_signature_result =
+        parse_func_signature(stream);
+
+    if (!func_signature_result) {
+        return std::unexpected(
+            std::move(func_signature_result.error()));
+    }
+
+    auto parse_func_body_result =
+        parse_func_body(stream);
+
+    if (!parse_func_body_result) {
+        return std::unexpected(
+            std::move(parse_func_body_result.error()));
+    }
 }
 
-void FuncNode::parse_func_signature(
-    TokenStream& stream) {
+std::expected<void, std::unique_ptr<core::Error>>
+FuncNode::parse_func_signature(TokenStream& stream) {
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Func);
 
     func_name_ = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
-    parse_func_args(stream);
+    auto parse_func_args_result =
+        parse_func_args(stream);
+
+    if (!parse_func_args_result) {
+        return std::unexpected(
+            std::move(parse_func_args_result.error()));
+    }
 
     if (stream.advance_if_matches(
             lex::TokenKind::OpenBrace)) {
         return_type_ = ExprKind::EmptyType;
-        return;
+        return std::expected<
+            void, std::unique_ptr<core::Error>>();
     }
 
     stream.advance_if_matches_or_throw(
@@ -167,9 +190,13 @@ void FuncNode::parse_func_signature(
 
     stream.advance_if_matches_or_throw(
         lex::TokenKind::OpenBrace);
+
+    return std::expected<
+        void, std::unique_ptr<core::Error>>();
 }
 
-void FuncNode::parse_func_args(TokenStream& stream) {
+std::expected<void, std::unique_ptr<core::Error>>
+FuncNode::parse_func_args(TokenStream& stream) {
     stream.advance_if_matches_or_throw(
         lex::TokenKind::OpenBracket);
 
@@ -178,7 +205,8 @@ void FuncNode::parse_func_args(TokenStream& stream) {
 
     if (stream.advance_if_matches(
             lex::TokenKind::CloseBracket)) {
-        return;
+        return std::expected<
+            void, std::unique_ptr<core::Error>>();
     }
 
     do {

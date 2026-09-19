@@ -10,7 +10,9 @@ namespace marex::parse {
 class TranslationUnit final {
    public:
     [[nodiscard]] std::string as_c();
-    void parse(TokenStream& stream);
+    [[nodiscard]] std::expected<
+        void, std::unique_ptr<core::Error>>
+    parse(TokenStream& stream);
 
    private:
     [[nodiscard]] static std::unique_ptr<AstNode>

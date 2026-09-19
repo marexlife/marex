@@ -5,10 +5,10 @@
 #include <string>
 #include <vector>
 
-#include "return_node.h"
 #include "expr_kind.h"
 #include "nodes/ast_node.h"
 #include "nodes/expr.h"
+#include "return_node.h"
 #include "token.h"
 
 namespace marex::parse {
@@ -25,13 +25,17 @@ class FuncNode final : public Expr {
 
    protected:
     [[nodiscard]] std::string as_c() override;
-    void parse(TokenStream& stream) override;
+    std::expected<void, std::unique_ptr<core::Error>>
+    parse(TokenStream& stream) override;
 
    private:
-    void parse_func_signature(TokenStream& stream);
-    void parse_func_body(TokenStream& stream);
+    std::expected<void, std::unique_ptr<core::Error>>
+    parse_func_signature(TokenStream& stream);
+    std::expected<void, std::unique_ptr<core::Error>>
+    parse_func_body(TokenStream& stream);
 
-    void parse_func_args(TokenStream& stream);
+    std::expected<void, std::unique_ptr<core::Error>>
+    parse_func_args(TokenStream& stream);
 
     std::string func_name_;
     ExprKind return_type_{};
