@@ -1,11 +1,16 @@
 #ifndef MAREX_LEX_LEXER_H
 #define MAREX_LEX_LEXER_H
 #include <cstddef>
+#include <expected>
+#include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
+#include "error.h"
 #include "source_pos.h"
 #include "token_factory.h"
+
 
 namespace marex::lex {
 enum class [[nodiscard]] LastCharKind : std::uint8_t {
@@ -26,8 +31,10 @@ class [[nodiscard]] Lexer final {
     Lexer& operator=(const Lexer&) = delete;
     ~Lexer() = default;
 
-    [[nodiscard]] std::pmr::vector<Token> run(
-        this Lexer& self,
+    [[nodiscard]] std::expected<
+        std::pmr::vector<Token>,
+        std::unique_ptr<core::Error>>
+    run(this Lexer& self,
         std::pmr::string&& source_text,
         std::optional<std::string_view> filename);
 

@@ -5,6 +5,8 @@
 #include "app.h"
 
 int main(int argc, char* argv[]) {
+    std::println("started");
+
     try {
         marex::app::App app{};
 
