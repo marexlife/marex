@@ -15,6 +15,7 @@ std::string TranslationUnit::as_c() {
 #include <stdlib.h>
 #include <stdbool.h>
 #include <memory.h>
+#include <stdint.h>
 
 void run(void);
 
