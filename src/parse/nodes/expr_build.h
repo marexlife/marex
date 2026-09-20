@@ -21,15 +21,6 @@ struct Ranking final {
 using RankingRow = std::vector<Ranking>;
 using Rankings = std::vector<RankingRow>;
 
-class ExprBuilder final {
-   public:
-    static std::unique_ptr<Expr> build(
-        TokenStream& stream);
-
-   private:
-    static void collect_rankings(
-        TokenStream& stream,
-        Rankings& binding_rankings);
-};
+std::unique_ptr<Expr> build(TokenStream& stream);
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_STATEMENTBUILDER_H

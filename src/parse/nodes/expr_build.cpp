@@ -1,4 +1,4 @@
-#include "expr_builder.h"
+#include "expr_build.h"
 
 #include <cstddef>
 #include <limits>
@@ -14,8 +14,15 @@
 #include "token_kind.h"
 #include "token_stream.h"
 
-namespace marex::parse {
-std::unique_ptr<Expr> ExprBuilder::build(
+namespace marex {
+namespace parse {
+void collect_rankings(TokenStream& stream,
+                      Rankings& binding_rankings);
+
+void handle_rankings(Rankings&& rankings);
+}  // namespace parse
+
+std::unique_ptr<parse::Expr> parse::build(
     TokenStream& stream) {
     Rankings binding_rankings;
 
@@ -37,7 +44,7 @@ std::unique_ptr<Expr> ExprBuilder::build(
     throw std::runtime_error("not implemented yet");
 }
 
-void ExprBuilder::collect_rankings(
+void parse::collect_rankings(
     TokenStream& stream, Rankings& binding_rankings) {
     for (std::uint8_t to_be_collected_rank = 0;
          to_be_collected_rank <
@@ -65,4 +72,4 @@ void ExprBuilder::collect_rankings(
         }
     }
 }
-}  // namespace marex::parse
+}  // namespace marex
