@@ -1,10 +1,12 @@
 #ifndef MAREX_PARSE_STATEMENTBUILDER_H
 #define MAREX_PARSE_STATEMENTBUILDER_H
 #include <memory>
+
 #include "nodes/expr.h"
 #include "token_stream.h"
 
 namespace marex::parse {
-std::unique_ptr<Expr> build(TokenStream& stream);
+[[nodiscard]] std::unique_ptr<Expr> build(
+    TokenStream& stream);
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_STATEMENTBUILDER_H
