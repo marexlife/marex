@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include "binding_rank.h"
 #include "expr_factory.h"
@@ -16,36 +17,30 @@
 
 namespace marex {
 namespace parse {
-void collect_rankings(TokenStream& stream,
-                      Rankings& binding_rankings);
+using Ranking = std::pair<std::unique_ptr<Expr>,
+                          TokenStream::ProgressType>;
+using RankingRow = std::vector<Ranking>;
+using Rankings = std::vector<RankingRow>;
 
-void handle_rankings(Rankings&& rankings);
+static void collect_rankings(TokenStream& stream,
+                             Rankings& rankings);
+
+static void handle_rankings(Rankings&& rankings);
 }  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build(
     TokenStream& stream) {
-    Rankings binding_rankings;
+    Rankings rankings;
 
-    collect_rankings(stream, binding_rankings);
+    collect_rankings(stream, rankings);
 
-    for (auto& expr_row : binding_rankings) {
-        for (auto& [expr, progress] : expr_row) {
-            switch (expr->get_kind()) {
-                case marex::lex::TokenKind::Assignment:
-
-                    break;
-                default:
-                    throw std::runtime_error(
-                        "not implemented yet");
-            }
-        }
-    }
+    handle_rankings(std::move(rankings));
 
     throw std::runtime_error("not implemented yet");
 }
 
-void parse::collect_rankings(
-    TokenStream& stream, Rankings& binding_rankings) {
+void parse::collect_rankings(TokenStream& stream,
+                             Rankings& rankings) {
     for (std::uint8_t to_be_collected_rank = 0;
          to_be_collected_rank <
          std::numeric_limits<std::underlying_type_t<
@@ -67,8 +62,23 @@ void parse::collect_rankings(
                     token_id));
             }
 
-            binding_rankings.emplace_back(
+            rankings.emplace_back(
                 std::move(ranking_row));
+        }
+    }
+}
+
+void parse::handle_rankings(Rankings&& rankings) {
+    for (auto& ranking_row : rankings) {
+        for (auto& [expr, progress] : ranking_row) {
+            switch (expr->get_kind()) {
+                case marex::lex::TokenKind::Assignment:
+
+                    break;
+                default:
+                    throw std::runtime_error(
+                        "not implemented yet");
+            }
         }
     }
 }
