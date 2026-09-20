@@ -28,7 +28,7 @@ static void collect_rankings(TokenStream& stream,
 static void handle_rankings(Rankings&& rankings);
 }  // namespace parse
 
-std::unique_ptr<parse::Expr> parse::build(
+std::unique_ptr<parse::Expr> parse::build_expr(
     TokenStream& stream) {
     Rankings rankings;
 
