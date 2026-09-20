@@ -1,8 +1,10 @@
 #include "expr_build.h"
 
 #include <cstddef>
+#include <functional>
 #include <limits>
 #include <memory>
+#include <ranges>
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
@@ -10,6 +12,7 @@
 
 #include "binding_rank.h"
 #include "expr_factory.h"
+#include "logging.h"
 #include "nodes/expr.h"
 #include "token.h"
 #include "token_kind.h"
@@ -41,25 +44,33 @@ std::unique_ptr<parse::Expr> parse::build_expr(
 
 void parse::collect_rankings(TokenStream& stream,
                              Rankings& rankings) {
-    for (std::uint8_t to_be_collected_rank = 0;
-         to_be_collected_rank <
-         std::numeric_limits<std::underlying_type_t<
-             lex::BindingRank>>::max();
-         ++to_be_collected_rank) {
+    constexpr auto enum_max_rank =
+        std::numeric_limits<std::underlying_type_t<
+            lex::BindingRank>>::max();
+
+    for (std::uint8_t i = 0; i < enum_max_rank; ++i) {
         RankingRow ranking_row;
 
-        for (std::size_t token_id = 0;
-             stream.token_kind_at(token_id) !=
-             lex::TokenKind::StatementEnd;
-             ++token_id) {
-            if (to_be_collected_rank ==
-                std::to_underlying(
-                    stream.get_binding_rank_at(
-                        token_id))) {
+        auto not_at_end = [&](std::size_t index) {
+            return stream.token_kind_at(index) !=
+                   lex::TokenKind::StatementEnd;
+        };
+
+        for (std::size_t j = 0;
+             std::invoke(not_at_end, j); ++j) {
+            auto rank_progress_matches_enum_one = [&] {
+                return i ==
+                       std::to_underlying(
+                           stream.get_binding_rank_at(
+                               j));
+            };
+
+            if (std::invoke(
+                    rank_progress_matches_enum_one)) {
                 ranking_row.emplace_back(Ranking(
                     ExprFactory::new_expr(
                         stream.copy_out_token()),
-                    token_id));
+                    j));
             }
 
             rankings.emplace_back(
@@ -70,15 +81,12 @@ void parse::collect_rankings(TokenStream& stream,
 
 void parse::handle_rankings(Rankings&& rankings) {
     for (auto& ranking_row : rankings) {
-        for (auto& [expr, progress] : ranking_row) {
-            switch (expr->get_kind()) {
-                case marex::lex::TokenKind::Assignment:
+        for (auto [index, ranking] :
+             ranking_row | std::views::enumerate) {
+            auto& [expr, rank] = ranking;
 
-                    break;
-                default:
-                    throw std::runtime_error(
-                        "not implemented yet");
-            }
+            core::log_info("at index: {}, kind: {}",
+                           index, *expr->get_kind());
         }
     }
 }
