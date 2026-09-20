@@ -6,10 +6,9 @@
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
-#include <vector>
 
-#include "expr_factory.h"
 #include "binding_rank.h"
+#include "expr_factory.h"
 #include "nodes/expr.h"
 #include "token.h"
 #include "token_kind.h"
@@ -18,35 +17,11 @@
 namespace marex::parse {
 std::unique_ptr<Expr> ExprBuilder::build(
     TokenStream& stream) {
-    std::pmr::vector<std::vector<std::pair<
-        lex::Token, TokenStream::ProgressType>>>
-        binding_rankings;
+    Rankings binding_rankings;
 
     collect_rankings(stream, binding_rankings);
 
-    std::vector<std::vector<
-        std::pair<std::unique_ptr<Expr>,
-                  TokenStream::ProgressType>>>
-        expr_rows;
-
-    for (auto& rank_row : binding_rankings) {
-        std::vector<
-            std::pair<std::unique_ptr<Expr>,
-                      TokenStream::ProgressType>>
-            expressions_row;
-        for (auto [token, progress] : rank_row) {
-            auto expr = ExprFactory::new_expr(
-                std::move(token));
-
-            expressions_row.emplace_back(
-                std::move(expr), progress);
-        }
-
-        expr_rows.emplace_back(
-            std::move(expressions_row));
-    }
-
-    for (auto& expr_row : expr_rows) {
+    for (auto& expr_row : binding_rankings) {
         for (auto& [expr, progress] : expr_row) {
             switch (expr->get_kind()) {
                 case marex::lex::TokenKind::Assignment:
@@ -63,18 +38,13 @@ std::unique_ptr<Expr> ExprBuilder::build(
 }
 
 void ExprBuilder::collect_rankings(
-    TokenStream& stream,
-    std::pmr::vector<std::vector<std::pair<
-        lex::Token, TokenStream::ProgressType>>>&
-        binding_rankings) {
+    TokenStream& stream, Rankings& binding_rankings) {
     for (std::uint8_t to_be_collected_rank = 0;
          to_be_collected_rank <
          std::numeric_limits<std::underlying_type_t<
              lex::BindingRank>>::max();
          ++to_be_collected_rank) {
-        std::vector<std::pair<
-            lex::Token, TokenStream::ProgressType>>
-            ranking_row;
+        RankingRow ranking_row;
 
         for (std::size_t token_id = 0;
              stream.token_kind_at(token_id) !=
@@ -84,9 +54,10 @@ void ExprBuilder::collect_rankings(
                 std::to_underlying(
                     stream.get_binding_rank_at(
                         token_id))) {
-                ranking_row.emplace_back(
-                    stream.borrow_token_at(token_id),
-                    token_id);
+                ranking_row.emplace_back(Ranking(
+                    ExprFactory::new_expr(
+                        stream.copy_out_token()),
+                    token_id));
             }
 
             binding_rankings.emplace_back(
