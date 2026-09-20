@@ -1,6 +1,7 @@
 #include "expr_build.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <limits>
 #include <memory>
@@ -80,10 +81,21 @@ void parse::collect_rankings(TokenStream& stream,
 }
 
 void parse::handle_rankings(Rankings&& rankings) {
-    for (auto& ranking_row : rankings) {
+    for (RankingRow& ranking_row : rankings) {
         for (auto [index, ranking] :
              ranking_row | std::views::enumerate) {
             auto& [expr, rank] = ranking;
+            [[maybe_unused]] auto get_previous_row =
+                [&] -> const Ranking& {
+                if (index == 0) {
+                    throw std::out_of_range(
+                        "there is no previous");
+                }
+
+                return ranking_row.at(
+                    static_cast<std::size_t>(index -
+                                             1));
+            };
 
             core::log_info("at index: {}, kind: {}",
                            index, *expr->get_kind());
