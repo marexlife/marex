@@ -3,10 +3,10 @@
 #include <optional>
 #include <utility>
 
-#include "token_kind.h"
 #include "binding_rank.h"
 #include "logging.h"
 #include "source_pos.h"
+#include "token_kind.h"
 
 namespace marex::lex {
 Token::Token(
@@ -14,13 +14,13 @@ Token::Token(
         passkey,
     std::string&& lexeme, TokenKind token_kind,
     SourcePos source_pos)
-    : lexeme(std::move(lexeme)),
-      kind(token_kind),
-      source_pos(source_pos) {}
+    : lexeme_(std::move(lexeme)),
+      kind_(token_kind),
+      source_pos_(source_pos) {}
 
 [[nodiscard]] BindingRank Token::get_binding_rank()
     const {
-    switch (kind) {
+    switch (kind_) {
         case lex::TokenKind::Var:
             return BindingRank::Var;
         case lex::TokenKind::Identifier:
@@ -35,22 +35,22 @@ Token::Token(
 
 [[nodiscard]] std::string_view Token::get_lexeme()
     const {
-    if (!lexeme) [[unlikely]] {
+    if (!lexeme_) [[unlikely]] {
         core::log_fatal_internal_error(
             "trying to get lexeme when none is there");
     }
 
-    return *lexeme;
+    return *lexeme_;
 }
 
 [[nodiscard]] std::pmr::string
 Token::move_out_lexeme() {
-    if (!lexeme) [[unlikely]] {
+    if (!lexeme_) [[unlikely]] {
         core::log_fatal_internal_error(
             "trying to move out a lexeme when none "
             "exists");
     }
 
-    return *lexeme;
+    return *lexeme_;
 }
 }  // namespace marex::lex

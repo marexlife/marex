@@ -27,24 +27,24 @@ class [[nodiscard]] Lexer final {
     Lexer& operator=(const Lexer&) = delete;
     ~Lexer() = default;
 
-    [[nodiscard]] std::pmr::vector<Token> run(
+    [[nodiscard]] std::vector<Token> run(
         this Lexer& self,
-        std::pmr::string&& source_text,
+        std::string&& source_text,
         std::optional<std::string_view> filename = std::nullopt);
 
    private:
     void push_token(this Lexer& self,
-                    std::pmr::vector<Token>& result,
+                    std::vector<Token>& result,
                     SourcePos& source_pos);
     void reset(this Lexer& self,
                SourcePos& source_pos);
     void push_current(this Lexer& self,
-                      std::pmr::vector<Token>& result,
+                      std::vector<Token>& result,
                       char current,
                       SourcePos& source_pos);
     void push_token_and_current(
         this Lexer& self,
-        std::pmr::vector<Token>& result, char current,
+        std::vector<Token>& result, char current,
         SourcePos& source_pos);
 
     [[nodiscard]] bool is_flushable(
@@ -57,7 +57,7 @@ class [[nodiscard]] Lexer final {
         std::nullopt;
     LastCharKind last_char_kind = LastCharKind::None;
     TokenFactory token_factory{};
-    std::pmr::string last_word;
+    std::string last_word;
 };
 }  // namespace marex::lex
 #endif  // MAREX_LEXER_LEXER_H

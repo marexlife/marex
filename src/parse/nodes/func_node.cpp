@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "var_decl.h"
 #include "defer.h"
 #include "exceptions/invalid_token_exception.h"
 #include "logging.h"
@@ -17,6 +16,7 @@
 #include "nodes/func_call.h"
 #include "nodes/return_node.h"
 #include "token_kind.h"
+#include "var_decl.h"
 
 namespace marex::parse {
 FuncNode::FuncNode(lex::Token&& token)
@@ -158,7 +158,7 @@ void FuncNode::parse_func_signature(
     }
 
     stream.advance_if_matches_or_throw(
-        lex::TokenKind::Arrow);
+        lex::TokenKind::Colon);
 
     return_type_ =
         expression_kind_from_decl_or_throw(stream);

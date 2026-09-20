@@ -1,4 +1,4 @@
-fun some_func(x: bool, y: int, z: float) -> int {
+fun some_func(x: bool, y: int, z: float): int {
     var t: bool = true 
 
     printf("some_func\n")

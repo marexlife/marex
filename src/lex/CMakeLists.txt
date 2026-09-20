@@ -25,3 +25,13 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+set(TEST_NAME ${PROJECT_NAME}_test)
+
+add_executable(${TEST_NAME} PRIVATE
+    test_lex.cpp
+)
+
+add_test(NAME ${TEST_NAME}
+    COMMAND $<TARGET_FILE:${PROJECT_NAME}>
+)

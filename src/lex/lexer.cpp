@@ -9,10 +9,10 @@
 #include "token.h"
 
 namespace marex::lex {
-std::pmr::vector<Token> Lexer::run(
-    this Lexer& self, std::pmr::string&& source_text,
+std::vector<Token> Lexer::run(
+    this Lexer& self, std::string&& source_text,
     std::optional<std::string_view> filename) {
-    std::pmr::vector<Token> result;
+    std::vector<Token> result;
 
     SourcePos source_pos{filename};
 
@@ -100,7 +100,7 @@ void Lexer::reset(this Lexer& self,
 }
 
 void Lexer::push_token(this Lexer& self,
-                       std::pmr::vector<Token>& result,
+                       std::vector<Token>& result,
                        SourcePos& source_pos) {
     core::log_info("Lexer: push_token");
 
@@ -112,7 +112,7 @@ void Lexer::push_token(this Lexer& self,
 }
 
 void Lexer::push_current(
-    this Lexer& self, std::pmr::vector<Token>& result,
+    this Lexer& self, std::vector<Token>& result,
     char current, SourcePos& source_pos) {
     core::log_info("Lexer: push_current");
 
@@ -122,7 +122,7 @@ void Lexer::push_current(
 }
 
 void Lexer::push_token_and_current(
-    this Lexer& self, std::pmr::vector<Token>& result,
+    this Lexer& self, std::vector<Token>& result,
     char current, SourcePos& source_pos) {
     core::log_info("Lexer: push_token_and_current");
 
