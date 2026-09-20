@@ -1,6 +1,7 @@
 #ifndef MAREX_LEX_LEXER_H
 #define MAREX_LEX_LEXER_H
 #include <cstddef>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -29,7 +30,7 @@ class [[nodiscard]] Lexer final {
     [[nodiscard]] std::pmr::vector<Token> run(
         this Lexer& self,
         std::pmr::string&& source_text,
-        std::optional<std::string_view> filename);
+        std::optional<std::string_view> filename = std::nullopt);
 
    private:
     void push_token(this Lexer& self,

@@ -1,5 +1,7 @@
 #include "test_lex.h"
 
-namespace marex::lex {
+#include "lexer.h"
 
-}
+namespace marex {
+void lex::test_lex() { marex::lex::Lexer lexer{}; }
+}  // namespace marex
