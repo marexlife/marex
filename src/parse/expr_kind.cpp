@@ -24,10 +24,9 @@ namespace marex {
         case ExprKind::Identifier:
             return "identifier";
         case ExprKind::None:
-            goto end;
+            break;
     }
 
-end:
     throw std::out_of_range("Not a valid TypeKind");
 }
 
