@@ -26,10 +26,15 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set(TEST_NAME ${PROJECT_NAME}_test)
+set(TEST_NAME ${PROJECT_NAME}_testing)
 
-add_executable(${TEST_NAME} PRIVATE
+add_executable(${TEST_NAME}
     test_lex.cpp
+)
+
+target_link_libraries(${TEST_NAME} PUBLIC
+    core
+    lex
 )
 
 add_test(NAME ${TEST_NAME}

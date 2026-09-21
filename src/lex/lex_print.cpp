@@ -8,7 +8,7 @@
 
 namespace marex {
 void lex::print_tokens(
-    std::pmr::vector<lex::Token>& token_stream) {
+    std::vector<lex::Token>& token_stream) {
     core::log_info("\nLexer print start\n");
 
     for (lex::Token& token : token_stream) {

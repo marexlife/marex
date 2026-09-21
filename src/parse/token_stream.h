@@ -6,19 +6,18 @@
 #include <string_view>
 #include <vector>
 
-#include "token_kind.h"
 #include "binding_rank.h"
 #include "source_pos.h"
 #include "token.h"
+#include "token_kind.h"
 
 namespace marex::parse {
 class TokenStream final {
    public:
     using ProgressType = std::size_t;
 
-    TokenStream(
-        std::pmr::vector<lex::Token>&& token_stream,
-        bool is_in_lint_mode = false);
+    TokenStream(std::vector<lex::Token>&& token_stream,
+                bool is_in_lint_mode = false);
 
     void advance() { ++progress; }
 
@@ -108,7 +107,7 @@ class TokenStream final {
         const;
 
    private:
-    std::pmr::vector<lex::Token> token_stream;
+    std::vector<lex::Token> token_stream;
     ProgressType progress{};
     bool is_in_lint_mode{};
 };

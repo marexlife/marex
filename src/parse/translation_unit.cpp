@@ -4,11 +4,28 @@
 #include <string>
 #include <utility>
 
-#include "token_kind.h"
-#include "nodes/func_node.h"
 #include "nodes/exceptions/invalid_token_exception.h"
+#include "nodes/func_node.h"
+#include "token_kind.h"
 
 namespace marex::parse {
+TranslationUnit TranslationUnit::compile(
+    std::vector<lex::Token>&& tokens) {
+    TokenStream stream{std::move(tokens)};
+    std::vector<std::unique_ptr<AstNode>> file_items;
+
+    while (!stream.is_at_end()) {
+        std::unique_ptr<AstNode> file_item =
+            create_file_item(stream);
+
+        file_item->parse(stream);
+
+        file_items.emplace_back(std::move(file_item));
+    }
+
+    return TranslationUnit{std::move(file_items)};
+}
+
 std::string TranslationUnit::as_c() {
     std::string result = R"(#include <stdio.h>
 #include <stddef.h>
@@ -26,22 +43,11 @@ int main(void) {
 
 )";
 
-    for (auto& file_item : file_items) {
+    for (auto& file_item : file_items_) {
         result += file_item->as_c();
     }
 
     return result;
-}
-
-void TranslationUnit::parse(TokenStream& stream) {
-    while (!stream.is_at_end()) {
-        std::unique_ptr<AstNode> file_item =
-            create_file_item(stream);
-
-        file_item->parse(stream);
-
-        file_items.emplace_back(std::move(file_item));
-    }
 }
 
 std::unique_ptr<AstNode>

@@ -44,7 +44,7 @@ void App::show_help_screen() {
 }
 
 void App::compile(
-    std::pmr::string&& source_code,
+    std::string&& source_code,
     std::optional<std::string_view> filename) {
     auto tokens =
         lexer.run(std::move(source_code), filename);

@@ -1,0 +1,7 @@
+class FileManager:
+
+var x = 1
+
+func OpenFile() {
+
+}

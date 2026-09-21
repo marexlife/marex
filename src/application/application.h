@@ -24,16 +24,16 @@ class App final {
 
     void compile_file(std::string_view argument);
 
-    void compile(std::pmr::string&& source_code,
+    void compile(std::string&& source_code,
                  std::optional<std::string_view>
                      filename = std::nullopt);
 
     void run_shell_mode();
     void run_shell_iteration();
-    [[nodiscard]] static std::pmr::string
+    [[nodiscard]] static std::string
     query_user_command();
     void execute_user_command(
-        std::pmr::string&& user_command);
+        std::string&& user_command);
 
     lex::Lexer lexer;
 };
