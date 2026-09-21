@@ -49,10 +49,9 @@ namespace marex {
         case TokenKind::Return:
             return "return";
         case TokenKind::None:
-            goto end;
+            break;
     }
 
-end:
     core::log_fatal_internal_error(
         "Out of range TokenKind");
 }
