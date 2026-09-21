@@ -12,7 +12,7 @@ InvalidTokenException::InvalidTokenException(
     lex::TokenKind expected_token_kind,
     lex::TokenKind got_token_kind,
     std::source_location cpp_source_location)
-    : full_message(std::format(
+    : message_(std::format(
           "Invalid token: at {}\nexpected: {}, got "
           "{}, from {}",
           source_pos.as_string(), *expected_token_kind,
@@ -25,7 +25,7 @@ InvalidTokenException::InvalidTokenException(
     lex::TokenKind unexpected_token_kind,
     std::string&& message,
     std::source_location cpp_source_location)
-    : full_message(std::format(
+    : message_(std::format(
           "at: {}, unexpected token kind: {}, {}, "
           "from {}",
           source_pos.as_string(),
@@ -37,7 +37,7 @@ InvalidTokenException::InvalidTokenException(
     lex::SourcePos source_pos,
     lex::TokenKind unexpected_token_kind,
     std::source_location cpp_source_location)
-    : full_message(std::format(
+    : message_(std::format(
           "at: {}, unexpected token kind: {}, from {}",
           source_pos.as_string(),
           *unexpected_token_kind,
@@ -48,7 +48,7 @@ InvalidTokenException::InvalidTokenException(
     lex::SourcePos source_pos,
     std::string&& full_message,
     std::source_location cpp_source_location)
-    : full_message(std::format(
+    : message_(std::format(
           "at {}\nInvalid token: {}, from {}",
           source_pos.as_string(),
           std::move(full_message),
@@ -57,6 +57,6 @@ InvalidTokenException::InvalidTokenException(
 
 const char* InvalidTokenException::what()
     const noexcept {
-    return full_message.data();
+    return message_.data();
 }
 }  // namespace marex::parse

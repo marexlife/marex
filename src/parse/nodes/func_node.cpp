@@ -19,9 +19,6 @@
 #include "var_decl.h"
 
 namespace marex::parse {
-FuncNode::FuncNode(lex::Token&& token)
-    : Expr(std::move(token)) {}
-
 [[nodiscard]] std::string FuncNode::as_c() {
     auto get_func_args = [&] -> std::string {
         std::string func_args_string;
@@ -63,11 +60,8 @@ FuncNode::FuncNode(lex::Token&& token)
         func_name_, std::invoke(get_func_args),
         std::invoke(get_func_code),
         std::invoke([&] -> std::string {
-            if (return_node_) {
-                return std::format(
-                    "\n    {}",
-                    return_node_.value()->as_c());
-            }
+            return std::format("\n    {}",
+                               return_node_.as_c());
 
             return "";
         }));
@@ -76,23 +70,7 @@ FuncNode::FuncNode(lex::Token&& token)
 void FuncNode::parse_func_body(TokenStream& stream) {
     while (true) {
         if (stream.matches(lex::TokenKind::Return)) {
-            this->return_node_ = std::invoke([&] {
-                auto return_node =
-                    std::make_unique<ReturnNode>(
-                        stream.copy_out_token());
-
-                return_node->parse(stream);
-
-                return return_node;
-            });
-
-            if (this->return_node_) {
-                core::log_info(
-                    "succeeded to set return node");
-            } else {
-                core::log_fatal_error(
-                    "failed to set return node");
-            }
+            return_node_ = ReturnNode::parse(stream);
         }
 
         if (stream.advance_if_matches(
@@ -153,7 +131,7 @@ void FuncNode::parse_func_signature(
 
     if (stream.advance_if_matches(
             lex::TokenKind::OpenBrace)) {
-        return_type_ = ExprKind::EmptyType;
+        return_type_ = TypeKind::EmptyType;
         return;
     }
 

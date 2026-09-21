@@ -5,27 +5,25 @@
 #include <string>
 #include <vector>
 
-#include "return_node.h"
-#include "expr_kind.h"
+#include "type_kind.h"
 #include "nodes/ast_node.h"
 #include "nodes/expr.h"
+#include "return_node.h"
 #include "token.h"
 
 namespace marex::parse {
-class ReturnNode;
-
 struct FuncArg final {
-    std::pmr::string arg_name;
-    ExprKind arg_type{};
+    std::string arg_name;
+    TypeKind arg_type{};
 };
 
 class FuncNode final : public Expr {
    public:
-    explicit FuncNode(lex::Token&& token);
+    [[nodiscard]] static FuncNode parse(
+        TokenStream& stream);
 
    protected:
     [[nodiscard]] std::string as_c() override;
-    void parse(TokenStream& stream) override;
 
    private:
     void parse_func_signature(TokenStream& stream);
@@ -34,10 +32,9 @@ class FuncNode final : public Expr {
     void parse_func_args(TokenStream& stream);
 
     std::string func_name_;
-    ExprKind return_type_{};
+    TypeKind return_type_{};
     std::vector<std::unique_ptr<AstNode>> func_items_;
-    std::optional<std::unique_ptr<ReturnNode>>
-        return_node_;
+    ReturnNode return_node_;
     std::vector<FuncArg> args_;
 };
 }  // namespace marex::parse

@@ -2,6 +2,7 @@
 #define MAREX_PARSE_BINARYOP_H
 #include <cstdint>
 #include <memory>
+#include <stdexcept>
 
 #include "nodes/expr.h"
 #include "token.h"
@@ -17,6 +18,11 @@ enum struct [[nodiscard]] BinaryOpKind : std::uint8_t {
 
 class BinaryOp final : public Expr {
    public:
+    [[nodiscard]] std::string as_c() override {
+        throw std::runtime_error(
+            "not implemented yet");
+    }
+
     explicit BinaryOp(lex::Token&& token,
                       BinaryOpKind binary_op_kind);
 

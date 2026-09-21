@@ -18,17 +18,8 @@ class AstNode {
     AstNode& operator=(const AstNode&) = delete;
     virtual ~AstNode() = default;
 
-    virtual void parse(
-        [[maybe_unused]] TokenStream& stream) {
-        throw std::runtime_error(
-            "this shouldn't have been called.");
-    }
-
     // deliberately not = 0;
-    [[nodiscard]] virtual std::string as_c() {
-        throw std::runtime_error(
-            "this shouldn't have been called.");
-    }
+    [[nodiscard]] virtual std::string as_c() = 0;
 
     [[nodiscard]] const lex::Token& get_token() const {
         return token;

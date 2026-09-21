@@ -2,9 +2,9 @@
 #define MAREX_PARSE_VAR_NODE_H
 #include <string>
 
-#include "expr_kind.h"
 #include "nodes/ast_node.h"
 #include "token.h"
+#include "type_kind.h"
 
 namespace marex::parse {
 class VarDecl final : public AstNode {
@@ -14,12 +14,16 @@ class VarDecl final : public AstNode {
    protected:
     [[nodiscard]] std::string as_c() override;
 
-    void parse(TokenStream& stream) override;
+    [[nodiscard]] static VarDecl parse(
+        TokenStream& stream);
 
    private:
+    VarDecl(lex::Token&& token, std::string&& name,
+            std::string&& value, TypeKind type_kind);
+
     std::string name_;
-    ExprKind type_kind_{};
     std::string value_;
+    TypeKind type_kind_{};
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_VAR_NODE_H

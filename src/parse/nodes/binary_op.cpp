@@ -10,7 +10,7 @@ BinaryOp::BinaryOp(lex::Token&& token,
 
 void BinaryOp::set(std::unique_ptr<Expr> lhs,
                    std::unique_ptr<Expr> rhs) {
-    this->lhs_ = std::move(lhs);
-    this->rhs_ = std::move(rhs);
+    lhs_ = std::move(lhs);
+    rhs_ = std::move(rhs);
 }
 }  // namespace marex::parse

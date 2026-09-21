@@ -7,9 +7,9 @@
 namespace marex::parse {
 class TokenStream;
 
-enum class ExprKind : std::uint8_t {
+enum class TypeKind : std::uint8_t {
     None = 0,
-    Identifier,
+    VoidType,
     EmptyType,
     IntType,
     BoolType,
@@ -18,14 +18,14 @@ enum class ExprKind : std::uint8_t {
 };
 
 [[nodiscard]] std::string_view operator*(
-    ExprKind kind);
+    TypeKind kind);
 
-ExprKind expression_kind_from_decl_or_throw(
+TypeKind expression_kind_from_decl_or_throw(
     const parse::TokenStream& pack,
     std::source_location cpp_source_location =
         std::source_location::current());
 
-ExprKind expression_kind_from_literal_or_throw(
+TypeKind expression_kind_from_literal_or_throw(
     const parse::TokenStream& pack,
     std::source_location cpp_source_location =
         std::source_location::current());

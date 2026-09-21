@@ -6,30 +6,30 @@
 
 #include "defer.h"
 #include "expr_kind.h"
-#include "token.h"
 #include "token_kind.h"
 
 namespace marex::parse {
-FuncCall::FuncCall(lex::Token&& token)
-    : Expr(std::move(token)) {}
-
 std::string FuncCall::as_c() {
     std::string result;
     std::uintmax_t count{};
 
-    for (auto& [name, expression_kind] : args) {
+    for (auto& [name, expression_kind] : args_) {
         core::Defer increment_count = [&] { ++count; };
         result += name;
 
-        if (count != args.size() - 1) {
+        if (count != args_.size() - 1) {
             result += ", ";
         }
     }
 
-    return std::format("{}({});\n", func_name, result);
+    return std::format("{}({});\n", func_name_,
+                       result);
 }
 
-void FuncCall::parse(TokenStream& stream) {
+FuncCall FuncCall::parse(TokenStream& stream) {
+    std::string func_name;
+    std::vector<CallArg> args;
+
     func_name = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
@@ -38,7 +38,9 @@ void FuncCall::parse(TokenStream& stream) {
 
     if (stream.advance_if_matches(
             lex::TokenKind::CloseBracket)) {
-        return;
+        return FuncCall{stream.copy_out_token(),
+                        std::move(func_name),
+                        std::move(args)};
     }
 
     do {
@@ -58,5 +60,16 @@ void FuncCall::parse(TokenStream& stream) {
 
     stream.advance_if_matches_or_throw(
         lex::TokenKind::CloseBracket);
+
+    return FuncCall{stream.copy_out_token(),
+                    std::move(func_name),
+                    std::move(args)};
 }
+
+FuncCall::FuncCall(lex::Token&& token,
+                   std::string&& func_name,
+                   std::vector<CallArg>&& args)
+    : Expr(std::move(token)),
+      func_name_(std::move(func_name)),
+      args_(std::move(args)) {}
 }  // namespace marex::parse

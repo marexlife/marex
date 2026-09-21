@@ -6,7 +6,7 @@
 #include "nodes/ast_node.h"
 #include "token.h"
 namespace marex::parse {
-enum struct ExprKind : std::uint8_t;
+enum struct TypeKind : std::uint8_t;
 
 class ReturnNode final : public AstNode {
    public:
@@ -14,10 +14,11 @@ class ReturnNode final : public AstNode {
 
     [[nodiscard]] std::string as_c() override;
 
-    void parse(TokenStream& stream) override;
+    [[nodiscard]] static ReturnNode parse(
+        TokenStream& stream);
 
    private:
-    ExprKind expression_kind_{};
+    TypeKind expression_kind_{};
     std::optional<std::string> value_;
 };
 }  // namespace marex::parse

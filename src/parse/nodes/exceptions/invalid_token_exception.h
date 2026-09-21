@@ -40,7 +40,7 @@ class InvalidTokenException final
     const char* what() const noexcept override;
 
    private:
-    std::string full_message;
+    std::string message_;
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_INVALIDTOKENEXCEPTION_H

@@ -1,6 +1,7 @@
 #ifndef MAREX_PARSE_FUNCCALL_H
 #define MAREX_PARSE_FUNCCALL_H
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "expr_kind.h"
@@ -10,20 +11,23 @@
 namespace marex::parse {
 struct CallArg final {
     std::string name;
-    ExprKind expression_kind{};
+    TypeKind expression_kind{};
 };
 
 class FuncCall final : public Expr {
    public:
-    explicit FuncCall(lex::Token&& token);
+    static FuncCall parse(TokenStream& stream);
 
+   protected:
     [[nodiscard]] std::string as_c() override;
 
-    void parse(TokenStream& stream) override;
-
    private:
-    std::string func_name;
-    std::vector<CallArg> args;
+    FuncCall(lex::Token&& token,
+             std::string&& func_name,
+             std::vector<CallArg>&& args);
+
+    std::string func_name_;
+    std::vector<CallArg> args_;
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_FUNCCALL_H

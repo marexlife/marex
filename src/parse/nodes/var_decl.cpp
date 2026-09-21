@@ -4,7 +4,6 @@
 #include <string>
 #include <utility>
 
-#include "expr_kind.h"
 #include "nodes/ast_node.h"
 #include "token_kind.h"
 
@@ -17,15 +16,19 @@ std::string VarDecl::as_c() {
                        name_, value_);
 }
 
-void VarDecl::parse(TokenStream& stream) {
+VarDecl VarDecl::parse(TokenStream& stream) {
+    std::string name;
+    std::string value;
+    TypeKind type_kind{};
+
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Var);
-    name_ = stream.advance_if_matches_or_throw(
+    name = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
     stream.advance_if_matches_or_throw(
         lex::TokenKind::Colon);
-    type_kind_ =
+    type_kind =
         expression_kind_from_decl_or_throw(stream);
     stream.advance();
 
@@ -35,8 +38,21 @@ void VarDecl::parse(TokenStream& stream) {
     [[maybe_unused]] auto not_needed =
         expression_kind_from_literal_or_throw(stream);
 
-    value_ = stream.get_lexeme();
+    value = stream.get_lexeme();
 
     stream.advance();
+
+    return VarDecl(stream.copy_out_token(),
+                   std::move(name), std::move(value),
+                   type_kind);
 }
+
+VarDecl::VarDecl(lex::Token&& token,
+                 std::string&& name,
+                 std::string&& value,
+                 TypeKind type_kind)
+    : AstNode(std::move(token)),
+      name_(std::move(name)),
+      value_(std::move(value)),
+      type_kind_(type_kind) {}
 }  // namespace marex::parse
