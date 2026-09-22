@@ -11,31 +11,41 @@ namespace marex {
         case TokenKind::Colon:
             return ":";
         case TokenKind::Identifier:
-            return "identifier";
+            return "Identifier";
+        case TokenKind::Int8Decl:
+            return "Int8Decl";
+        case TokenKind::Int16Decl:
+            return "Int16Decl";
         case TokenKind::Int32Decl:
-            return "Int Decl";
+            return "Int32Decl";
+        case TokenKind::Int64Decl:
+            return "Int64Decl";
         case TokenKind::FloatDecl:
-            return "Float Decl";
+            return "FloatDecl";
+        case TokenKind::DoubleDecl:
+            return "DoubleDecl";
         case TokenKind::BoolDecl:
-            return "Bool Decl";
+            return "BoolDecl";
         case TokenKind::IntLiteral:
-            return "Int Literal";
+            return "IntLiteral";
         case TokenKind::FloatLiteral:
-            return "Int Literal";
+            return "IntLiteral";
         case TokenKind::BoolLiteral:
-            return "Bool Literal";
+            return "BoolLiteral";
         case TokenKind::StringLiteral:
-            return "String Literal";
+            return "StringLiteral";
         case TokenKind::Arrow:
-            return "arrow";
+            return "Arrow";
         case TokenKind::Comma:
-            return "comma";
+            return "Comma";
         case TokenKind::Assignment:
-            return "=";
+            return "Assignment";
         case TokenKind::StatementEnd:
-            return ";";
+            return "StatementEnd";
         case TokenKind::Var:
-            return "var";
+            return "Var";
+        case TokenKind::Val:
+            return "Val";
         case TokenKind::OpenBrace:
             return "{";
         case TokenKind::CloseBrace:
@@ -47,10 +57,9 @@ namespace marex {
         case TokenKind::Return:
             return "return";
         case TokenKind::None:
-            goto end;
+            break;
     }
 
-end:
     core::log_fatal_internal_error(
         "Out of range TokenKind");
 }

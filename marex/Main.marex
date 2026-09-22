@@ -1,4 +1,4 @@
-class Player:
+SomeFunc() {
 
-someFunc(x: int32): int32 {
 }
+
