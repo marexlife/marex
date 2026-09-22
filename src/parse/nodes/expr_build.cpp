@@ -65,10 +65,13 @@ void parse::collect_rankings(TokenStream& stream,
 
             if (std::invoke(
                     rank_progress_matches_enum_one)) {
-                last_ranking_row.emplace_back(Ranking(
+                Ranking ranking{
                     ExprFactory::new_expr(
                         stream.copy_out_token()),
-                    j));
+                    j};
+
+                last_ranking_row.emplace_back(
+                    std::move(ranking));
             }
 
             rankings.emplace_back(
