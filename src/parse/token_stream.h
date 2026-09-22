@@ -1,9 +1,11 @@
 #ifndef MAREX_PARSE_PARSERPACK_H
 #define MAREX_PARSE_PARSERPACK_H
 #include <cstddef>
+#include <functional>
 #include <source_location>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <vector>
 
 #include "binding_rank.h"
@@ -31,25 +33,23 @@ class TokenStream final {
             "trying to access next token, when there "
             "is none") const;
 
-    [[nodiscard]] bool is_at_end() const;
+    template <typename F>
+        requires std::is_invocable_v<F,
+                                     const lex::Token&>
+    void run_until_stmt_end(F iter) const {
+        for (std::size_t i = 0;
+             token_kind_at(i) !=
+             lex::TokenKind::StatementEnd;
+             ++i) {
+            std::invoke(iter, borrow_token_at(i));
+        }
+    }
 
-    auto begin() { return tokens_.begin(); }
-    auto end() { return tokens_.end(); }
+    [[nodiscard]] bool is_at_end() const;
 
     [[nodiscard]] lex::TokenKind token_kind_at(
         std::size_t index) const {
         return borrow_token_at(index).get_kind();
-    }
-
-    [[nodiscard]] bool is_not_stmt_end_at(
-        ProgressType progress) const {
-        return !is_stmt_end_at(progress);
-    }
-
-    [[nodiscard]] bool is_stmt_end_at(
-        ProgressType progress) const {
-        return matches_at(
-            progress, lex::TokenKind::StatementEnd);
     }
 
     [[nodiscard]] bool mismatches_at(
@@ -112,7 +112,7 @@ class TokenStream final {
             std::source_location::current());
 
     [[nodiscard]] lex::TokenKind get_kind() const {
-        return get_token().get_kind();
+        return borrow_token().get_kind();
     }
 
     [[nodiscard]] lex::Token
@@ -125,14 +125,15 @@ class TokenStream final {
     get_kind_and_advance();
 
     [[nodiscard]] lex::SourcePos get_pos() const {
-        return get_token().get_pos();
+        return borrow_token().get_pos();
     }
 
     [[nodiscard]] std::string_view get_lexeme() const {
-        return get_token().get_lexeme();
+        return borrow_token().get_lexeme();
     }
 
-    [[nodiscard]] const lex::Token& get_token() const {
+    [[nodiscard]] const lex::Token& borrow_token()
+        const {
         return tokens_.at(progress_);
     }
 

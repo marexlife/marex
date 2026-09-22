@@ -63,7 +63,7 @@ std::pmr::string
 TokenStream::advance_if_matches_or_throw(
     lex::TokenKind token_kind,
     std::source_location cpp_source_location) {
-    auto pre_increment_token_borrow = get_token();
+    auto pre_increment_token_borrow = borrow_token();
     const auto got_token_kind =
         pre_increment_token_borrow.get_kind();
 
