@@ -1,7 +1,5 @@
 #ifndef MAREX_PARSE_EXPR_H
 #define MAREX_PARSE_EXPR_H
-#include <concepts>
-
 #include "nodes/ast_node.h"
 #include "token.h"
 
@@ -10,11 +8,6 @@ class Expr : public AstNode {
    public:
     explicit Expr(lex::Token&& token);
     virtual ~Expr() = default;
-
-    template <std::derived_from<Expr> Target>
-    [[nodiscard]] Target& cast() {
-        return static_cast<Target&>(*this);
-    }
 
     Expr(Expr&&) = delete;
     Expr& operator=(Expr&&) = delete;
