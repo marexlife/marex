@@ -30,6 +30,10 @@ static void collect_rankings(TokenStream& stream,
                              Rankings& rankings);
 
 static void handle_rankings(Rankings&& rankings);
+static constexpr auto enum_max_rank() {
+    return std::numeric_limits<std::underlying_type_t<
+        lex::BindingRank>>::max();
+}
 }  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build_expr(
@@ -45,20 +49,18 @@ std::unique_ptr<parse::Expr> parse::build_expr(
 
 void parse::collect_rankings(TokenStream& stream,
                              Rankings& rankings) {
-    constexpr auto enum_max_rank =
-        std::numeric_limits<std::underlying_type_t<
-            lex::BindingRank>>::max();
-
-    for (std::uint8_t i = 0; i < enum_max_rank; ++i) {
+    for (std::uint8_t i = 0; i < enum_max_rank();
+         ++i) {
         RankingRow last_ranking_row;
 
         for (std::size_t j = 0;
              stream.is_not_stmt_end_at(j); ++j) {
             auto rank_progress_matches_enum_one = [&] {
-                return i ==
-                       std::to_underlying(
-                           stream.get_binding_rank_at(
-                               j));
+                lex::BindingRank binding_rank =
+                    stream.get_binding_rank_at(j);
+
+                return i == std::to_underlying(
+                                binding_rank);
             };
 
             if (std::invoke(
