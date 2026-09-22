@@ -1,4 +1,4 @@
 some_func(y: int): int {
-    
+    return 1
 }
 

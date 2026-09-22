@@ -38,6 +38,29 @@ class TokenStream final {
         return borrow_token_at(index).get_kind();
     }
 
+    [[nodiscard]] bool is_not_stmt_end_at(
+        ProgressType progress) const {
+        return !is_stmt_end_at(progress);
+    }
+
+    [[nodiscard]] bool is_stmt_end_at(
+        ProgressType progress) const {
+        return matches_at(
+            progress, lex::TokenKind::StatementEnd);
+    }
+
+    [[nodiscard]] bool mismatches_at(
+        ProgressType progress,
+        lex::TokenKind token_kind) const {
+        return !matches_at(progress, token_kind);
+    }
+
+    [[nodiscard]] bool matches_at(
+        ProgressType progress,
+        lex::TokenKind token_kind) const {
+        return token_kind_at(progress) == token_kind;
+    }
+
     [[nodiscard]] const lex::Token& borrow_token_at(
         std::size_t index) const {
         return token_stream_.at(index);

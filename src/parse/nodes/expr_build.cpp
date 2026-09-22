@@ -50,15 +50,10 @@ void parse::collect_rankings(TokenStream& stream,
             lex::BindingRank>>::max();
 
     for (std::uint8_t i = 0; i < enum_max_rank; ++i) {
-        RankingRow ranking_row;
-
-        auto not_at_end = [&](std::size_t index) {
-            return stream.token_kind_at(index) !=
-                   lex::TokenKind::StatementEnd;
-        };
+        RankingRow last_ranking_row;
 
         for (std::size_t j = 0;
-             std::invoke(not_at_end, j); ++j) {
+             stream.is_not_stmt_end_at(j); ++j) {
             auto rank_progress_matches_enum_one = [&] {
                 return i ==
                        std::to_underlying(
@@ -68,14 +63,14 @@ void parse::collect_rankings(TokenStream& stream,
 
             if (std::invoke(
                     rank_progress_matches_enum_one)) {
-                ranking_row.emplace_back(Ranking(
+                last_ranking_row.emplace_back(Ranking(
                     ExprFactory::new_expr(
                         stream.copy_out_token()),
                     j));
             }
 
             rankings.emplace_back(
-                std::move(ranking_row));
+                std::move(last_ranking_row));
         }
     }
 }
