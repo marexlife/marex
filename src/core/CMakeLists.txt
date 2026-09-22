@@ -3,8 +3,6 @@ project(core)
 
 include(${CMAKE_SOURCE_DIR}/cmake/flags.cmake)
 
-set(CMAKE_BUILD_TYPE Release)
-
 add_library(${PROJECT_NAME}
     logging.cpp
     error_format.cpp

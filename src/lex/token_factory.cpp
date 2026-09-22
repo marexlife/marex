@@ -2,10 +2,11 @@
 
 #include <string_view>
 
-#include "token_kind.h"
 #include "passkey.h"
 #include "source_pos.h"
 #include "token.h"
+#include "token_kind.h"
+
 
 namespace marex::lex {
 TokenFactory::TokenFactory()
@@ -15,7 +16,6 @@ TokenFactory::TokenFactory()
               {"float", TokenKind::FloatDecl},
               {"int", TokenKind::IntDecl},
               {"bool", TokenKind::BoolDecl},
-              {"fun", TokenKind::Func},
               {":", TokenKind::Colon},
               {"=", TokenKind::Assignment},
               {";", TokenKind::StatementEnd},

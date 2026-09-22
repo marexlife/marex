@@ -2,9 +2,10 @@
 #include <format>
 #include <print>
 
-#include "application.h"
+#include "app.h"
 
-int main(int argc, char* argv[]) {
+int main([[maybe_unused]] int argc,
+         [[maybe_unused]] char* argv[]) {
     try {
         marex::app::App app{};
 
