@@ -18,6 +18,7 @@ TokenFactory::TokenFactory()
               {"int8", TokenKind::Int8Decl},
               {"int16", TokenKind::Int16Decl},
               {"int32", TokenKind::Int32Decl},
+              {"int", TokenKind::Int32Decl},
               {"int64", TokenKind::Int64Decl},
               {"bool", TokenKind::BoolDecl},
               {":", TokenKind::Colon},
