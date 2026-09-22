@@ -87,6 +87,9 @@ void parse::handle_rankings(Rankings&& rankings) {
             auto& [expr, rank] = ranking;
             [[maybe_unused]] auto get_previous_row =
                 [&] -> const Ranking& {
+                // would be dangerous if we tried the
+                // number stuff in that case even
+                // before .at
                 if (index == 0) {
                     throw std::out_of_range(
                         "there is no previous");
