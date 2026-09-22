@@ -16,7 +16,7 @@ class TranslationUnit final {
 
    private:
     [[nodiscard]] static std::unique_ptr<AstNode>
-    create_file_item(TokenStream& pack);
+    create_file_item(TokenStream& stream);
 
     explicit TranslationUnit(
         std::vector<std::unique_ptr<AstNode>>

@@ -143,9 +143,6 @@ void FuncNode::parse(TokenStream& stream) {
 
 void FuncNode::parse_func_signature(
     TokenStream& stream) {
-    stream.advance_if_matches_or_throw(
-        lex::TokenKind::Func);
-
     func_name_ = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 

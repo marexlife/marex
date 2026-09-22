@@ -21,16 +21,17 @@ class [[nodiscard]] Lexer final {
 
    public:
     Lexer() = default;
+    ~Lexer() = default;
+
     Lexer(Lexer&&) = delete;
     Lexer& operator=(Lexer&&) = delete;
     Lexer(const Lexer&) = delete;
     Lexer& operator=(const Lexer&) = delete;
-    ~Lexer() = default;
 
     [[nodiscard]] std::vector<Token> run(
-        this Lexer& self,
-        std::string&& source_text,
-        std::optional<std::string_view> filename = std::nullopt);
+        this Lexer& self, std::string&& source_text,
+        std::optional<std::string_view> filename =
+            std::nullopt);
 
    private:
     void push_token(this Lexer& self,
@@ -43,9 +44,8 @@ class [[nodiscard]] Lexer final {
                       char current,
                       SourcePos& source_pos);
     void push_token_and_current(
-        this Lexer& self,
-        std::vector<Token>& result, char current,
-        SourcePos& source_pos);
+        this Lexer& self, std::vector<Token>& result,
+        char current, SourcePos& source_pos);
 
     [[nodiscard]] bool is_flushable(
         this const Lexer& self) {

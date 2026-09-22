@@ -1,7 +1,5 @@
-class FileManager:
+class Engine:
 
-var x = 1
-
-func OpenFile() {
-
+update(delta float) override {
+    
 }

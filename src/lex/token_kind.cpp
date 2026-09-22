@@ -8,8 +8,6 @@ namespace marex {
 [[nodiscard]] std::string_view lex::operator*(
     TokenKind token_kind) {
     switch (token_kind) {
-        case TokenKind::Func:
-            return "function keyword";
         case TokenKind::Colon:
             return ":";
         case TokenKind::Identifier:

@@ -35,6 +35,16 @@ lex::TokenKind TokenStream::get_next_kind(
     }
 }
 
+bool TokenStream::previous_was(
+    lex::TokenKind token_kind) const {
+    return borrow_previous().get_kind() == token_kind;
+}
+
+bool TokenStream::next_is(
+    lex::TokenKind token_kind) const {
+    return borrow_next().get_kind() == token_kind;
+}
+
 std::string_view TokenStream::get_kind_string() const {
     return *get_kind();
 }

@@ -21,6 +21,11 @@ class TokenStream final {
 
     void advance() { ++progress_; }
 
+    [[nodiscard]] bool previous_was(
+        lex::TokenKind token_kind) const;
+    [[nodiscard]] bool next_is(
+        lex::TokenKind token_kind) const;
+
     [[nodiscard]] lex::TokenKind get_next_kind(
         std::string_view error_message_on_failure =
             "trying to access next token, when there "
@@ -57,6 +62,16 @@ class TokenStream final {
     [[nodiscard]] bool matches(
         lex::TokenKind token_kind) const {
         return get_kind() == token_kind;
+    }
+
+    [[nodiscard]] const lex::Token& borrow_previous()
+        const {
+        return token_stream_.at(progress_ - 1);
+    }
+
+    [[nodiscard]] const lex::Token& borrow_next()
+        const {
+        return token_stream_.at(progress_ + 1);
     }
 
     [[nodiscard]] lex::Token

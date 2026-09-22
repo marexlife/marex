@@ -51,18 +51,27 @@ int main(void) {
 }
 
 std::unique_ptr<AstNode>
-TranslationUnit::create_file_item(TokenStream& pack) {
-    switch (pack.get_kind()) {
-        case lex::TokenKind::Func:
-            return std::make_unique<FuncNode>(
-                pack.copy_out_token());
+TranslationUnit::create_file_item(
+    TokenStream& stream) {
+    switch (stream.get_kind()) {
+        case lex::TokenKind::Identifier:
+            if (stream.next_is(
+                    lex::TokenKind::OpenBracket)) {
+                return std::make_unique<FuncNode>(
+                    stream.copy_out_token());
+            }
+
+            throw InvalidTokenException(
+                stream.get_pos(),
+                "identifier which is not a function "
+                "call is not allowed");
         case lex::TokenKind::Var:
             throw InvalidTokenException(
-                pack.get_pos(),
+                stream.get_pos(),
                 "no global variables allowed");
         default:
             throw InvalidTokenException(
-                pack.get_pos(), pack.get_kind());
+                stream.get_pos(), stream.get_kind());
     }
 }
 }  // namespace marex::parse

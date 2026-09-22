@@ -1,10 +1,7 @@
 from subprocess import run
 import os
 
-try:
-    run(["cmake", ".", "-B", "build", "-GNinja"], check=True)
-except:
-    run(["cmake", ".", "-B", "build"], check=True)
+run(["cmake", ".", "-B", "build"], check=True)
 
 run(["cmake", "--build", "build"], check=True)
 
