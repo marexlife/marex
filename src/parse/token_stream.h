@@ -33,6 +33,9 @@ class TokenStream final {
 
     [[nodiscard]] bool is_at_end() const;
 
+    auto begin() { return tokens_.begin(); }
+    auto end() { return tokens_.end(); }
+
     [[nodiscard]] lex::TokenKind token_kind_at(
         std::size_t index) const {
         return borrow_token_at(index).get_kind();
@@ -63,7 +66,7 @@ class TokenStream final {
 
     [[nodiscard]] const lex::Token& borrow_token_at(
         std::size_t index) const {
-        return token_stream_.at(index);
+        return tokens_.at(index);
     }
 
     [[nodiscard]] lex::BindingRank get_binding_rank_at(
@@ -89,17 +92,17 @@ class TokenStream final {
 
     [[nodiscard]] const lex::Token& borrow_previous()
         const {
-        return token_stream_.at(progress_ - 1);
+        return tokens_.at(progress_ - 1);
     }
 
     [[nodiscard]] const lex::Token& borrow_next()
         const {
-        return token_stream_.at(progress_ + 1);
+        return tokens_.at(progress_ + 1);
     }
 
     [[nodiscard]] lex::Token
     copy_out_previous_token() {
-        return token_stream_.at(progress_ - 1);
+        return tokens_.at(progress_ - 1);
     }
 
     /* NOT [[nodiscard]] */ std::pmr::string
@@ -130,11 +133,11 @@ class TokenStream final {
     }
 
     [[nodiscard]] const lex::Token& get_token() const {
-        return token_stream_.at(progress_);
+        return tokens_.at(progress_);
     }
 
     [[nodiscard]] lex::Token copy_out_token() const {
-        return lex::Token(token_stream_.at(progress_));
+        return lex::Token(tokens_.at(progress_));
     }
 
     [[nodiscard]] bool get_is_in_lint_mode() const {
@@ -145,7 +148,7 @@ class TokenStream final {
         const;
 
    private:
-    std::vector<lex::Token> token_stream_;
+    std::vector<lex::Token> tokens_;
     ProgressType progress_{};
     bool is_in_lint_mode_{};
 };

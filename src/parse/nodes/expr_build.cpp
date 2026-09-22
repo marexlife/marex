@@ -22,83 +22,11 @@
 #include "token_stream.h"
 
 namespace marex {
-namespace parse {
-using Ranking = std::pair<std::unique_ptr<Expr>,
-                          TokenStream::ProgressType>;
-using RankingRow = std::vector<Ranking>;
-using Rankings = std::vector<RankingRow>;
-
-static void collect_rankings(TokenStream& stream,
-                             Rankings& rankings);
-
-static void handle_rankings(Rankings&& rankings);
-static constexpr auto enum_max_rank() {
-    return std::numeric_limits<std::underlying_type_t<
-        lex::BindingRank>>::max();
-}
-}  // namespace parse
+namespace parse {}  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build_expr(
     TokenStream& stream) {
-    Rankings rankings;
-
-    collect_rankings(stream, rankings);
-
-    handle_rankings(std::move(rankings));
-
     throw std::runtime_error("not implemented yet");
 }
 
-void parse::collect_rankings(TokenStream& stream,
-                             Rankings& rankings) {
-    for (std::uint8_t i = 0; i < enum_max_rank();
-         ++i) {
-        RankingRow last_ranking_row;
-
-        for (std::size_t j = 0;
-             stream.is_not_stmt_end_at(j); ++j) {
-            auto rank_progress_matches_enum_one = [&] {
-                lex::BindingRank binding_rank =
-                    stream.get_binding_rank_at(j);
-
-                return i == std::to_underlying(
-                                binding_rank);
-            };
-
-            if (std::invoke(
-                    rank_progress_matches_enum_one)) {
-                Ranking ranking{
-                    ExprFactory::new_expr(
-                        stream.copy_out_token()),
-                    j};
-
-                last_ranking_row.emplace_back(
-                    std::move(ranking));
-            }
-
-            rankings.emplace_back(
-                std::move(last_ranking_row));
-        }
-    }
-}
-
-void parse::handle_rankings(Rankings&& rankings) {
-    for (RankingRow& ranking_row : rankings) {
-        std::optional<
-            std::reference_wrapper<RankingRow>>
-            previous_row;
-
-        for (auto [index, ranking] :
-             ranking_row | std::views::enumerate) {
-            auto& [expr, rank] = ranking;
-
-            core::Defer defer_previous_row = [&] {
-                previous_row = ranking_row;
-            };
-
-            core::log_info("at index: {}, kind: {}",
-                           index, *expr->get_kind());
-        }
-    }
-}
 }  // namespace marex
