@@ -5,6 +5,7 @@
 #include <functional>
 #include <limits>
 #include <memory>
+#include <optional>
 #include <ranges>
 #include <stdexcept>
 #include <type_traits>
@@ -12,6 +13,7 @@
 #include <vector>
 
 #include "binding_rank.h"
+#include "defer.h"
 #include "expr_factory.h"
 #include "logging.h"
 #include "nodes/expr.h"
@@ -82,22 +84,16 @@ void parse::collect_rankings(TokenStream& stream,
 
 void parse::handle_rankings(Rankings&& rankings) {
     for (RankingRow& ranking_row : rankings) {
+        std::optional<
+            std::reference_wrapper<RankingRow>>
+            previous_row;
+
         for (auto [index, ranking] :
              ranking_row | std::views::enumerate) {
             auto& [expr, rank] = ranking;
-            [[maybe_unused]] auto get_previous_row =
-                [&] -> const Ranking& {
-                // would be dangerous if we tried the
-                // number stuff in that case even
-                // before .at
-                if (index == 0) {
-                    throw std::out_of_range(
-                        "there is no previous");
-                }
 
-                return ranking_row.at(
-                    static_cast<std::size_t>(index -
-                                             1));
+            core::Defer defer_previous_row = [&] {
+                previous_row = ranking_row;
             };
 
             core::log_info("at index: {}, kind: {}",
