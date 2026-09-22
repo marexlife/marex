@@ -3,7 +3,7 @@
 #include <string>
 
 namespace marex::fetch {
-[[nodiscard]] std::pmr::string fetch(
+[[nodiscard]] std::string fetch(
     std::string_view filepath);
 }  // namespace marex::fetch
 #endif  // MAREX_FETCH_FETCH_H

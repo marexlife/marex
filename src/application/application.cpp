@@ -70,23 +70,22 @@ void App::compile_file(std::string_view argument) {
     App::compile(std::move(source_code), argument);
 }
 
-std::pmr::string App::query_user_command() {
+std::string App::query_user_command() {
     std::println("Input a command...");
 
-    std::pmr::string user_command;
+    std::string user_command;
     std::getline(std::cin, user_command);
 
     return user_command;
 }
 
 void App::execute_user_command(
-    std::pmr::string&& user_command) {
+    std::string&& user_command) {
     App::compile(std::move(user_command));
 }
 
 void App::run_shell_iteration() {
-    std::pmr::string user_command =
-        query_user_command();
+    std::string user_command = query_user_command();
 
     App::execute_user_command(std::move(user_command));
 

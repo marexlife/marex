@@ -14,16 +14,16 @@
 
 namespace marex::parse {
 TokenStream::TokenStream(
-    std::pmr::vector<lex::Token>&& token_stream,
+    std::vector<lex::Token>&& token_stream,
     bool is_in_lint_mode)
-    : token_stream(std::move(token_stream)),
-      progress(),
-      is_in_lint_mode(is_in_lint_mode) {}
+    : token_stream_(std::move(token_stream)),
+      progress_(),
+      is_in_lint_mode_(is_in_lint_mode) {}
 
 lex::TokenKind TokenStream::get_next_kind(
     std::string_view error_message_on_failure) const {
     try {
-        return token_stream.at(progress + 1)
+        return token_stream_.at(progress_ + 1)
             .get_kind();
     } catch (const std::exception& exception) {
         throw std::runtime_error(
@@ -101,7 +101,7 @@ TokenStream::get_kind_and_advance() {
 
 bool TokenStream::is_at_end() const {
     const auto is_finished =
-        token_stream.size() <= progress;
+        token_stream_.size() <= progress_;
 
     return is_finished;
 }
