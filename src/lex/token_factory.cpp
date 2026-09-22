@@ -7,14 +7,18 @@
 #include "token.h"
 #include "token_kind.h"
 
-
 namespace marex::lex {
 TokenFactory::TokenFactory()
     : mapping{
           {
               {"var", TokenKind::Var},
+              {"val", TokenKind::Var},
               {"float", TokenKind::FloatDecl},
-              {"int", TokenKind::IntDecl},
+              {"double", TokenKind::DoubleDecl},
+              {"int8", TokenKind::Int8Decl},
+              {"int16", TokenKind::Int16Decl},
+              {"int32", TokenKind::Int32Decl},
+              {"int64", TokenKind::Int64Decl},
               {"bool", TokenKind::BoolDecl},
               {":", TokenKind::Colon},
               {"=", TokenKind::Assignment},

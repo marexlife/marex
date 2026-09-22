@@ -12,7 +12,7 @@ namespace marex {
             return ":";
         case TokenKind::Identifier:
             return "identifier";
-        case TokenKind::IntDecl:
+        case TokenKind::Int32Decl:
             return "Int Decl";
         case TokenKind::FloatDecl:
             return "Float Decl";

@@ -1,0 +1,4 @@
+class Player:
+
+someFunc(x: int32): int32 {
+}

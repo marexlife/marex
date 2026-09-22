@@ -35,7 +35,7 @@ parse::expression_kind_from_decl_or_throw(
     const parse::TokenStream& pack,
     std::source_location cpp_source_location) {
     switch (pack.get_kind()) {
-        case marex::lex::TokenKind::IntDecl:
+        case marex::lex::TokenKind::Int32Decl:
             return ExprKind::IntType;
         case marex::lex::TokenKind::BoolDecl:
             return ExprKind::BoolType;
