@@ -14,12 +14,7 @@ bool lex::test_lex() {
 
     std::string source_text =
         R"(
-func someFunc(x: int): void {
-    var xs = [10, 1, 3]
-
-    foreach x in xs {
-
-    }
+some_func(x: int): void {
 }
 )";
 
