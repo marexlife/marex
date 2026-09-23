@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "nodes/expr.h"
+#include "nodes/op_node.h"
 #include "token.h"
 
 namespace marex::parse {
@@ -15,7 +16,7 @@ enum struct [[nodiscard]] BinaryOpKind : std::uint8_t {
     Div,
 };
 
-class BinaryOp final : public Expr {
+class BinaryOp final : public OpNode {
    public:
     explicit BinaryOp(lex::Token&& token,
                       BinaryOpKind binary_op_kind);

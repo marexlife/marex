@@ -21,14 +21,14 @@ Token::Token(
 std::optional<BindingPower> Token::get_binding_power()
     const {
     switch (kind_) {
-        case lex::TokenKind::AddOp:
+        case lex::TokenKind::OpAdd:
             [[fallthrough]];
         case lex::TokenKind::SubOp:
             return std::optional<BindingPower>(
                 BindingPower::AddSub);
-        case lex::TokenKind::MulOp:
+        case lex::TokenKind::OpMul:
             [[fallthrough]];
-        case lex::TokenKind::DivOp:
+        case lex::TokenKind::OpDiv:
             return std::optional<BindingPower>(
                 BindingPower::MulDiv);
         case lex::TokenKind::Identifier:
