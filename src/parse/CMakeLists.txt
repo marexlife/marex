@@ -13,7 +13,6 @@ add_library(${PROJECT_NAME}
     token_stream.cpp
     translation_unit.cpp
     expr_kind.cpp
-    expr_factory.cpp
 
     nodes/ast_node.cpp
     nodes/op_node.cpp
