@@ -23,6 +23,7 @@ add_library(${PROJECT_NAME}
     nodes/func_call.cpp
     nodes/expr.cpp
     nodes/expr_build.cpp
+    nodes/operand.cpp
     nodes/identifier.cpp
     nodes/literal.cpp
 
