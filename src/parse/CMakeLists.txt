@@ -23,6 +23,8 @@ add_library(${PROJECT_NAME}
     nodes/func_call.cpp
     nodes/expr.cpp
     nodes/expr_build.cpp
+    nodes/identifier.cpp
+    nodes/literal.cpp
 
     nodes/exceptions/invalid_token_exception.cpp
 )

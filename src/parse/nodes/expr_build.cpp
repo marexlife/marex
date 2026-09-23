@@ -29,8 +29,8 @@ struct Op final {
     lex::BindingPower binding_power{};
 };
 
-[[nodiscard]] static std::unique_ptr<OpNode> make_op(
-    lex::Token&& token);
+[[nodiscard]] static std::unique_ptr<parse::BinaryOp>
+make_bin_op(lex::Token&& token);
 }  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build_expr(
@@ -93,18 +93,20 @@ std::unique_ptr<parse::Expr> parse::build_expr(
                     get_current_is_more_powerful,
                     *current_binding_power,
                     previous_binding_power)) {
-                auto node = make_op(lex::Token(token));
+                auto node_from_current =
+                    make_bin_op(lex::Token(token));
             } else {
-                auto node = make_op(lex::Token(
-                    previous_op->get().token));
+                auto node_from_previous =
+                    make_bin_op(lex::Token(
+                        previous_op->get().token));
             }
         });
 
     throw std::runtime_error("not implemented yet");
 }
 
-[[nodiscard]] std::unique_ptr<parse::OpNode>
-parse::make_op(lex::Token&& token) {
+[[nodiscard]] std::unique_ptr<parse::BinaryOp>
+parse::make_bin_op(lex::Token&& token) {
     switch (token.get_kind()) {
         case lex::TokenKind::OpAdd:
             return std::make_unique<BinaryOp>(
