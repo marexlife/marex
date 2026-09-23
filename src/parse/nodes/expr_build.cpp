@@ -12,7 +12,6 @@
 #include "defer.h"
 #include "nodes/binary_op.h"
 #include "nodes/expr.h"
-#include "nodes/op_node.h"
 #include "token.h"
 #include "token_kind.h"
 #include "token_stream.h"
