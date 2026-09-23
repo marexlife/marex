@@ -12,6 +12,7 @@
 #include "defer.h"
 #include "nodes/binary_op.h"
 #include "nodes/expr.h"
+#include "nodes/op_node.h"
 #include "token.h"
 #include "token_kind.h"
 #include "token_stream.h"
@@ -28,8 +29,8 @@ struct Op final {
     lex::BindingPower binding_power{};
 };
 
-[[nodiscard]] static std::unique_ptr<parse::BinaryOp>
-make_bin_op(lex::Token&& token);
+[[nodiscard]] static std::unique_ptr<parse::OpNode>
+make_op(lex::Token&& token);
 }  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build_expr(
@@ -93,10 +94,25 @@ std::unique_ptr<parse::Expr> parse::build_expr(
                     *current_binding_power,
                     previous_binding_power)) {
                 auto node_from_current =
-                    make_bin_op(lex::Token(token));
+                    make_op(lex::Token(token));
+
+                switch (node_from_current
+                            ->get_op_node_kind()) {
+                    case OpNodeKind::BinaryOp: {
+                        [[maybe_unused]] auto& node =
+                            node_from_current
+                                ->cast<BinaryOp>();
+                    } break;
+                    case OpNodeKind::MonoOp: {
+                        throw std::runtime_error(
+                            "not implemented yet");
+                    } break;
+                    default:
+                        std::unreachable();
+                }
             } else {
                 auto node_from_previous =
-                    make_bin_op(lex::Token(
+                    make_op(lex::Token(
                         previous_op->get().token));
             }
         });
@@ -104,8 +120,8 @@ std::unique_ptr<parse::Expr> parse::build_expr(
     throw std::runtime_error("not implemented yet");
 }
 
-[[nodiscard]] std::unique_ptr<parse::BinaryOp>
-parse::make_bin_op(lex::Token&& token) {
+[[nodiscard]] std::unique_ptr<parse::OpNode>
+parse::make_op(lex::Token&& token) {
     switch (token.get_kind()) {
         case lex::TokenKind::OpAdd:
             return std::make_unique<BinaryOp>(

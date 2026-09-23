@@ -7,7 +7,7 @@
 namespace marex::parse {
 BinaryOp::BinaryOp(lex::Token&& token,
                    BinaryOpKind binary_op_kind)
-    : OpNode(std::move(token)),
+    : OpNode(std::move(token), OpNodeKind::BinaryOp),
       binary_op_kind_(binary_op_kind) {}
 
 void BinaryOp::set(std::unique_ptr<Expr> lhs,

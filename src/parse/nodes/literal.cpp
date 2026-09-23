@@ -2,10 +2,10 @@
 
 #include <utility>
 
-#include "nodes/expr.h"
+#include "nodes/operand.h"
 #include "token.h"
 
 namespace marex::parse {
 Literal::Literal(lex::Token&& token)
-    : Expr(std::move(token)) {}
+    : Operand(std::move(token)) {}
 }  // namespace marex::parse
