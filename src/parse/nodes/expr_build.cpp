@@ -80,6 +80,7 @@ std::unique_ptr<parse::Expr> parse::build_expr(
                     get_is_current_more_powerful,
                     *current_binding_power,
                     previous_binding_power)) {
+            } else {
             }
         });
 
