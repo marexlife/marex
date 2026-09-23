@@ -29,7 +29,7 @@ struct Op final {
 
 std::unique_ptr<parse::Expr> parse::build_expr(
     TokenStream& stream) {
-    auto get_is_current_more_powerful =
+    auto get_current_is_more_powerful =
         [](lex::BindingPower previous_binding_power,
            lex::BindingPower current_binding_power) {
             return std::to_underlying(
@@ -77,9 +77,10 @@ std::unique_ptr<parse::Expr> parse::build_expr(
                 previous_op->get().binding_power;
 
             if (std::invoke(
-                    get_is_current_more_powerful,
+                    get_current_is_more_powerful,
                     *current_binding_power,
                     previous_binding_power)) {
+                
             } else {
             }
         });
