@@ -1,5 +1,6 @@
 #ifndef MAREX_PARSE_ASTNODE_H
 #define MAREX_PARSE_ASTNODE_H
+#include <optional>
 #include <stdexcept>
 #include <string_view>
 
@@ -34,7 +35,7 @@ class AstNode {
         return token;
     }
 
-    [[nodiscard]] lex::BindingPower get_binding_rank()
+    [[nodiscard]] std::optional<lex::BindingPower> get_binding_power()
         const {
         return token.get_binding_power();
     }
