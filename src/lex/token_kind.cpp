@@ -10,6 +10,14 @@ namespace marex {
     switch (token_kind) {
         case TokenKind::Colon:
             return ":";
+        case TokenKind::OpAdd:
+            return "OpAdd";
+        case TokenKind::OpSub:
+            return "OpSub";
+        case TokenKind::OpMul:
+            return "OpMul";
+        case TokenKind::OpDiv:
+            return "OpDiv";
         case TokenKind::Identifier:
             return "Identifier";
         case TokenKind::Int8Decl:

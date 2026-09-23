@@ -23,7 +23,7 @@ std::optional<BindingPower> Token::get_binding_power()
     switch (kind_) {
         case lex::TokenKind::OpAdd:
             [[fallthrough]];
-        case lex::TokenKind::SubOp:
+        case lex::TokenKind::OpSub:
             return std::optional<BindingPower>(
                 BindingPower::AddSub);
         case lex::TokenKind::OpMul:

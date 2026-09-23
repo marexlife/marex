@@ -76,7 +76,7 @@ FuncNode::FuncNode(lex::Token&& token)
 void FuncNode::parse_func_body(TokenStream& stream) {
     while (true) {
         if (stream.matches(lex::TokenKind::Return)) {
-            this->return_node_ = std::invoke([&] {
+            return_node_ = std::invoke([&] {
                 auto return_node =
                     std::make_unique<ReturnNode>(
                         stream.copy_out_token());
@@ -86,7 +86,7 @@ void FuncNode::parse_func_body(TokenStream& stream) {
                 return return_node;
             });
 
-            if (this->return_node_) {
+            if (return_node_) {
                 core::log_info(
                     "succeeded to set return node");
             } else {
