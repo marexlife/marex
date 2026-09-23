@@ -9,7 +9,7 @@
 #include "token_kind.h"
 
 namespace marex::lex {
-enum struct BindingRank : std::uint8_t;
+enum struct BindingPower : std::uint8_t;
 
 class [[nodiscard]] TokenFactory;
 class [[nodiscard]] Token final {
@@ -31,7 +31,9 @@ class [[nodiscard]] Token final {
         return kind_ == other.kind_;
     }
 
-    [[nodiscard]] BindingRank get_binding_rank() const;
+    [[nodiscard]] std::optional<BindingPower>
+    get_binding_power() const;
+
     [[nodiscard]] SourcePos get_pos() const {
         return source_pos_;
     }

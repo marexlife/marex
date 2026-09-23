@@ -34,9 +34,9 @@ class AstNode {
         return token;
     }
 
-    [[nodiscard]] lex::BindingRank get_binding_rank()
+    [[nodiscard]] lex::BindingPower get_binding_rank()
         const {
-        return token.get_binding_rank();
+        return token.get_binding_power();
     }
 
     [[nodiscard]] lex::TokenKind get_kind() const {

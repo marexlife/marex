@@ -25,6 +25,11 @@ enum struct [[nodiscard]] TokenKind : std::uint8_t {
     FloatLiteral,
     BoolLiteral,
 
+    AddOp,
+    SubOp,
+    MulOp,
+    DivOp,
+
     StatementEnd,
 
     Arrow,

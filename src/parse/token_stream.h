@@ -8,7 +8,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "binding_rank.h"
+#include "binding_power.h"
 #include "source_pos.h"
 #include "token.h"
 #include "token_kind.h"
@@ -16,6 +16,17 @@
 namespace marex::parse {
 class TokenStream final {
    public:
+    struct RunUntilStmtEndPack final {
+        RunUntilStmtEndPack(
+            std::size_t index,
+            std::reference_wrapper<const lex::Token>
+                token)
+            : index(index), token(token) {}
+
+        std::size_t index{};
+        std::reference_wrapper<const lex::Token> token;
+    };
+
     using ProgressType = std::size_t;
 
     TokenStream(std::vector<lex::Token>&& token_stream,
@@ -34,14 +45,16 @@ class TokenStream final {
             "is none") const;
 
     template <typename F>
-        requires std::is_invocable_v<F,
-                                     const lex::Token&>
+        requires std::is_invocable_v<
+            F, RunUntilStmtEndPack>
     void run_until_stmt_end(F iter) const {
         for (std::size_t i = 0;
              token_kind_at(i) !=
              lex::TokenKind::StatementEnd;
              ++i) {
-            std::invoke(iter, borrow_token_at(i));
+            std::invoke(iter,
+                        RunUntilStmtEndPack(
+                            i, borrow_token_at(i)));
         }
     }
 
@@ -69,10 +82,10 @@ class TokenStream final {
         return tokens_.at(index);
     }
 
-    [[nodiscard]] lex::BindingRank get_binding_rank_at(
-        std::size_t index) const {
+    [[nodiscard]] std::optional<lex::BindingPower>
+    get_binding_power_at(std::size_t index) const {
         return borrow_token_at(index)
-            .get_binding_rank();
+            .get_binding_power();
     }
 
     [[nodiscard]] std::size_t get_progress() const {
