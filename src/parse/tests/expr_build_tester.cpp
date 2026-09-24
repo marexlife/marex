@@ -12,6 +12,6 @@ int ExprBuildTester::test_expr_build() {
 
     auto result = build_expr(token_stream);
 
-    return result->get_kind() == lex::TokenKind::OpMul ? 0 : -1;
+    return result->get_kind() == lex::TokenKind::OpAdd ? 0 : -1;
 }
 }  // namespace marex::parse::tests
