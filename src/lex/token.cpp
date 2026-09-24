@@ -12,14 +12,16 @@ namespace marex::lex {
 Token::Token(
     [[maybe_unused]] core::Passkey<TokenFactory>&&
         passkey,
-    std::string&& lexeme, TokenKind token_kind,
+    std::string&& lexeme, TokenKind kind,
     SourcePos source_pos)
     : lexeme_(std::move(lexeme)),
-      kind_(token_kind),
+      kind_(kind),
       source_pos_(source_pos) {}
 
-std::optional<BindingPower> Token::get_binding_power()
-    const {
+Token::Token([[maybe_unused]] core::Passkey<LexTester>&& passkey,
+             TokenKind kind) : kind_(kind) {}
+
+std::optional<BindingPower> Token::get_binding_power() const {
     switch (kind_) {
         case lex::TokenKind::OpAdd:
             [[fallthrough]];

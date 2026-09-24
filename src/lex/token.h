@@ -4,43 +4,41 @@
 #include <string>
 #include <string_view>
 
+#include "lex_tests/test_lex.h"
 #include "passkey.h"
 #include "source_pos.h"
 #include "token_kind.h"
 
 namespace marex::lex {
 enum struct BindingPower : std::uint8_t;
+class TokenFactory;
+class LexTester;
 
-class [[nodiscard]] TokenFactory;
 class [[nodiscard]] Token final {
    public:
-    Token([[maybe_unused]] core::Passkey<
-              TokenFactory>&& passkey,
-          std::string&& lexeme, TokenKind token_kind,
-          SourcePos source_pos);
+    Token([[maybe_unused]] core::Passkey<TokenFactory>&& passkey,
+          std::string&& lexeme, TokenKind kind, SourcePos source_pos);
+
+    Token([[maybe_unused]] core::Passkey<LexTester>&& passkey,
+          TokenKind kind);
 
     [[nodiscard]] std::string_view get_lexeme() const;
 
     [[nodiscard]] std::pmr::string move_out_lexeme();
 
-    [[nodiscard]] TokenKind get_kind() const {
-        return kind_;
-    }
+    [[nodiscard]] TokenKind get_kind() const { return kind_; }
 
     auto operator==(const Token& other) const {
         return kind_ == other.kind_;
     }
 
-    [[nodiscard]] std::optional<BindingPower>
-    get_binding_power() const;
+    [[nodiscard]] std::optional<BindingPower> get_binding_power()
+        const;
 
-    [[nodiscard]] SourcePos get_pos() const {
-        return source_pos_;
-    }
+    [[nodiscard]] SourcePos get_pos() const { return source_pos_; }
 
    private:
-    std::optional<std::pmr::string> lexeme_ =
-        std::nullopt;
+    std::optional<std::pmr::string> lexeme_ = std::nullopt;
     TokenKind kind_{};
     SourcePos source_pos_;
 };

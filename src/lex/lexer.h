@@ -16,9 +16,6 @@ enum class [[nodiscard]] LastCharKind : std::uint8_t {
 };
 
 class [[nodiscard]] Lexer final {
-    constexpr static std::size_t vector_default_size =
-        100;
-
    public:
     Lexer() = default;
     ~Lexer() = default;
@@ -30,31 +27,24 @@ class [[nodiscard]] Lexer final {
 
     [[nodiscard]] std::vector<Token> run(
         this Lexer& self, std::string&& source_text,
-        std::optional<std::string_view> filename =
-            std::nullopt);
+        std::optional<std::string_view> filename = std::nullopt);
 
    private:
-    void push_token(this Lexer& self,
-                    std::vector<Token>& result,
+    void push_token(this Lexer& self, std::vector<Token>& result,
                     SourcePos& source_pos);
-    void reset(this Lexer& self,
-               SourcePos& source_pos);
-    void push_current(this Lexer& self,
-                      std::vector<Token>& result,
-                      char current,
-                      SourcePos& source_pos);
-    void push_token_and_current(
-        this Lexer& self, std::vector<Token>& result,
-        char current, SourcePos& source_pos);
+    void reset(this Lexer& self, SourcePos& source_pos);
+    void push_current(this Lexer& self, std::vector<Token>& result,
+                      char current, SourcePos& source_pos);
+    void push_token_and_current(this Lexer& self,
+                                std::vector<Token>& result,
+                                char current, SourcePos& source_pos);
 
-    [[nodiscard]] bool is_flushable(
-        this const Lexer& self) {
-        return self.last_char_kind ==
-               LastCharKind::WasDefault;
+    [[nodiscard]] bool is_flushable(this const Lexer& self) {
+        return self.last_char_kind == LastCharKind::WasDefault;
     }
 
-    std::optional<char> last_char_optional =
-        std::nullopt;
+    constexpr static std::size_t expected_token_amount = 100;
+    std::optional<char> last_char_optional = std::nullopt;
     LastCharKind last_char_kind = LastCharKind::None;
     TokenFactory token_factory{};
     std::string last_word;

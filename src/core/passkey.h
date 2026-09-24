@@ -3,12 +3,12 @@
 #include <type_traits>
 
 namespace marex::core {
-template <typename Factory>
-    requires std::is_class_v<Factory>
+template <typename Friend>
+    requires std::is_class_v<Friend>
 class [[nodiscard]] Passkey final {
-    friend Factory;
+    friend Friend;
 
-public:
+   public:
     Passkey(Passkey&&) = default;
 
     Passkey& operator=(Passkey&&) = delete;
@@ -16,8 +16,8 @@ public:
     Passkey& operator=(const Passkey&) = delete;
     ~Passkey() = default;
 
-private:
+   private:
     Passkey() = default;
 };
-} // namespace compiler::core
-#endif // MAREX_CORE_PASSKEY_H
+}  // namespace marex::core
+#endif  // MAREX_CORE_PASSKEY_H

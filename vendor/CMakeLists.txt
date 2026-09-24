@@ -7,6 +7,11 @@ FetchContent_Declare(BOOST
     GIT_TAG boost-1.92.0
 )
 
+FetchContent_Declare(CATCH2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v3.16.0
+)
+
 FetchContent_MakeAvailable(
-    ${BOOST}
+    BOOST CATCH2
 )

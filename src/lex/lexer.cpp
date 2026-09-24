@@ -16,7 +16,7 @@ std::vector<Token> Lexer::run(
 
     SourcePos source_pos{filename};
 
-    result.reserve(vector_default_size);
+    result.reserve(expected_token_ampunt);
 
     core::Defer defer_reset = [&] {
         if (self.is_flushable()) {
@@ -27,8 +27,7 @@ std::vector<Token> Lexer::run(
     };
 
     for (const auto source_text_char : source_text) {
-        LastCharKind this_char_kind =
-            LastCharKind::WasNotDefault;
+        LastCharKind this_char_kind = LastCharKind::WasNotDefault;
 
         core::Defer defer_iter_end = [&] {
             self.last_char_optional = source_text_char;
@@ -40,14 +39,12 @@ std::vector<Token> Lexer::run(
         switch (source_text_char) {
             case ' ':
                 if (self.is_flushable()) {
-                    self.push_token(result,
-                                    source_pos);
+                    self.push_token(result, source_pos);
                 }
                 break;
             case '\n':
                 if (self.is_flushable()) {
-                    self.push_token(result,
-                                    source_pos);
+                    self.push_token(result, source_pos);
                 }
                 source_pos.advance_line();
                 break;
@@ -71,19 +68,15 @@ std::vector<Token> Lexer::run(
             case ';':
                 if (self.is_flushable()) {
                     self.push_token_and_current(
-                        result, source_text_char,
-                        source_pos);
+                        result, source_text_char, source_pos);
                 } else {
-                    self.push_current(result,
-                                      source_text_char,
+                    self.push_current(result, source_text_char,
                                       source_pos);
                 }
                 break;
             default:
-                this_char_kind =
-                    LastCharKind::WasDefault;
-                self.last_word.push_back(
-                    source_text_char);
+                this_char_kind = LastCharKind::WasDefault;
+                self.last_word.push_back(source_text_char);
                 break;
         }
     }
@@ -91,39 +84,35 @@ std::vector<Token> Lexer::run(
     return result;
 }
 
-void Lexer::reset(this Lexer& self,
-                  SourcePos& source_pos) {
+void Lexer::reset(this Lexer& self, SourcePos& source_pos) {
     self.last_char_optional = std::nullopt;
     self.last_char_kind = LastCharKind::None;
     source_pos.reset();
     self.last_word.clear();
 }
 
-void Lexer::push_token(this Lexer& self,
-                       std::vector<Token>& result,
+void Lexer::push_token(this Lexer& self, std::vector<Token>& result,
                        SourcePos& source_pos) {
     core::log_info("Lexer: push_token");
 
-    result.emplace_back(
-        self.token_factory.create_token(
-            std::string{self.last_word}, source_pos));
+    result.emplace_back(self.token_factory.create_token(
+        std::string{self.last_word}, source_pos));
 
     self.last_word.clear();
 }
 
-void Lexer::push_current(
-    this Lexer& self, std::vector<Token>& result,
-    char current, SourcePos& source_pos) {
+void Lexer::push_current(this Lexer& self, std::vector<Token>& result,
+                         char current, SourcePos& source_pos) {
     core::log_info("Lexer: push_current");
 
-    result.emplace_back(
-        self.token_factory.create_token(
-            std::string{current}, source_pos));
+    result.emplace_back(self.token_factory.create_token(
+        std::string{current}, source_pos));
 }
 
-void Lexer::push_token_and_current(
-    this Lexer& self, std::vector<Token>& result,
-    char current, SourcePos& source_pos) {
+void Lexer::push_token_and_current(this Lexer& self,
+                                   std::vector<Token>& result,
+                                   char current,
+                                   SourcePos& source_pos) {
     core::log_info("Lexer: push_token_and_current");
 
     self.push_token(result, source_pos);
