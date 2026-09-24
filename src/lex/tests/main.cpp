@@ -1,4 +1,4 @@
-#include "test_lex.h"
+#include "main.h"
 
 #include <cassert>
 #include <format>
