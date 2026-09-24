@@ -19,8 +19,7 @@ class TokenStream final {
     struct RunUntilStmtEndPack final {
         RunUntilStmtEndPack(
             std::size_t index,
-            std::reference_wrapper<const lex::Token>
-                token)
+            std::reference_wrapper<const lex::Token> token)
             : index(index), token(token) {}
 
         std::size_t index{};
@@ -34,10 +33,8 @@ class TokenStream final {
 
     void advance() { ++progress_; }
 
-    [[nodiscard]] bool previous_was(
-        lex::TokenKind token_kind) const;
-    [[nodiscard]] bool next_is(
-        lex::TokenKind token_kind) const;
+    [[nodiscard]] bool previous_was(lex::TokenKind token_kind) const;
+    [[nodiscard]] bool next_is(lex::TokenKind token_kind) const;
 
     [[nodiscard]] lex::TokenKind get_next_kind(
         std::string_view error_message_on_failure =
@@ -45,16 +42,12 @@ class TokenStream final {
             "is none") const;
 
     template <typename F>
-        requires std::is_invocable_v<
-            F, RunUntilStmtEndPack>
+        requires std::is_invocable_v<F, RunUntilStmtEndPack>
     void run_until_stmt_end(F iter) const {
         for (std::size_t i = 0;
-             token_kind_at(i) !=
-             lex::TokenKind::StatementEnd;
-             ++i) {
+             token_kind_at(i) != lex::TokenKind::StatementEnd; ++i) {
             std::invoke(iter,
-                        RunUntilStmtEndPack(
-                            i, borrow_token_at(i)));
+                        RunUntilStmtEndPack(i, borrow_token_at(i)));
         }
     }
 
@@ -66,14 +59,12 @@ class TokenStream final {
     }
 
     [[nodiscard]] bool mismatches_at(
-        ProgressType progress,
-        lex::TokenKind token_kind) const {
+        ProgressType progress, lex::TokenKind token_kind) const {
         return !matches_at(progress, token_kind);
     }
 
-    [[nodiscard]] bool matches_at(
-        ProgressType progress,
-        lex::TokenKind token_kind) const {
+    [[nodiscard]] bool matches_at(ProgressType progress,
+                                  lex::TokenKind token_kind) const {
         return token_kind_at(progress) == token_kind;
     }
 
@@ -84,37 +75,30 @@ class TokenStream final {
 
     [[nodiscard]] std::optional<lex::BindingPower>
     get_binding_power_at(std::size_t index) const {
-        return borrow_token_at(index)
-            .get_binding_power();
+        return borrow_token_at(index).get_binding_power();
     }
 
     [[nodiscard]] std::size_t get_progress() const {
         return progress_;
     }
 
-    [[nodiscard]] std::string_view get_kind_string()
-        const;
+    [[nodiscard]] std::string_view get_kind_string() const;
 
-    [[nodiscard]] bool advance_if_matches(
-        lex::TokenKind token_kind);
+    [[nodiscard]] bool advance_if_matches(lex::TokenKind token_kind);
 
-    [[nodiscard]] bool matches(
-        lex::TokenKind token_kind) const {
+    [[nodiscard]] bool matches(lex::TokenKind token_kind) const {
         return get_kind() == token_kind;
     }
 
-    [[nodiscard]] const lex::Token& borrow_previous()
-        const {
+    [[nodiscard]] const lex::Token& borrow_previous() const {
         return tokens_.at(progress_ - 1);
     }
 
-    [[nodiscard]] const lex::Token& borrow_next()
-        const {
+    [[nodiscard]] const lex::Token& borrow_next() const {
         return tokens_.at(progress_ + 1);
     }
 
-    [[nodiscard]] lex::Token
-    copy_out_previous_token() {
+    [[nodiscard]] lex::Token copy_out_previous_token() {
         return tokens_.at(progress_ - 1);
     }
 
@@ -128,25 +112,21 @@ class TokenStream final {
         return borrow_token().get_kind();
     }
 
-    [[nodiscard]] lex::Token
-    copy_out_token_and_advance();
+    [[nodiscard]] lex::Token copy_out_token_and_advance();
 
-    [[nodiscard]] std::string_view
-    get_lexeme_and_advance();
+    [[nodiscard]] std::string_view get_lexeme_and_advance();
 
-    [[nodiscard]] lex::TokenKind
-    get_kind_and_advance();
+    [[nodiscard]] lex::TokenKind get_kind_and_advance();
 
     [[nodiscard]] lex::SourcePos get_pos() const {
         return borrow_token().get_pos();
     }
 
     [[nodiscard]] std::string_view get_lexeme() const {
-        return borrow_token().get_lexeme();
+        return borrow_token().get_lexeme_or_throw();
     }
 
-    [[nodiscard]] const lex::Token& borrow_token()
-        const {
+    [[nodiscard]] const lex::Token& borrow_token() const {
         return tokens_.at(progress_);
     }
 
@@ -158,8 +138,7 @@ class TokenStream final {
         return is_in_lint_mode_;
     }
 
-    [[nodiscard]] std::string get_error_message()
-        const;
+    [[nodiscard]] std::string get_error_message() const;
 
    private:
     std::vector<lex::Token> tokens_;

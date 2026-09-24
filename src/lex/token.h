@@ -19,9 +19,15 @@ class [[nodiscard]] Token final {
           std::string&& lexeme, TokenKind kind, SourcePos source_pos);
 
     Token([[maybe_unused]] core::Passkey<LexTester>&& passkey,
+          std::string&& lexeme, TokenKind kind);
+
+    Token([[maybe_unused]] core::Passkey<LexTester>&& passkey,
           TokenKind kind);
 
-    [[nodiscard]] std::string_view get_lexeme() const;
+    [[nodiscard]] std::string_view get_lexeme_or_throw() const;
+
+    [[nodiscard]] std::string_view get_lexeme_or_empty_if_none()
+        const;
 
     [[nodiscard]] std::pmr::string move_out_lexeme();
 

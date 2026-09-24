@@ -5,7 +5,7 @@ add_subdirectory(tests)
 
 include(${CMAKE_SOURCE_DIR}/cmake/flags.cmake)
 
-add_library(${PROJECT_NAME}
+set(SOURCE_FILES
     lexer.cpp
     lex_print.cpp
     token.cpp
@@ -13,6 +13,8 @@ add_library(${PROJECT_NAME}
     token_factory.cpp
     token_kind.cpp
 )
+
+add_library(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_compile_options(${PROJECT_NAME} PUBLIC
     ${MAREX_FLAGS}

@@ -1,10 +1,8 @@
 #include "test_lex.h"
 
 #include <cassert>
-#include <catch2/catch_test_macros.hpp>
 #include <format>
 #include <iostream>
-#include <print>
 #include <string>
 #include <utility>
 #include <vector>
@@ -15,7 +13,7 @@
 #include "token_kind.h"
 
 namespace marex::lex {
-void LexTester::test_lex() {
+int LexTester::test_lex() {
     marex::lex::Lexer lexer{};
 
     std::string source_text =
@@ -27,9 +25,10 @@ some_func(x: int) {
     std::vector<Token> result = lexer.run(std::move(source_text));
 
     std::vector<Token> expected = {
-        Token{core::Passkey<LexTester>{}, TokenKind::Identifier},
+        Token{core::Passkey<LexTester>{}, "some_func",
+              TokenKind::Identifier},
         Token{core::Passkey<LexTester>{}, TokenKind::OpenBracket},
-        Token{core::Passkey<LexTester>{}, TokenKind::Identifier},
+        Token{core::Passkey<LexTester>{}, "x", TokenKind::Identifier},
         Token{core::Passkey<LexTester>{}, TokenKind::Colon},
         Token{core::Passkey<LexTester>{}, TokenKind::Int32Decl},
         Token{core::Passkey<LexTester>{}, TokenKind::CloseBracket},
@@ -39,14 +38,21 @@ some_func(x: int) {
 
     for (auto& got_element : result) {
         for (auto& expected_element : expected) {
-            std::cerr << std::format("expected: {}, got: {}\n",
-                                     *expected_element.get_kind(),
-                                     *got_element.get_kind());
+            std::cerr << std::format(
+                "expected: {} '{}', got: {} '{}'\n",
+                *expected_element.get_kind(),
+                expected_element.get_lexeme_or_empty_if_none(),
+                *got_element.get_kind(),
+                expected_element.get_lexeme_or_empty_if_none());
 
-            REQUIRE(expected_element == got_element);
+            if (expected_element != got_element) {
+                return -1;
+            }
         }
     }
+
+    return 0;
 }
 }  // namespace marex::lex
 
-int main() { marex::lex::LexTester::test_lex(); }
+int main() { return marex::lex::LexTester::test_lex(); }
