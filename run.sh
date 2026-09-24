@@ -3,6 +3,6 @@ MAREX_FILE=./marex/Main.marex
 
 cmake . -B build
 cmake --build build
-cd build/src/lex/ && ctest .
+cd build/src/lex/tests && ctest .
 
 ${COMPILER_PATH} ${MAREX_FILE}
