@@ -1,6 +1,7 @@
 #include "test_lex.h"
 
 #include <cassert>
+#include <catch2/catch_test_macros.hpp>
 #include <string>
 #include <utility>
 #include <vector>
@@ -11,7 +12,7 @@
 #include "token_kind.h"
 
 namespace marex::lex {
-int LexTester::test_lex() {
+void LexTester::test_lex() {
     marex::lex::Lexer lexer{};
 
     std::string source_text =
@@ -35,20 +36,10 @@ some_func(x: int) {
 
     for (auto& result_element : result) {
         for (auto& expected_element : expected) {
-            if (result_element != expected_element) {
-                return -1;
-            }
+            REQUIRE(result_element != expected_element);
         }
     }
-
-    assert(false);
-
-    return 0;
 }
 }  // namespace marex::lex
 
-int main() {
-    auto result = marex::lex::LexTester::test_lex();
-
-    return result;
-}
+int main() { marex::lex::LexTester::test_lex(); }

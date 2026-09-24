@@ -30,6 +30,11 @@ enum struct [[nodiscard]] TokenKind : std::uint8_t {
     OpMul,
     OpDiv,
 
+    OpAddAssign,
+    OpSubAssign,
+    OpMulAssign,
+    OpDivAssign,
+
     StatementEnd,
 
     Arrow,
@@ -44,7 +49,6 @@ enum struct [[nodiscard]] TokenKind : std::uint8_t {
     CloseBracket,
 };
 
-[[nodiscard]] std::string_view operator*(
-    TokenKind token_kind);
+[[nodiscard]] std::string_view operator*(TokenKind token_kind);
 }  // namespace marex::lex
 #endif  // MAREX_LEX_TOKENKIND_H

@@ -65,6 +65,14 @@ std::vector<Token> Lexer::run(
                 [[fallthrough]];
             case ',':
                 [[fallthrough]];
+            case '+':
+                [[fallthrough]];
+            case '-':
+                [[fallthrough]];
+            case '*':
+                [[fallthrough]];
+            case '/':
+                [[fallthrough]];
             case ';':
                 if (self.is_flushable()) {
                     self.push_token_and_current(

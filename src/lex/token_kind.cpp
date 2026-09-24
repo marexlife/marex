@@ -5,11 +5,11 @@
 #include "logging.h"
 
 namespace marex {
-[[nodiscard]] std::string_view lex::operator*(
-    TokenKind token_kind) {
+[[nodiscard]] std::string_view lex::operator*(TokenKind token_kind) {
     switch (token_kind) {
         case TokenKind::Colon:
             return ":";
+
         case TokenKind::OpAdd:
             return "OpAdd";
         case TokenKind::OpSub:
@@ -18,6 +18,16 @@ namespace marex {
             return "OpMul";
         case TokenKind::OpDiv:
             return "OpDiv";
+
+        case TokenKind::OpAddAssign:
+            return "OpAddAssign";
+        case TokenKind::OpSubAssign:
+            return "OpSubAssign";
+        case TokenKind::OpMulAssign:
+            return "OpMulAssign";
+        case TokenKind::OpDivAssign:
+            return "OpDivAssign";
+
         case TokenKind::Identifier:
             return "Identifier";
         case TokenKind::Int8Decl:
@@ -68,7 +78,6 @@ namespace marex {
             break;
     }
 
-    core::log_fatal_internal_error(
-        "Out of range TokenKind");
+    core::log_fatal_internal_error("Out of range TokenKind");
 }
 }  // namespace marex

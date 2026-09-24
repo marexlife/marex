@@ -3,7 +3,7 @@
 namespace marex::lex {
 class LexTester final {
    public:
-    [[nodiscard]] static int test_lex();
+    static void test_lex();
 };
 }  // namespace marex::lex
 #endif  // MAREX_LEX_TESTLEX_H
