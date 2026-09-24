@@ -8,9 +8,12 @@ add_executable(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} PUBLIC
     core
     lex
-    Catch2
 )
 
 enable_testing()
 
 add_test(${PROJECT_NAME} ${PROJECT_NAME})
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ctest $<TARGET_FILE:${PROJECT_NAME}> --output-on-failure
+)
