@@ -16,13 +16,14 @@ namespace marex::lex {
 int LexTester::test_lex() {
     marex::lex::Lexer lexer{};
 
-    std::string source_text =
-        R"(
-some_func(x: int) {
-}
-)";
+    std::string input =
+        R"(some_func(x: int): int {
+    return 1
+})";
 
-    std::vector<Token> result = lexer.run(std::move(source_text));
+    std::cerr << std::format("input: '{}'\n", input);
+
+    std::vector<Token> result = lexer.run(std::move(input));
 
     std::vector<Token> expected = {
         Token{core::Passkey<LexTester>{}, "some_func",
