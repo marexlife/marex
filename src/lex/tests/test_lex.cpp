@@ -2,6 +2,9 @@
 
 #include <cassert>
 #include <catch2/catch_test_macros.hpp>
+#include <format>
+#include <iostream>
+#include <print>
 #include <string>
 #include <utility>
 #include <vector>
@@ -34,9 +37,13 @@ some_func(x: int) {
         Token{core::Passkey<LexTester>{}, TokenKind::CloseBrace},
     };
 
-    for (auto& result_element : result) {
+    for (auto& got_element : result) {
         for (auto& expected_element : expected) {
-            REQUIRE(result_element != expected_element);
+            std::cerr << std::format("expected: {}, got: {}\n",
+                                     *expected_element.get_kind(),
+                                     *got_element.get_kind());
+
+            REQUIRE(expected_element == got_element);
         }
     }
 }
