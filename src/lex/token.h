@@ -11,17 +11,20 @@
 namespace marex::lex {
 enum struct BindingPower : std::uint8_t;
 class TokenFactory;
+
+namespace tests {
 class LexTester;
+}
 
 class [[nodiscard]] Token final {
    public:
     Token([[maybe_unused]] core::Passkey<TokenFactory>&& passkey,
           std::string&& lexeme, TokenKind kind, SourcePos source_pos);
 
-    Token([[maybe_unused]] core::Passkey<LexTester>&& passkey,
+    Token([[maybe_unused]] core::Passkey<tests::LexTester>&& passkey,
           std::string&& lexeme, TokenKind kind);
 
-    Token([[maybe_unused]] core::Passkey<LexTester>&& passkey,
+    Token([[maybe_unused]] core::Passkey<tests::LexTester>&& passkey,
           TokenKind kind);
 
     [[nodiscard]] std::string_view get_lexeme_or_throw() const;
