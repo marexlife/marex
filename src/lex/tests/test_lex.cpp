@@ -1,5 +1,6 @@
 #include "test_lex.h"
 
+#include <cassert>
 #include <string>
 #include <utility>
 #include <vector>
@@ -39,6 +40,8 @@ some_func(x: int) {
             }
         }
     }
+
+    assert(false);
 
     return 0;
 }
