@@ -5,7 +5,7 @@ class ExprBuildTester final {
    public:
     ExprBuildTester() = delete;
 
-    [[nodiscard]] static int test_expr_build(); 
+    [[nodiscard]] static int test_expr_build();
 };
 }  // namespace marex::parse::tests
 #endif  // MAREX_PARSE_TESTS_EXPRBUILD_H

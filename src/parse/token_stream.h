@@ -16,20 +16,10 @@
 namespace marex::parse {
 class TokenStream final {
    public:
-    struct RunUntilStmtEndPack final {
-        RunUntilStmtEndPack(
-            std::size_t index,
-            std::reference_wrapper<const lex::Token> token)
-            : index(index), token(token) {}
-
-        std::size_t index{};
-        std::reference_wrapper<const lex::Token> token;
-    };
+    TokenStream(std::vector<lex::Token>&& token_stream = {},
+                bool is_in_lint_mode = false);
 
     using ProgressType = std::size_t;
-
-    TokenStream(std::vector<lex::Token>&& token_stream,
-                bool is_in_lint_mode = false);
 
     void advance() { ++progress_; }
 
@@ -40,6 +30,16 @@ class TokenStream final {
         std::string_view error_message_on_failure =
             "trying to access next token, when there "
             "is none") const;
+
+    struct RunUntilStmtEndPack final {
+        RunUntilStmtEndPack(
+            std::size_t index,
+            std::reference_wrapper<const lex::Token> token)
+            : index(index), token(token) {}
+
+        std::size_t index{};
+        std::reference_wrapper<const lex::Token> token;
+    };
 
     template <typename F>
         requires std::is_invocable_v<F, RunUntilStmtEndPack>

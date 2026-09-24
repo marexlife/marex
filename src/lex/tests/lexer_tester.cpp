@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "lexer.h"
-#include "passkey.h"
 #include "token.h"
 #include "token_kind.h"
 
@@ -27,19 +26,18 @@ int LexTester::test_lex() {
     std::vector<Token> output = lexer.run(std::string{input});
 
     std::vector<Token> expected = {
-        Token{core::Passkey<LexTester>{}, "some_func",
-              TokenKind::Identifier},
-        Token{core::Passkey<LexTester>{}, TokenKind::OpenBracket},
-        Token{core::Passkey<LexTester>{}, "x", TokenKind::Identifier},
-        Token{core::Passkey<LexTester>{}, TokenKind::Colon},
-        Token{core::Passkey<LexTester>{}, TokenKind::Int32Decl},
-        Token{core::Passkey<LexTester>{}, TokenKind::CloseBracket},
-        Token{core::Passkey<LexTester>{}, TokenKind::Colon},
-        Token{core::Passkey<LexTester>{}, TokenKind::Int32Decl},
-        Token{core::Passkey<LexTester>{}, TokenKind::OpenBrace},
-        Token{core::Passkey<LexTester>{}, TokenKind::Return},
-        Token{core::Passkey<LexTester>{}, TokenKind::IntLiteral},
-        Token{core::Passkey<LexTester>{}, TokenKind::CloseBrace},
+        Token{"some_func", TokenKind::Identifier},
+        Token{TokenKind::OpenBracket},
+        Token{"x", TokenKind::Identifier},
+        Token{TokenKind::Colon},
+        Token{TokenKind::Int32Decl},
+        Token{TokenKind::CloseBracket},
+        Token{TokenKind::Colon},
+        Token{TokenKind::Int32Decl},
+        Token{TokenKind::OpenBrace},
+        Token{TokenKind::Return},
+        Token{TokenKind::IntLiteral},
+        Token{TokenKind::CloseBrace},
     };
 
     for (auto& got_element : output) {

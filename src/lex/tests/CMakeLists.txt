@@ -13,6 +13,10 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 
 enable_testing()
 
+add_compile_definitions(${PROJECT_NAME}
+    TESTING
+)
+
 add_test(${PROJECT_NAME} ${PROJECT_NAME})
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

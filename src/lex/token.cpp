@@ -17,15 +17,12 @@ Token::Token([[maybe_unused]] core::Passkey<TokenFactory>&& passkey,
       kind_(kind),
       source_pos_(source_pos) {}
 
-Token::Token(
-    [[maybe_unused]] core::Passkey<tests::LexTester>&& passkey,
-    std::string&& lexeme, TokenKind kind)
+#ifdef TESTING
+Token::Token(std::string&& lexeme, TokenKind kind)
     : lexeme_(std::move(lexeme)), kind_(kind) {}
 
-Token::Token(
-    [[maybe_unused]] core::Passkey<tests::LexTester>&& passkey,
-    TokenKind kind)
-    : kind_(kind) {}
+Token::Token(TokenKind kind) : kind_(kind) {}
+#endif
 
 [[nodiscard]] std::string_view Token::get_lexeme_or_throw() const {
     if (!lexeme_) [[unlikely]] {

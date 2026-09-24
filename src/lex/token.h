@@ -21,11 +21,11 @@ class [[nodiscard]] Token final {
     Token([[maybe_unused]] core::Passkey<TokenFactory>&& passkey,
           std::string&& lexeme, TokenKind kind, SourcePos source_pos);
 
-    Token([[maybe_unused]] core::Passkey<tests::LexTester>&& passkey,
-          std::string&& lexeme, TokenKind kind);
+#ifdef TESTING
+    Token(std::string&& lexeme, TokenKind kind);
 
-    Token([[maybe_unused]] core::Passkey<tests::LexTester>&& passkey,
-          TokenKind kind);
+    Token(TokenKind kind);
+#endif
 
     [[nodiscard]] std::string_view get_lexeme_or_throw() const;
 
