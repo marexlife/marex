@@ -27,7 +27,7 @@ some_func(x: int) {
         Token{core::Passkey<LexTester>{}, TokenKind::OpenBracket},
         Token{core::Passkey<LexTester>{}, TokenKind::Identifier},
         Token{core::Passkey<LexTester>{}, TokenKind::Colon},
-        Token{core::Passkey<LexTester>{}, TokenKind::IntLiteral},
+        Token{core::Passkey<LexTester>{}, TokenKind::Int32Decl},
         Token{core::Passkey<LexTester>{}, TokenKind::CloseBracket},
         Token{core::Passkey<LexTester>{}, TokenKind::OpenBrace},
         Token{core::Passkey<LexTester>{}, TokenKind::CloseBrace},
