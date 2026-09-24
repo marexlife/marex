@@ -28,8 +28,12 @@ class [[nodiscard]] Token final {
 
     [[nodiscard]] TokenKind get_kind() const { return kind_; }
 
-    auto operator==(const Token& other) const {
+    [[nodiscard]] bool operator==(const Token& other) const {
         return kind_ == other.kind_;
+    }
+
+    [[nodiscard]] bool operator!=(const Token& other) const {
+        return kind_ != other.kind_;
     }
 
     [[nodiscard]] std::optional<BindingPower> get_binding_power()
