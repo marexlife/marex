@@ -28,6 +28,8 @@ int LexTester::test_lex() {
     std::vector<Token> expected = {
         Token{core::Passkey<LexTester>{}, "some_func",
               TokenKind::Identifier},
+        Token{core::Passkey<LexTester>{}, "some_func",
+              TokenKind::Identifier},
         Token{core::Passkey<LexTester>{}, TokenKind::OpenBracket},
         Token{core::Passkey<LexTester>{}, "x", TokenKind::Identifier},
         Token{core::Passkey<LexTester>{}, TokenKind::Colon},
