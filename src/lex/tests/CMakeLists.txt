@@ -13,4 +13,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 
 enable_testing()
 
-add_test(Tester ${PROJECT_NAME})
+add_test(${PROJECT_NAME} ${PROJECT_NAME})
