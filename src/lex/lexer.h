@@ -26,28 +26,30 @@ class [[nodiscard]] Lexer final {
     Lexer& operator=(const Lexer&) = delete;
 
     [[nodiscard]] std::vector<Token> run(
-        this Lexer& self, std::string&& source_text,
+        std::string&& source_text,
         std::optional<std::string_view> filename = std::nullopt);
 
    private:
-    void push_token(this Lexer& self, std::vector<Token>& result,
+    void push_token(std::vector<Token>& result,
                     SourcePos& source_pos);
-    void reset(this Lexer& self, SourcePos& source_pos);
-    void push_current(this Lexer& self, std::vector<Token>& result,
-                      char current, SourcePos& source_pos);
-    void push_token_and_current(this Lexer& self,
-                                std::vector<Token>& result,
+    void reset(SourcePos& source_pos);
+    void push_current(std::vector<Token>& result, char current,
+                      SourcePos& source_pos);
+    void push_token_and_current(std::vector<Token>& result,
                                 char current, SourcePos& source_pos);
 
-    [[nodiscard]] bool is_flushable(this const Lexer& self) {
-        return self.last_char_kind == LastCharKind::WasDefault;
+    void flush_without_add(std::vector<Token>& result,
+                           SourcePos& source_pos);
+
+    [[nodiscard]] bool is_flushable() {
+        return last_char_kind_ == LastCharKind::WasDefault;
     }
 
-    constexpr static std::size_t expected_token_amount = 100;
-    std::optional<char> last_char_optional = std::nullopt;
-    LastCharKind last_char_kind = LastCharKind::None;
-    TokenFactory token_factory{};
-    std::string last_word;
+    constexpr static std::size_t expected_token_amount_ = 100;
+    std::optional<char> last_char_optional_ = std::nullopt;
+    LastCharKind last_char_kind_ = LastCharKind::None;
+    TokenFactory token_factory_{};
+    std::string last_word_;
 };
 }  // namespace marex::lex
 #endif  // MAREX_LEXER_LEXER_H
