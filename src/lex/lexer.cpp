@@ -16,7 +16,7 @@ std::vector<Token> Lexer::run(
 
     SourcePos source_pos{filename};
 
-    result.reserve(expected_token_ampunt);
+    result.reserve(expected_token_amount);
 
     core::Defer defer_reset = [&] {
         if (self.is_flushable()) {
