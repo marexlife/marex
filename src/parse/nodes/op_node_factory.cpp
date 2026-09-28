@@ -13,7 +13,7 @@ namespace marex::parse {
 std::unique_ptr<OpNode> OpNodeFactory::create_node(
     lex::Token&& token) {
     if (auto token_op_info = token.get_token_info_optional()) {
-        return create_operator(lex::Token{token}, *token_op_info);
+        return create_operator(std::move(token), *token_op_info);
     }
 
     return create_operand(lex::Token{token});
