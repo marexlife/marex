@@ -1,2 +1,3 @@
-square(x: int): int
-    return x * x
+some_func(x: int) {
+    return 1
+}
