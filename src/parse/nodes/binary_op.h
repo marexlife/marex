@@ -1,25 +1,18 @@
 #ifndef MAREX_PARSE_BINARYOP_H
 #define MAREX_PARSE_BINARYOP_H
-#include <cstdint>
 #include <memory>
 #include <optional>
 
+#include "binary_op_kind.h"
 #include "nodes/op_node.h"
+#include "nodes/operator.h"
 #include "token.h"
 
 namespace marex::parse {
-enum struct [[nodiscard]] BinaryOpKind : std::uint8_t {
-    None = 0,
-    Add,
-    Sub,
-    Mul,
-    Div,
-};
-
-class BinaryOp final : public OpNode {
+class BinaryOp final : public Operator {
    public:
-    explicit BinaryOp(lex::Token&& token,
-                      BinaryOpKind binary_op_kind);
+    explicit BinaryOp(lex::Token&& token, BinaryOpKind binary_op_kind,
+                      lex::BindingPower binding_power);
 
     void set(std::unique_ptr<OpNode> lhs,
              std::unique_ptr<OpNode> rhs);

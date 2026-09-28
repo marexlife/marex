@@ -16,6 +16,21 @@ namespace tests {
 class LexTester;
 }
 
+enum struct [[nodiscard]] TokenOpKind : std::uint8_t {
+    None = 0,
+    MonoOp,
+    BinOp,
+};
+
+struct TokenOpInfo final {
+    TokenOpInfo(BindingPower binding_power, TokenOpKind token_op_kind)
+        : binding_power(binding_power),
+          token_op_kind(token_op_kind) {}
+
+    BindingPower binding_power{};
+    TokenOpKind token_op_kind{};
+};
+
 class [[nodiscard]] Token final {
    public:
     Token([[maybe_unused]] core::Passkey<TokenFactory>&& passkey,
@@ -46,7 +61,7 @@ class [[nodiscard]] Token final {
         return kind_ != other.kind_;
     }
 
-    [[nodiscard]] std::optional<BindingPower> get_binding_power()
+    [[nodiscard]] std::optional<TokenOpInfo> get_token_info_optional()
         const;
 
     [[nodiscard]] SourcePos get_pos() const { return source_pos_; }

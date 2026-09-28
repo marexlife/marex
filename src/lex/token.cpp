@@ -34,18 +34,20 @@ std::string_view Token::get_lexeme_or_empty_if_none() const {
     return *lexeme_;
 }
 
-std::optional<BindingPower> Token::get_binding_power() const {
+std::optional<TokenOpInfo> Token::get_token_info_optional() const {
     switch (kind_) {
         case lex::TokenKind::OpAdd:
             [[fallthrough]];
         case lex::TokenKind::OpSub:
-            return std::optional<BindingPower>(BindingPower::AddSub);
+            return std::optional<TokenOpInfo>(TokenOpInfo{
+                BindingPower::AddSub, TokenOpKind::BinOp});
         case lex::TokenKind::OpMul:
             [[fallthrough]];
         case lex::TokenKind::OpDiv:
-            return std::optional<BindingPower>(BindingPower::MulDiv);
+            return std::optional<TokenOpInfo>(TokenOpInfo{
+                BindingPower::MulDiv, TokenOpKind::BinOp});
         case lex::TokenKind::Identifier:
-            return BindingPower::Invalid;
+            return std::nullopt;
         case TokenKind::None:
             core::log_fatal_error("TokenKind is none");
         default:

@@ -32,9 +32,9 @@ class AstNode {
         return token;
     }
 
-    [[nodiscard]] std::optional<lex::BindingPower> get_binding_power()
-        const {
-        return token.get_binding_power();
+    [[nodiscard]] std::optional<lex::TokenOpInfo>
+    get_token_info_optional() const {
+        return token.get_token_info_optional();
     }
 
     [[nodiscard]] lex::TokenKind get_kind() const {

@@ -75,7 +75,7 @@ class TokenStream final {
 
     [[nodiscard]] std::optional<lex::BindingPower>
     get_binding_power_at(std::size_t index) const {
-        return borrow_token_at(index).get_binding_power();
+        return borrow_token_at(index).get_token_info_optional();
     }
 
     [[nodiscard]] std::size_t get_progress() const {
