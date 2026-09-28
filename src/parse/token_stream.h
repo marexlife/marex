@@ -8,7 +8,6 @@
 #include <type_traits>
 #include <vector>
 
-#include "binding_power.h"
 #include "source_pos.h"
 #include "token.h"
 #include "token_kind.h"
@@ -73,7 +72,7 @@ class TokenStream final {
         return tokens_.at(index);
     }
 
-    [[nodiscard]] std::optional<lex::BindingPower>
+    [[nodiscard]] std::optional<lex::TokenOpInfo>
     get_binding_power_at(std::size_t index) const {
         return borrow_token_at(index).get_token_info_optional();
     }
