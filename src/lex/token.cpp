@@ -1,6 +1,7 @@
 #include "token.h"
 
 #include <optional>
+#include <stdexcept>
 #include <string_view>
 #include <utility>
 
@@ -55,13 +56,21 @@ std::optional<TokenOpInfo> Token::get_token_info_optional() const {
     }
 }
 
-[[nodiscard]] std::pmr::string Token::move_out_lexeme() {
+std::string Token::move_out_lexeme_or_throw() {
     if (!lexeme_) [[unlikely]] {
-        core::log_fatal_internal_error(
+        throw std::runtime_error(
             "trying to move out a lexeme when none "
             "exists");
     }
 
     return *lexeme_;
+}
+
+std::optional<std::string> Token::move_out_lexeme_or_none() {
+    if (lexeme_) {
+        return std::move(lexeme_);
+    }
+
+    return std::nullopt;
 }
 }  // namespace marex::lex

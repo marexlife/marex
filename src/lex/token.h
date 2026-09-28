@@ -44,12 +44,21 @@ class [[nodiscard]] Token final {
     Token(TokenKind kind) : kind_(kind) {}
 #endif
 
+    Token(Token&&) = default;
+    Token& operator=(Token&&) = delete;
+    Token(const Token&) = delete;
+    Token& operator=(const Token&) = delete;
+    ~Token() = default;
+
     [[nodiscard]] std::string_view get_lexeme_or_throw() const;
 
     [[nodiscard]] std::string_view get_lexeme_or_empty_if_none()
         const;
 
-    [[nodiscard]] std::pmr::string move_out_lexeme();
+    [[nodiscard]] std::string move_out_lexeme_or_throw();
+
+    [[nodiscard]] std::optional<std::string>
+    move_out_lexeme_or_none();
 
     [[nodiscard]] TokenKind get_kind() const { return kind_; }
 
@@ -67,7 +76,7 @@ class [[nodiscard]] Token final {
     [[nodiscard]] SourcePos get_pos() const { return source_pos_; }
 
    private:
-    std::optional<std::pmr::string> lexeme_ = std::nullopt;
+    std::optional<std::string> lexeme_ = std::nullopt;
     TokenKind kind_{};
     SourcePos source_pos_;
 };

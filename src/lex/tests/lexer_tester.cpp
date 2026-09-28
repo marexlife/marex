@@ -1,5 +1,6 @@
 #include "lexer_tester.h"
 
+#include <array>
 #include <cassert>
 #include <cstddef>
 #include <format>
@@ -25,7 +26,7 @@ int LexTester::test_lex() {
 
     std::vector<Token> output = lexer.run(std::string{input});
 
-    std::vector<Token> expected = {
+    std::array expected{
         Token{"some_func", TokenKind::Identifier},
         Token{TokenKind::OpenBracket},
         Token{"x", TokenKind::Identifier},

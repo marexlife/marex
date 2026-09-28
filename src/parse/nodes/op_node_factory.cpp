@@ -16,7 +16,7 @@ std::unique_ptr<OpNode> OpNodeFactory::create_node(
         return create_operator(std::move(token), *token_op_info);
     }
 
-    return create_operand(lex::Token{token});
+    return create_operand(std::move(token));
 }
 
 std::unique_ptr<OpNode> OpNodeFactory::create_operator(
@@ -25,7 +25,7 @@ std::unique_ptr<OpNode> OpNodeFactory::create_operator(
         case lex::TokenOpKind::BinOp: {
             auto token_kind = token.get_kind();
             return std::make_unique<BinaryOp>(
-                lex::Token{token},
+                std::move(token),
                 OpNodeFactory::to_binary_op_kind(token_kind),
                 token_op_info.binding_power);
         } break;

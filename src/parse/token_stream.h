@@ -3,9 +3,11 @@
 #include <cstddef>
 #include <functional>
 #include <source_location>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include "source_pos.h"
@@ -31,12 +33,16 @@ class TokenStream final {
             "is none") const;
 
     template <typename F>
-        requires std::is_invocable_v<F, lex::Token&>
-    void run_until_stmt_end(F iter) const {
+        requires std::is_invocable_v<F, lex::Token>
+    void run_until_stmt_end(F iter) {
         for (std::size_t i = 0;
              token_kind_at(i) != lex::TokenKind::StatementEnd; ++i) {
-            std::invoke(iter, borrow_token_at(i));
+            std::invoke(iter, move_out_token_at(i));
         }
+    }
+
+    [[nodiscard]] lex::Token move_out_token_at(std::size_t index) {
+        return std::move(tokens_.at(index));
     }
 
     [[nodiscard]] bool is_at_end() const;
@@ -56,11 +62,6 @@ class TokenStream final {
         return token_kind_at(progress) == token_kind;
     }
 
-    [[nodiscard]] const lex::Token& borrow_token_at(
-        std::size_t index) const {
-        return tokens_.at(index);
-    }
-
     [[nodiscard]] std::optional<lex::TokenOpInfo>
     get_binding_power_at(std::size_t index) const {
         return borrow_token_at(index).get_token_info_optional();
@@ -78,20 +79,11 @@ class TokenStream final {
         return get_kind() == token_kind;
     }
 
-    [[nodiscard]] const lex::Token& borrow_previous() const {
-        return tokens_.at(progress_ - 1);
-    }
-
-    [[nodiscard]] const lex::Token& borrow_next() const {
-        return tokens_.at(progress_ + 1);
-    }
-
     [[nodiscard]] lex::Token copy_out_previous_token() {
-        return tokens_.at(progress_ - 1);
+        return std::move(tokens_.at(progress_ - 1));
     }
 
-    /* NOT [[nodiscard]] */ std::pmr::string
-    advance_if_matches_or_throw(
+    /* NOT [[nodiscard]] */ std::string advance_if_matches_or_throw(
         lex::TokenKind token_kind,
         std::source_location cpp_source_location =
             std::source_location::current());
@@ -100,7 +92,7 @@ class TokenStream final {
         return borrow_token().get_kind();
     }
 
-    [[nodiscard]] lex::Token copy_out_token_and_advance();
+    [[nodiscard]] lex::Token move_out_token_and_advance();
 
     [[nodiscard]] std::string_view get_lexeme_and_advance();
 
@@ -114,12 +106,33 @@ class TokenStream final {
         return borrow_token().get_lexeme_or_throw();
     }
 
-    [[nodiscard]] const lex::Token& borrow_token() const {
-        return tokens_.at(progress_);
+    [[nodiscard]] const lex::Token& borrow_previous() const {
+        if (progress_ == 0) [[unlikely]] {
+            throw std::out_of_range("can not -index");
+        }
+
+        return borrow_token_at(progress_ - 1);
     }
 
-    [[nodiscard]] lex::Token copy_out_token() const {
-        return lex::Token(tokens_.at(progress_));
+    [[nodiscard]] const lex::Token& borrow_next() const {
+        return borrow_token_at(progress_ + 1);
+    }
+
+    [[nodiscard]] const lex::Token& borrow_token() const {
+        return borrow_token_at(progress_);
+    }
+
+    [[nodiscard]] const lex::Token& borrow_token_at(
+        std::size_t index) const {
+        return tokens_.at(index);
+    }
+
+    [[nodiscard]] std::string move_out_lexeme() {
+        return tokens_.at(progress_).move_out_lexeme_or_throw();
+    }
+
+    [[nodiscard]] lex::Token move_out_token() {
+        return move_out_token_at(progress_);
     }
 
     [[nodiscard]] bool get_is_in_lint_mode() const {
