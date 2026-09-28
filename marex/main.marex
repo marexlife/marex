@@ -1,0 +1,7 @@
+some_func(x: int) {
+    return 1
+}
+
+some_other_func(x: int, y: int): bool {
+    return true
+}
