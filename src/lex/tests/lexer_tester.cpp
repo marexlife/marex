@@ -12,6 +12,7 @@
 #include "token.h"
 #include "token_kind.h"
 
+
 namespace marex::lex::tests {
 int LexTester::test_lex() {
     marex::lex::Lexer lexer{};

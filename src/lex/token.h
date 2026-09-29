@@ -22,9 +22,10 @@ class [[nodiscard]] Token final {
           std::string&& lexeme, TokenKind kind, SourcePos source_pos);
 
 #ifdef TESTING
-    Token(std::string&& lexeme, TokenKind kind);
+    Token(std::string&& lexeme, TokenKind kind)
+        : lexeme_(std::move(lexeme)), kind_(kind) {}
 
-    Token(TokenKind kind);
+    Token(TokenKind kind) : kind_(kind) {}
 #endif
 
     [[nodiscard]] std::string_view get_lexeme_or_throw() const;

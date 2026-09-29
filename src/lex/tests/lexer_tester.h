@@ -1,5 +1,8 @@
 #ifndef MAREX_PARSE_TESTS_LEXERTESTER_H
 #define MAREX_PARSE_TESTS_LEXERTESTER_H
+
+#define TESTING 1
+
 namespace marex::lex::tests {
 class LexTester final {
    public:
