@@ -1,3 +1,3 @@
 cmake . -B build
 cmake --build build
-./build/src/main/main
+./build/src/main/main ./marex/msain.marex
