@@ -71,8 +71,8 @@ std::string TokenStream::advance_if_matches_or_throw(
                                 cpp_source_location);
 }
 
-lex::Token TokenStream::move_out_token_and_advance() {
-    auto token = move_out_token();
+const lex::Token& TokenStream::borrow_out_token_and_advance() {
+    const auto& token = borrow_token();
 
     advance();
 

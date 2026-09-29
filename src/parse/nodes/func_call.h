@@ -15,7 +15,7 @@ struct CallArg final {
 
 class FuncCall final : public Expr {
    public:
-    explicit FuncCall(lex::Token&& token);
+    explicit FuncCall(std::reference_wrapper<lex::Token> token);
 
     [[nodiscard]] std::string as_c() override;
 

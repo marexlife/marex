@@ -11,10 +11,10 @@
 namespace marex::parse {
 class AstNode {
    public:
-    explicit AstNode(lex::Token&& token);
+    explicit AstNode(std::reference_wrapper<lex::Token> token);
 
     AstNode(AstNode&&) = default;
-    AstNode& operator=(AstNode&&) = default;
+    AstNode& operator=(AstNode&&) = delete;
     AstNode(const AstNode&) = delete;
     AstNode& operator=(const AstNode&) = delete;
     virtual ~AstNode() = default;
@@ -34,19 +34,19 @@ class AstNode {
 
     [[nodiscard]] std::optional<lex::TokenOpInfo>
     get_token_info_optional() const {
-        return token.get_token_info_optional();
+        return token.get().get_token_info_optional();
     }
 
     [[nodiscard]] lex::TokenKind get_kind() const {
-        return token.get_kind();
+        return token.get().get_kind();
     }
 
     [[nodiscard]] std::string_view get_lexeme() const {
-        return token.get_lexeme_or_throw();
+        return token.get().get_lexeme_or_throw();
     }
 
    private:
-    lex::Token token;
+    std::reference_wrapper<lex::Token> token;
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_ASTNODE_H

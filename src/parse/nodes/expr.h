@@ -6,7 +6,7 @@
 namespace marex::parse {
 class Expr : public AstNode {
    public:
-    explicit Expr(lex::Token&& token);
+    explicit Expr(std::reference_wrapper<lex::Token> token);
     virtual ~Expr() = default;
 
     Expr(Expr&&) = delete;

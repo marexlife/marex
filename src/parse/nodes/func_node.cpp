@@ -77,7 +77,7 @@ void FuncNode::parse_func_body(TokenStream& stream) {
         if (stream.matches(lex::TokenKind::Return)) {
             return_node_ = std::invoke([&] {
                 auto return_node = std::make_unique<ReturnNode>(
-                    stream.move_out_token());
+                    stream.borrow_token());
 
                 return_node->parse(stream);
 
