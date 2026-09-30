@@ -46,7 +46,7 @@ std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
 
     std::optional<std::reference_wrapper<Op>> previous_op =
         std::nullopt;
-    std::optional<std::reference_wrapper<lex::Token>>
+    std::optional<std::reference_wrapper<const lex::Token>>
         previous_operand = std::nullopt;
 
     constexpr std::size_t reserve_non_operators = 100;
@@ -59,10 +59,7 @@ std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
     operators.reserve(reserve_operators);
     non_operators.reserve(reserve_non_operators);
 
-    stream.run_until_stmt_end([&](TokenStream::RunUntilStmtEndPack
-                                      pack) {
-        auto token = pack.token.get();
-
+    stream.run_until_stmt_end([&](const lex::Token& token) {
         core::Defer iter_defer = [&] {
             if (auto binding_power = token.get_binding_power()) {
                 Op current_op{lex::Token(token), *binding_power};

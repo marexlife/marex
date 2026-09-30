@@ -31,23 +31,12 @@ class TokenStream final {
             "trying to access next token, when there "
             "is none") const;
 
-    struct RunUntilStmtEndPack final {
-        RunUntilStmtEndPack(
-            std::size_t index,
-            std::reference_wrapper<const lex::Token> token)
-            : index(index), token(token) {}
-
-        std::size_t index{};
-        std::reference_wrapper<const lex::Token> token;
-    };
-
     template <typename F>
-        requires std::is_invocable_v<F, RunUntilStmtEndPack>
+        requires std::is_invocable_v<F, const lex::Token&>
     void run_until_stmt_end(F iter) const {
         for (std::size_t i = 0;
              token_kind_at(i) != lex::TokenKind::StatementEnd; ++i) {
-            std::invoke(iter,
-                        RunUntilStmtEndPack(i, borrow_token_at(i)));
+            std::invoke(iter, borrow_token_at(i));
         }
     }
 
