@@ -8,34 +8,29 @@
 #include "token_kind.h"
 
 namespace marex::parse {
-class InvalidTokenException final
-    : public std::exception {
+class InvalidTokenException final : public std::exception {
    public:
-    InvalidTokenException(
-        lex::SourcePos source_pos,
-        lex::TokenKind expected_token_kind,
-        lex::TokenKind got_token_kind,
-        std::source_location cpp_source_location =
-            std::source_location::current());
+    InvalidTokenException(lex::SourcePos source_pos,
+                          lex::TokenKind expected_token_kind,
+                          lex::TokenKind got_token_kind,
+                          std::source_location cpp_source_location =
+                              std::source_location::current());
 
-    InvalidTokenException(
-        lex::SourcePos source_pos,
-        lex::TokenKind unexpected_token_kind,
-        std::source_location cpp_source_location =
-            std::source_location::current());
+    InvalidTokenException(lex::SourcePos source_pos,
+                          lex::TokenKind unexpected_token_kind,
+                          std::source_location cpp_source_location =
+                              std::source_location::current());
 
-    InvalidTokenException(
-        lex::SourcePos source_pos,
-        lex::TokenKind unexpected_token_kind,
-        std::string&& message,
-        std::source_location cpp_source_location =
-            std::source_location::current());
+    InvalidTokenException(lex::SourcePos source_pos,
+                          lex::TokenKind unexpected_token_kind,
+                          std::string&& message,
+                          std::source_location cpp_source_location =
+                              std::source_location::current());
 
-    InvalidTokenException(
-        lex::SourcePos source_pos,
-        std::string&& full_message,
-        std::source_location cpp_source_location =
-            std::source_location::current());
+    InvalidTokenException(lex::SourcePos source_pos,
+                          std::string&& full_message,
+                          std::source_location cpp_source_location =
+                              std::source_location::current());
 
     const char* what() const noexcept override;
 

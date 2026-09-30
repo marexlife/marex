@@ -6,7 +6,9 @@
 #include <utility>
 
 #include "binding_power.h"
+#include "exceptions/invalid_token_exception.h"
 #include "nodes/binary_op.h"
+#include "nodes/identifier.h"
 #include "nodes/op_node.h"
 #include "nodes/operand.h"
 #include "nodes/operator.h"
@@ -29,7 +31,8 @@ std::unique_ptr<Operator> OpFactory::create_operator(
                                    *binary_op_kind);
     }
 
-    throw std::runtime_error("not implemented");
+    throw InvalidTokenException(token.get_pos(),
+                                "expected an operator");
 }
 
 std::optional<BinaryOpKind> OpFactory::get_binary_op_kind(
@@ -64,6 +67,12 @@ std::unique_ptr<BinaryOp> OpFactory::create_bin_operator(
 
 std::unique_ptr<Operand> OpFactory::create_operand(
     [[maybe_unused]] lex::Token&& token) {
-    throw std::runtime_error("create operand not implemented");
+    switch (token.get_kind()) {
+        case lex::TokenKind::Identifier:
+            return std::make_unique<Identifier>(std::move(token));
+        default:
+            throw InvalidTokenException(token.get_pos(),
+                                        "expected an operand");
+    }
 }
 }  // namespace marex::parse
