@@ -1,4 +1,4 @@
-Checks: "readability-*"
+Checks: "readability-*,google-*,performance-*"
 CheckOptions:
   - key: "readability-identifier-naming.ClassCase"
     value: CamelCase
