@@ -12,8 +12,8 @@
 
 namespace marex {
 namespace parse {
-std::vector<std::unique_ptr<OpNode>> create_operators(
-    TokenStream& stream);
+[[nodiscard]] static std::vector<std::unique_ptr<OpNode>>
+create_operators(TokenStream& stream);
 }  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
@@ -22,8 +22,8 @@ std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
     throw std::runtime_error("not implemented yet");
 }
 
-std::vector<std::unique_ptr<parse::OpNode>> parse::create_operators(
-    TokenStream& stream) {
+static std::vector<std::unique_ptr<parse::OpNode>>
+parse::create_operators(TokenStream& stream) {
     std::vector<std::unique_ptr<OpNode>> operators;
 
     stream.run_until_stmt_end([&](const lex::Token& token) {
