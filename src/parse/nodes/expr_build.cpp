@@ -1,5 +1,6 @@
 #include "expr_build.h"
 
+#include <list>
 #include <memory>
 #include <stdexcept>
 #include <utility>
@@ -13,11 +14,11 @@
 
 namespace marex {
 namespace parse {
-[[nodiscard]] static std::vector<std::unique_ptr<OpNode>>
+[[nodiscard]] static std::list<std::unique_ptr<parse::OpNode>>
 create_operators(TokenStream& stream);
 
 [[nodiscard]] static std::unique_ptr<parse::Expr> process_operators(
-    std::vector<std::unique_ptr<OpNode>>&& operators);
+    std::list<std::unique_ptr<parse::OpNode>>&& operators);
 }  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
@@ -26,9 +27,9 @@ std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
     return process_operators(std::move(operators));
 }
 
-static std::vector<std::unique_ptr<parse::OpNode>>
+static std::list<std::unique_ptr<parse::OpNode>>
 parse::create_operators(TokenStream& stream) {
-    std::vector<std::unique_ptr<OpNode>> operators;
+    std::list<std::unique_ptr<OpNode>> operators;
 
     stream.run_until_stmt_end([&](const lex::Token& token) {
         operators.emplace_back(
@@ -39,7 +40,7 @@ parse::create_operators(TokenStream& stream) {
 }
 
 static std::unique_ptr<parse::Expr> parse::process_operators(
-    [[maybe_unused]] std::vector<std::unique_ptr<OpNode>>&&
+    [[maybe_unused]] std::list<std::unique_ptr<parse::OpNode>>&&
         operators) {
     throw std::runtime_error("not implemented yet");
 }
