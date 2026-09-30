@@ -17,7 +17,7 @@ class OpFactory final {
 
    private:
     [[nodiscard]] static std::unique_ptr<Operator> create_operator(
-        lex::Token&& token);
+        lex::Token&& token, lex::BindingPower binding_power);
 
     [[nodiscard]] static std::unique_ptr<Operand> create_operand(
         lex::Token&& token);
