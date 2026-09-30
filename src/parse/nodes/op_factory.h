@@ -2,7 +2,7 @@
 #define MAREX_PARSE_OPFACTORY_H
 #include <memory>
 
-#include "nodes/binary_op.h"
+#include "nodes/binary_op_kind.h"
 #include "token.h"
 
 namespace marex::parse {
