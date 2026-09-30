@@ -1,8 +1,11 @@
 #ifndef MAREX_PARSE_OPFACTORY_H
 #define MAREX_PARSE_OPFACTORY_H
 #include <memory>
+#include <optional>
 
 #include "nodes/binary_op_kind.h"
+#include "nodes/identifier.h"
+#include "nodes/literal.h"
 #include "token.h"
 
 namespace marex::parse {
@@ -10,6 +13,8 @@ class OpNode;
 class Operator;
 class Operand;
 class BinaryOp;
+
+enum struct LiteralKind : std::uint8_t;
 
 class OpFactory final {
    public:
@@ -36,6 +41,16 @@ class OpFactory final {
 
     [[nodiscard]] static std::unique_ptr<Operand> create_operand(
         lex::Token&& token);
+
+    [[nodiscard]] static std::optional<LiteralKind> to_literal_kind(
+        const lex::Token& token);
+
+    [[nodiscard]] static std::unique_ptr<Literal>
+    create_literal_operand(lex::Token&& token,
+                           LiteralKind literal_kind);
+
+    [[nodiscard]] static std::unique_ptr<Identifier>
+    create_identifier_operand(lex::Token&& token);
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_OPFACTORY_H

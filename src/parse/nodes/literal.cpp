@@ -6,6 +6,6 @@
 #include "token.h"
 
 namespace marex::parse {
-Literal::Literal(lex::Token&& token)
-    : Operand(std::move(token)) {}
+Literal::Literal(lex::Token&& token, LiteralKind literal_kind)
+    : Operand(std::move(token)), literal_kind_(literal_kind) {}
 }  // namespace marex::parse
