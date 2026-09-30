@@ -4,7 +4,9 @@
 #include <memory>
 #include <optional>
 
+#include "binding_power.h"
 #include "nodes/op_node.h"
+#include "nodes/operator.h"
 #include "token.h"
 
 namespace marex::parse {
@@ -16,9 +18,10 @@ enum struct [[nodiscard]] BinaryOpKind : std::uint8_t {
     Div,
 };
 
-class BinaryOp final : public OpNode {
+class BinaryOp final : public Operator {
    public:
     explicit BinaryOp(lex::Token&& token,
+                      lex::BindingPower binding_power,
                       BinaryOpKind binary_op_kind);
 
     void set(std::unique_ptr<OpNode> lhs,

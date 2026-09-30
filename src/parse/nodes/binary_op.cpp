@@ -3,10 +3,13 @@
 #include <utility>
 
 #include "nodes/op_node.h"
+#include "nodes/operator.h"
 
 namespace marex::parse {
-BinaryOp::BinaryOp(lex::Token&& token, BinaryOpKind binary_op_kind)
-    : OpNode(std::move(token), OpNodeKind::BinaryOp),
+BinaryOp::BinaryOp(lex::Token&& token,
+                   lex::BindingPower binding_power,
+                   BinaryOpKind binary_op_kind)
+    : Operator(std::move(token), OpNodeKind::BinaryOp, binding_power),
       binary_op_kind_(binary_op_kind) {}
 
 void BinaryOp::set(std::unique_ptr<OpNode> lhs,

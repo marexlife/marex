@@ -30,7 +30,7 @@ struct Op final {
 };
 
 [[nodiscard]] static std::unique_ptr<parse::OpNode> make_op_node(
-    lex::Token&& token);
+    lex::Token&& token, lex::BindingPower binding_power);
 
 [[nodiscard]] static std::unique_ptr<parse::Operand>
 make_operand_node(lex::Token&& token);
@@ -87,7 +87,8 @@ std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
 
         if (!previous_op) {
             if (previous_operand) {
-                auto node = make_op_node(lex::Token(token));
+                auto node = make_op_node(lex::Token(token),
+                                         *token.get_binding_power());
 
                 switch (node->get_op_node_kind()) {
                     case OpNodeKind::BinaryOp: {
@@ -115,7 +116,8 @@ std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
         if (std::invoke(get_current_is_more_powerful,
                         *current_binding_power,
                         previous_binding_power)) {
-            auto node_from_current = make_op_node(lex::Token(token));
+            auto node_from_current = make_op_node(
+                lex::Token(token), *token.get_binding_power());
 
             switch (node_from_current->get_op_node_kind()) {
                 case OpNodeKind::BinaryOp: {
@@ -132,8 +134,11 @@ std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
                     std::unreachable();
             }
         } else {
+            auto& previous_token = previous_op->get().token;
+
             auto node_from_previous =
-                make_op_node(lex::Token(previous_op->get().token));
+                make_op_node(lex::Token(previous_token),
+                             *previous_token.get_binding_power());
 
             switch (node_from_previous->get_op_node_kind()) {
                 case OpNodeKind::BinaryOp: {
@@ -156,20 +161,20 @@ std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
 }
 
 [[nodiscard]] std::unique_ptr<parse::OpNode> parse::make_op_node(
-    lex::Token&& token) {
+    lex::Token&& token, lex::BindingPower binding_power) {
     switch (token.get_kind()) {
         case lex::TokenKind::OpAdd:
-            return std::make_unique<BinaryOp>(std::move(token),
-                                              BinaryOpKind::Add);
+            return std::make_unique<BinaryOp>(
+                std::move(token), binding_power, BinaryOpKind::Add);
         case lex::TokenKind::OpSub:
-            return std::make_unique<BinaryOp>(std::move(token),
-                                              BinaryOpKind::Sub);
+            return std::make_unique<BinaryOp>(
+                std::move(token), binding_power, BinaryOpKind::Sub);
         case lex::TokenKind::OpMul:
-            return std::make_unique<BinaryOp>(std::move(token),
-                                              BinaryOpKind::Mul);
+            return std::make_unique<BinaryOp>(
+                std::move(token), binding_power, BinaryOpKind::Mul);
         case lex::TokenKind::OpDiv:
-            return std::make_unique<BinaryOp>(std::move(token),
-                                              BinaryOpKind::Div);
+            return std::make_unique<BinaryOp>(
+                std::move(token), binding_power, BinaryOpKind::Div);
         default:
             throw std::runtime_error(
                 "internal "
