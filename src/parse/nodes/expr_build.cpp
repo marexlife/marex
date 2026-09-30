@@ -4,7 +4,6 @@
 #include <memory>
 #include <stdexcept>
 #include <utility>
-#include <vector>
 
 #include "nodes/expr.h"
 #include "nodes/op_factory.h"
