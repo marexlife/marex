@@ -26,6 +26,8 @@ add_library(${PROJECT_NAME}
     nodes/expr.cpp
     nodes/expr_build.cpp
     nodes/operand.cpp
+    nodes/operator.cpp
+    nodes/op_factory.cpp
     nodes/identifier.cpp
     nodes/literal.cpp
 
