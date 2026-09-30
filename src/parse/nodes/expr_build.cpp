@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 
 #include "nodes/expr.h"
@@ -14,12 +15,15 @@ namespace marex {
 namespace parse {
 [[nodiscard]] static std::vector<std::unique_ptr<OpNode>>
 create_operators(TokenStream& stream);
+
+[[nodiscard]] static std::unique_ptr<parse::Expr> process_operators(
+    std::vector<std::unique_ptr<OpNode>>&& operators);
 }  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
     auto operators = create_operators(stream);
 
-    throw std::runtime_error("not implemented yet");
+    return process_operators(std::move(operators));
 }
 
 static std::vector<std::unique_ptr<parse::OpNode>>
@@ -32,5 +36,11 @@ parse::create_operators(TokenStream& stream) {
     });
 
     return operators;
+}
+
+static std::unique_ptr<parse::Expr> parse::process_operators(
+    [[maybe_unused]] std::vector<std::unique_ptr<OpNode>>&&
+        operators) {
+    throw std::runtime_error("not implemented yet");
 }
 }  // namespace marex
