@@ -16,10 +16,10 @@ class OpFactory final {
         lex::Token&& token);
 
    private:
-    [[nodiscard]] static std::unique_ptr<Operand> create_operand(
+    [[nodiscard]] static std::unique_ptr<Operator> create_operator(
         lex::Token&& token);
 
-    [[nodiscard]] static std::unique_ptr<Operator> create_operator(
+    [[nodiscard]] static std::unique_ptr<Operand> create_operand(
         lex::Token&& token);
 };
 }  // namespace marex::parse
