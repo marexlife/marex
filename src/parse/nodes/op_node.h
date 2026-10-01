@@ -21,7 +21,7 @@ class OpNode : public Expr,
 
     template <std::derived_from<OpNode> T>
     [[nodiscard]] std::shared_ptr<T> cast() {
-        return shared_from_this();
+        return std::static_pointer_cast<T>(shared_from_this());
     }
 
     [[nodiscard]] OpNodeKind get_op_node_kind() const {
