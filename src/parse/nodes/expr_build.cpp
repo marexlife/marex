@@ -74,7 +74,7 @@ parse::create_op_nodes(TokenStream& stream) {
 namespace parse {
 std::unique_ptr<Expr> OperationProcessor::process_operators(
     std::list<std::shared_ptr<parse::OpNode>>&& op_nodes) {
-    while (true) {
+    while (op_nodes.size() > 1) {
         core::Defer end_while_iter = [&] {
             previous_operator_ = std::nullopt;
         };
