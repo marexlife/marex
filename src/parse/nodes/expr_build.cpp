@@ -143,8 +143,29 @@ void OperationProcessor::handle_in_between_iter(
 
 void OperationProcessor::handle_in_between_bin_op(
     std::shared_ptr<BinaryOp>&& op_node) {
-    if (get_was_previous_more_powerful(*op_node)) {
-    } else {
+    if (!get_was_previous_more_powerful(*op_node)) {
+        op_node->set_lhs(previous_operand_.value());
+
+        return;
+    }
+
+    auto& previous_operator_value = previous_operator_.value();
+
+    switch (previous_operator_value->get_op_node_kind()) {
+        case marex::parse::OpNodeKind::BinaryOp: {
+            auto previous_bin_op =
+                previous_operator_value->cast<BinaryOp>();
+
+            previous_bin_op->set_rhs(previous_operand_.value());
+        } break;
+        case marex::parse::OpNodeKind::MonoOp:
+            throw std::runtime_error("mono op not implemented yet");
+        case marex::parse::OpNodeKind::Operand:
+            [[fallthrough]];
+        case marex::parse::OpNodeKind::None:
+            [[fallthrough]];
+        default:
+            std::unreachable();
     }
 }
 }  // namespace parse
