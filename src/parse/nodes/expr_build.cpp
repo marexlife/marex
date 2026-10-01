@@ -29,7 +29,7 @@ class OperationProcessor final {
         std::list<std::shared_ptr<parse::OpNode>>&& op_nodes);
 
    private:
-    [[nodiscard]] bool was_previous_more_powerful(
+    [[nodiscard]] bool get_was_previous_more_powerful(
         const Operator& this_op_node) const {
         auto previous_binding_power =
             previous_operator_.value()->get_binding_power();
@@ -42,7 +42,8 @@ class OperationProcessor final {
 
     void handle_first_time_iter(std::shared_ptr<OpNode>& op_node);
     void handle_in_between_iter(std::shared_ptr<OpNode>& op_node);
-    void handle_in_between_bin_op(std::shared_ptr<BinaryOp>&& op_node);
+    void handle_in_between_bin_op(
+        std::shared_ptr<BinaryOp>&& op_node);
 
     std::optional<std::shared_ptr<Operator>> previous_operator_ =
         std::nullopt;
@@ -141,6 +142,10 @@ void OperationProcessor::handle_in_between_iter(
 }
 
 void OperationProcessor::handle_in_between_bin_op(
-    [[maybe_unused]] std::shared_ptr<BinaryOp>&& op_node) {}
+    std::shared_ptr<BinaryOp>&& op_node) {
+    if (get_was_previous_more_powerful(*op_node)) {
+    } else {
+    }
+}
 }  // namespace parse
 }  // namespace marex
