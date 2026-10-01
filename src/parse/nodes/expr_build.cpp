@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <utility>
 
+#include "defer.h"
 #include "nodes/expr.h"
 #include "nodes/op_factory.h"
 #include "nodes/op_node.h"
@@ -24,7 +25,7 @@ class OperationProcessor final {
         std::list<std::unique_ptr<parse::OpNode>>&& op_nodes);
 
    private:
-    [[maybe_unused]] bool is_first_time_in_iter_{};
+    bool is_first_time_in_iter_{};
 };
 }  // namespace parse
 
@@ -49,10 +50,16 @@ parse::create_op_nodes(TokenStream& stream) {
 
 namespace parse {
 std::unique_ptr<Expr> OperationProcessor::process_operators(
-    [[maybe_unused]] std::list<std::unique_ptr<parse::OpNode>>&&
-        op_nodes) {
+    std::list<std::unique_ptr<parse::OpNode>>&& op_nodes) {
     while (true) {
+        core::Defer end_while_iter = [&] {
+            is_first_time_in_iter_ = true;
+        };
+
         for ([[maybe_unused]] auto& op_node : op_nodes) {
+            core::Defer end_for_iter = [&] {
+                is_first_time_in_iter_ = false;
+            };
         }
     }
 
