@@ -10,6 +10,8 @@ class Operator : public OpNode {
     Operator(lex::Token&& token, OpNodeKind op_node_kind,
              lex::BindingPower binding_power);
 
+    [[nodiscard]] virtual bool is_finished() const = 0;
+
    private:
     lex::BindingPower binding_power{};
 };

@@ -3,11 +3,11 @@
 #include <memory>
 #include <optional>
 
+#include "binary_op_kind.h"
 #include "binding_power.h"
 #include "nodes/op_node.h"
 #include "nodes/operator.h"
 #include "token.h"
-#include "binary_op_kind.h"
 
 namespace marex::parse {
 class BinaryOp final : public Operator {
@@ -23,6 +23,18 @@ class BinaryOp final : public Operator {
 
     [[nodiscard]] BinaryOpKind get_binary_op() const {
         return binary_op_kind_;
+    }
+
+    [[nodiscard]] bool is_finished() const override {
+        return lhs_finished() && rhs_finished();
+    }
+
+    [[nodiscard]] bool lhs_finished() const {
+        return lhs_.has_value();
+    }
+
+    [[nodiscard]] bool rhs_finished() const {
+        return rhs_.has_value();
     }
 
    private:

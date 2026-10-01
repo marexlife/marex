@@ -14,20 +14,29 @@
 namespace marex {
 namespace parse {
 [[nodiscard]] static std::list<std::unique_ptr<parse::OpNode>>
-create_operators(TokenStream& stream);
+create_op_nodes(TokenStream& stream);
 
-[[nodiscard]] static std::unique_ptr<parse::Expr> process_operators(
-    std::list<std::unique_ptr<parse::OpNode>>&& operators);
+class OperationProcessor final {
+   public:
+    OperationProcessor() = default;
+
+    [[nodiscard]] std::unique_ptr<parse::Expr> process_operators(
+        std::list<std::unique_ptr<parse::OpNode>>&& op_nodes);
+
+   private:
+    [[maybe_unused]] bool is_first_time_in_iter_{};
+};
 }  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
-    auto operators = create_operators(stream);
+    auto op_nodes = create_op_nodes(stream);
 
-    return process_operators(std::move(operators));
+    return OperationProcessor{}.process_operators(
+        std::move(op_nodes));
 }
 
 static std::list<std::unique_ptr<parse::OpNode>>
-parse::create_operators(TokenStream& stream) {
+parse::create_op_nodes(TokenStream& stream) {
     std::list<std::unique_ptr<OpNode>> operators;
 
     stream.run_until_stmt_end([&](const lex::Token& token) {
@@ -38,9 +47,16 @@ parse::create_operators(TokenStream& stream) {
     return operators;
 }
 
-static std::unique_ptr<parse::Expr> parse::process_operators(
+namespace parse {
+std::unique_ptr<Expr> OperationProcessor::process_operators(
     [[maybe_unused]] std::list<std::unique_ptr<parse::OpNode>>&&
-        operators) {
+        op_nodes) {
+    while (true) {
+        for ([[maybe_unused]] auto& op_node : op_nodes) {
+        }
+    }
+
     throw std::runtime_error("not implemented yet");
 }
+}  // namespace parse
 }  // namespace marex
