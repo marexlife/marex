@@ -41,6 +41,7 @@ class OperationProcessor final {
     void op_node_iter(std::shared_ptr<OpNode>& op_node);
 
     void handle_first_time_iter(std::shared_ptr<OpNode>& op_node);
+    void handle_in_between_iter(std::shared_ptr<OpNode>& op_node);
 
     std::optional<std::shared_ptr<Operator>> previous_operator_ =
         std::nullopt;
@@ -86,10 +87,12 @@ std::unique_ptr<Expr> OperationProcessor::process_operators(
 
 void OperationProcessor::op_node_iter(
     std::shared_ptr<OpNode>& op_node) {
-    if (!previous_operand_) {
+    if (!previous_operator_ || !previous_operand_) {
         handle_first_time_iter(op_node);
         return;
     }
+
+    handle_in_between_iter(op_node);
 }
 
 void OperationProcessor::handle_first_time_iter(
@@ -103,12 +106,29 @@ void OperationProcessor::handle_first_time_iter(
 
             bin_operator->set_lhs(previous_operand_.value());
         } break;
-        case marex::parse::OpNodeKind::MonoOp:
+        case marex::parse::OpNodeKind::MonoOp: {
             throw std::runtime_error(
                 "mono ops are not implemented yet");
-        case marex::parse::OpNodeKind::Operand:
+        } break;
+        case marex::parse::OpNodeKind::Operand: {
             previous_operand_ = op_node->cast<Operand>();
-            break;
+        } break;
+        case marex::parse::OpNodeKind::None:
+            [[fallthrough]];
+        default:
+            std::unreachable();
+    }
+}
+
+void OperationProcessor::handle_in_between_iter(
+    std::shared_ptr<OpNode>& op_node) {
+    switch (op_node->get_op_node_kind()) {
+        case marex::parse::OpNodeKind::BinaryOp: {
+        } break;
+        case marex::parse::OpNodeKind::MonoOp: {
+        } break;
+        case marex::parse::OpNodeKind::Operand: {
+        } break;
         case marex::parse::OpNodeKind::None:
             [[fallthrough]];
         default:
