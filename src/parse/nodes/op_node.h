@@ -1,6 +1,7 @@
 #ifndef MAREX_PARSE_OPNODE_H
 #define MAREX_PARSE_OPNODE_H
 #include <concepts>
+#include <memory>
 
 #include "expr.h"
 #include "token.h"
@@ -13,14 +14,14 @@ enum struct [[nodiscard]] OpNodeKind : std::uint8_t {
     Operand,
 };
 
-class OpNode : public Expr {
+class OpNode : public Expr,
+               public std::enable_shared_from_this<OpNode> {
    public:
-    explicit OpNode(lex::Token&& token,
-                    OpNodeKind op_node_kind);
+    explicit OpNode(lex::Token&& token, OpNodeKind op_node_kind);
 
     template <std::derived_from<OpNode> T>
-    [[nodiscard]] T& cast() {
-        return static_cast<T&>(*this);
+    [[nodiscard]] std::shared_ptr<T> cast() {
+        return shared_from_this();
     }
 
     [[nodiscard]] OpNodeKind get_op_node_kind() const {

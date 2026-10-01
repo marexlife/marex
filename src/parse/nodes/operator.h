@@ -10,10 +10,14 @@ class Operator : public OpNode {
     Operator(lex::Token&& token, OpNodeKind op_node_kind,
              lex::BindingPower binding_power);
 
+    [[nodiscard]] lex::BindingPower get_binding_power() const {
+        return binding_power_;
+    }
+
     [[nodiscard]] virtual bool is_finished() const = 0;
 
    private:
-    lex::BindingPower binding_power{};
+    lex::BindingPower binding_power_{};
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_OPERATOR_H

@@ -16,10 +16,10 @@ class BinaryOp final : public Operator {
                       lex::BindingPower binding_power,
                       BinaryOpKind binary_op_kind);
 
-    void set(std::unique_ptr<OpNode> lhs,
-             std::unique_ptr<OpNode> rhs);
-    void set_lhs(std::unique_ptr<OpNode> lhs);
-    void set_rhs(std::unique_ptr<OpNode> rhs);
+    void set(std::shared_ptr<OpNode> lhs,
+             std::shared_ptr<OpNode> rhs);
+    void set_lhs(std::shared_ptr<OpNode> lhs);
+    void set_rhs(std::shared_ptr<OpNode> rhs);
 
     [[nodiscard]] BinaryOpKind get_binary_op() const {
         return binary_op_kind_;
@@ -39,8 +39,8 @@ class BinaryOp final : public Operator {
 
    private:
     BinaryOpKind binary_op_kind_{};
-    std::optional<std::unique_ptr<OpNode>> lhs_;
-    std::optional<std::unique_ptr<OpNode>> rhs_;
+    std::optional<std::shared_ptr<OpNode>> lhs_;
+    std::optional<std::shared_ptr<OpNode>> rhs_;
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_BINARYOP_H

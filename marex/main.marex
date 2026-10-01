@@ -1,6 +1,6 @@
 some_func(y: int32): int32 {
-    return 1
+    x: bool = true;
+    y: bool = false;
+
+    return 1;
 }
-
-
-
