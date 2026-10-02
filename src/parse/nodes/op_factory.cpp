@@ -33,7 +33,7 @@ std::unique_ptr<Operator> OpFactory::create_operator(
                                    *binary_op_kind);
     }
 
-    throw InvalidTokenException(token.get_pos(),
+    throw InvalidTokenException(token.get_pos(), token.get_kind(),
                                 "expected an operator");
 }
 
