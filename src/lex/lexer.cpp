@@ -41,6 +41,8 @@ std::vector<Token> Lexer::run(
                 flush_without_add(result, source_pos);
             } break;
             case '\n': {
+                core::log_info("Lexer: new line");
+
                 flush_without_add(result, source_pos);
                 source_pos.advance_line();
             } break;
