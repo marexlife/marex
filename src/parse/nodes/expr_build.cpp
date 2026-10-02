@@ -1,5 +1,6 @@
 #include "expr_build.h"
 
+#include <cstddef>
 #include <list>
 #include <memory>
 #include <optional>
@@ -49,6 +50,7 @@ class OperationProcessor final {
         std::nullopt;
     std::optional<std::shared_ptr<Operand>> previous_operand_ =
         std::nullopt;
+    std::size_t index_{};
 };
 }  // namespace parse
 
@@ -79,7 +81,11 @@ std::unique_ptr<Expr> OperationProcessor::process_operators(
             previous_operator_ = std::nullopt;
         };
 
+        index_ = {};
+
         for (auto& op_node : op_nodes) {
+            core::Defer increment_index = [&] { ++index_; };
+
             op_node_iter(op_node);
         }
     }
@@ -157,6 +163,9 @@ void OperationProcessor::handle_in_between_bin_op(
                 previous_operator_value->cast<BinaryOp>();
 
             previous_bin_op->set_rhs(previous_operand_.value());
+
+            if (previous_bin_op->is_finished()) {
+            }
         } break;
         case marex::parse::OpNodeKind::MonoOp:
             throw std::runtime_error("mono op not implemented yet");
