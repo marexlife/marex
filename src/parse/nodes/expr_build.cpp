@@ -1,6 +1,7 @@
 #include "expr_build.h"
 
 #include <cstddef>
+#include <iterator>
 #include <list>
 #include <memory>
 #include <optional>
@@ -19,15 +20,14 @@
 
 namespace marex {
 namespace parse {
-[[nodiscard]] static std::list<std::shared_ptr<parse::OpNode>>
-create_op_nodes(TokenStream& stream);
-
 class OperationProcessor final {
    public:
     OperationProcessor() = default;
 
-    [[nodiscard]] std::unique_ptr<parse::Expr> process_operators(
-        std::list<std::shared_ptr<parse::OpNode>>&& op_nodes);
+    [[nodiscard]] OperationProcessor& create_op_nodes(
+        TokenStream& stream);
+
+    [[nodiscard]] std::unique_ptr<parse::Expr> process_op_nodes();
 
    private:
     [[nodiscard]] bool get_was_previous_more_powerful(
@@ -45,45 +45,44 @@ class OperationProcessor final {
     void handle_in_between_iter(std::shared_ptr<OpNode>& op_node);
     void handle_in_between_bin_op(
         std::shared_ptr<BinaryOp>&& op_node);
+    void handle_last_bin_op(std::shared_ptr<OpNode>& op_node);
 
+    std::list<std::shared_ptr<OpNode>> op_nodes_;
     std::optional<std::shared_ptr<Operator>> previous_operator_ =
         std::nullopt;
     std::optional<std::shared_ptr<Operand>> previous_operand_ =
         std::nullopt;
     std::size_t index_{};
+    bool is_last_iter_{};
 };
 }  // namespace parse
 
 std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
-    auto op_nodes = create_op_nodes(stream);
-
-    return OperationProcessor{}.process_operators(
-        std::move(op_nodes));
-}
-
-static std::list<std::shared_ptr<parse::OpNode>>
-parse::create_op_nodes(TokenStream& stream) {
-    std::list<std::shared_ptr<OpNode>> operators;
-
-    stream.run_until_stmt_end([&](const lex::Token& token) {
-        operators.emplace_back(
-            OpFactory::create_op_node(lex::Token(token)));
-    });
-
-    return operators;
+    return OperationProcessor{}
+        .create_op_nodes(stream)
+        .process_op_nodes();
 }
 
 namespace parse {
-std::unique_ptr<Expr> OperationProcessor::process_operators(
-    std::list<std::shared_ptr<parse::OpNode>>&& op_nodes) {
-    while (op_nodes.size() > 1) {
+OperationProcessor& OperationProcessor::create_op_nodes(
+    TokenStream& stream) {
+    stream.run_until_stmt_end([&](const lex::Token& token) {
+        op_nodes_.emplace_back(
+            OpFactory::create_op_node(lex::Token(token)));
+    });
+
+    return *this;
+}
+
+std::unique_ptr<Expr> OperationProcessor::process_op_nodes() {
+    while (op_nodes_.size() > 1) {
         core::Defer end_while_iter = [&] {
             previous_operator_ = std::nullopt;
         };
 
-        index_ = {};
+        for (index_ = {}; auto& op_node : op_nodes_) {
+            is_last_iter_ = index_ == op_nodes_.size() - 1;
 
-        for (auto& op_node : op_nodes) {
             core::Defer increment_index = [&] { ++index_; };
 
             op_node_iter(op_node);
@@ -97,6 +96,11 @@ void OperationProcessor::op_node_iter(
     std::shared_ptr<OpNode>& op_node) {
     if (!previous_operator_ || !previous_operand_) {
         handle_first_time_iter(op_node);
+        return;
+    }
+
+    if (is_last_iter_) {
+        handle_last_bin_op(op_node);
         return;
     }
 
@@ -165,6 +169,29 @@ void OperationProcessor::handle_in_between_bin_op(
             previous_bin_op->set_rhs(previous_operand_.value());
 
             if (previous_bin_op->is_finished()) {
+                auto op_nodes_erase_begin_iter = op_nodes_.begin();
+                auto op_nodes_erase_end_iter = op_nodes_.begin();
+                auto new_complex_operand_insert_iter =
+                    op_nodes_.begin();
+
+                if (index_ == 0) [[unlikely]] {
+                    throw std::runtime_error(
+                        "internal error: index is too low in erasing "
+                        "from the node list");
+                }
+
+                std::advance(op_nodes_erase_begin_iter, index_ - 1);
+                std::advance(op_nodes_erase_end_iter, index_ + 1);
+                std::advance(new_complex_operand_insert_iter, index_);
+
+                op_nodes_.erase(op_nodes_erase_begin_iter,
+                                op_nodes_erase_end_iter);
+
+                auto complex_operand =
+                    previous_bin_op->to_complex_operand();
+
+                op_nodes_.insert(new_complex_operand_insert_iter,
+                                 complex_operand);
             }
         } break;
         case marex::parse::OpNodeKind::MonoOp:
@@ -177,5 +204,8 @@ void OperationProcessor::handle_in_between_bin_op(
             std::unreachable();
     }
 }
+
+void OperationProcessor::handle_last_bin_op(
+    [[maybe_unused]] std::shared_ptr<OpNode>& op_node) {}
 }  // namespace parse
 }  // namespace marex
