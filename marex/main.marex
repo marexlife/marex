@@ -1,6 +1,6 @@
 some_func(y: int32): int32 {
-    x: bool = true;
-    y: bool = false;
+    var x: bool = true;
+    var y: bool = false;
 
     return 1;
 }
