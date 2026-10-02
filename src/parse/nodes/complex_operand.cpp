@@ -1,11 +1,12 @@
 #include "complex_operand.h"
 
+#include <memory>
 #include <utility>
 
-#include "nodes/operand.h"
+#include "nodes/operator.h"
 
 namespace marex::parse {
 ComplexOperand::ComplexOperand(lex::Token&& token,
-                               std::unique_ptr<Operator> operand)
-    : Operand(std::move(token)), operand_(std::move(operand)) {}
+                               std::shared_ptr<Operator>&& operand)
+    : Operand(std::move(token)), operator_(operand) {}
 }  // namespace marex::parse
