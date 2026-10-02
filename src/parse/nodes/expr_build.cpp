@@ -172,10 +172,8 @@ void OperationProcessor::handle_in_between_bin_op(
             previous_bin_op->set_rhs(previous_operand_.value());
 
             if (previous_bin_op->is_finished()) {
-                auto op_nodes_erase_begin_iter = op_nodes_.begin();
+                auto op_nodes_begin_iter = op_nodes_.begin();
                 auto op_nodes_erase_end_iter = op_nodes_.begin();
-                auto new_complex_operand_insert_iter =
-                    op_nodes_.begin();
 
                 if (index_ == 0) [[unlikely]] {
                     throw std::runtime_error(
@@ -183,17 +181,16 @@ void OperationProcessor::handle_in_between_bin_op(
                         "from the node list");
                 }
 
-                std::advance(op_nodes_erase_begin_iter, index_ - 1);
+                std::advance(op_nodes_begin_iter, index_ - 1);
                 std::advance(op_nodes_erase_end_iter, index_ + 1);
-                std::advance(new_complex_operand_insert_iter, index_);
 
-                op_nodes_.erase(op_nodes_erase_begin_iter,
+                op_nodes_.erase(op_nodes_begin_iter,
                                 op_nodes_erase_end_iter);
 
                 auto complex_operand =
                     previous_bin_op->to_complex_operand();
 
-                op_nodes_.insert(new_complex_operand_insert_iter,
+                op_nodes_.insert(op_nodes_begin_iter,
                                  complex_operand);
             }
         } break;
