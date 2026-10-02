@@ -31,13 +31,7 @@ class OperationProcessor final {
 
    private:
     [[nodiscard]] bool get_was_previous_more_powerful(
-        const Operator& this_op_node) const {
-        auto previous_binding_power =
-            previous_operator_.value()->get_binding_power();
-        auto this_binding_power = this_op_node.get_binding_power();
-
-        return previous_binding_power > this_binding_power;
-    }
+        const Operator& this_op_node) const;
 
     void op_node_iter(std::shared_ptr<OpNode>& op_node);
 
@@ -129,6 +123,15 @@ void OperationProcessor::handle_first_time_iter(
         default:
             std::unreachable();
     }
+}
+
+[[nodiscard]] bool OperationProcessor::get_was_previous_more_powerful(
+    const Operator& this_op_node) const {
+    auto previous_binding_power =
+        previous_operator_.value()->get_binding_power();
+    auto this_binding_power = this_op_node.get_binding_power();
+
+    return previous_binding_power > this_binding_power;
 }
 
 void OperationProcessor::handle_in_between_iter(
