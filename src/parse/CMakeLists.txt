@@ -29,6 +29,7 @@ add_library(${PROJECT_NAME}
     nodes/operator.cpp
     nodes/op_factory.cpp
     nodes/identifier.cpp
+    nodes/complex_operand.cpp
     nodes/literal.cpp
 
     nodes/exceptions/invalid_token_exception.cpp
