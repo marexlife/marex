@@ -45,7 +45,7 @@ class OperationProcessor final {
     void handle_in_between_iter(std::shared_ptr<OpNode>& op_node);
     void handle_in_between_bin_op(
         std::shared_ptr<BinaryOp>&& op_node);
-    void handle_last_bin_op(std::shared_ptr<OpNode>& op_node);
+    void handle_last_op_node(std::shared_ptr<OpNode>& op_node);
 
     std::list<std::shared_ptr<OpNode>> op_nodes_;
     std::optional<std::shared_ptr<Operator>> previous_operator_ =
@@ -100,7 +100,7 @@ void OperationProcessor::op_node_iter(
     }
 
     if (is_last_iter_) {
-        handle_last_bin_op(op_node);
+        handle_last_op_node(op_node);
         return;
     }
 
@@ -205,7 +205,24 @@ void OperationProcessor::handle_in_between_bin_op(
     }
 }
 
-void OperationProcessor::handle_last_bin_op(
-    [[maybe_unused]] std::shared_ptr<OpNode>& op_node) {}
+void OperationProcessor::handle_last_op_node(
+    std::shared_ptr<OpNode>& op_node) {
+    auto previous_operator_value = previous_operator_.value();
+
+    switch (previous_operator_value->get_op_node_kind()) {
+        case OpNodeKind::BinaryOp: {
+            auto previous_bin_op =
+                previous_operator_value->cast<BinaryOp>();
+
+            previous_bin_op->set_rhs(op_node);
+        } break;
+        case OpNodeKind::MonoOp:
+            throw std::runtime_error("mono ops not supported yet");
+        case OpNodeKind::None:
+            [[fallthrough]];
+        default:
+            std::unreachable();
+    }
+}
 }  // namespace parse
 }  // namespace marex
