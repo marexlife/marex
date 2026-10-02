@@ -3,6 +3,7 @@
 #include <exception>
 #include <source_location>
 #include <string>
+#include <string_view>
 
 #include "source_pos.h"
 #include "token_kind.h"
@@ -18,6 +19,13 @@ class InvalidTokenException final : public std::exception {
 
     InvalidTokenException(lex::SourcePos source_pos,
                           lex::TokenKind unexpected_token_kind,
+                          std::source_location cpp_source_location =
+                              std::source_location::current());
+
+    InvalidTokenException(lex::SourcePos source_pos,
+                          lex::TokenKind unexpected_token_kind,
+                          std::string&& message,
+                          std::string_view unexpected_token_lexeme,
                           std::source_location cpp_source_location =
                               std::source_location::current());
 

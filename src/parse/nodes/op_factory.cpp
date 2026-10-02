@@ -34,7 +34,8 @@ std::unique_ptr<Operator> OpFactory::create_operator(
     }
 
     throw InvalidTokenException(token.get_pos(), token.get_kind(),
-                                "expected an operator");
+                                "expected an operator.",
+                                token.get_lexeme_or_empty_if_none());
 }
 
 std::optional<BinaryOpKind> OpFactory::get_binary_op_kind(
