@@ -52,7 +52,6 @@ TokenFactory::TokenFactory()
 Token TokenFactory::create_token(std::string&& source_word,
                                  SourcePos source_pos) {
     return Token{
-        core::Passkey<TokenFactory>{},
         std::move(source_word),
         map(source_word),
         source_pos,

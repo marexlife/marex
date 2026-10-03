@@ -4,7 +4,6 @@
 #include <string>
 #include <string_view>
 
-#include "passkey.h"
 #include "source_pos.h"
 #include "token_kind.h"
 
@@ -18,15 +17,11 @@ class LexTester;
 
 class [[nodiscard]] Token final {
    public:
-    Token([[maybe_unused]] core::Passkey<TokenFactory>&& passkey,
-          std::string&& lexeme, TokenKind kind, SourcePos source_pos);
+    Token(std::string&& lexeme, TokenKind kind, SourcePos source_pos);
+    explicit Token(TokenKind kind) : kind_(kind) {}
 
-#ifdef TESTING
     Token(std::string&& lexeme, TokenKind kind)
         : lexeme_(std::move(lexeme)), kind_(kind) {}
-
-    Token(TokenKind kind) : kind_(kind) {}
-#endif
 
     [[nodiscard]] std::string_view get_lexeme_or_throw() const;
 

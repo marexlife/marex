@@ -10,8 +10,7 @@
 #include "token_kind.h"
 
 namespace marex::lex {
-Token::Token([[maybe_unused]] core::Passkey<TokenFactory>&& passkey,
-             std::string&& lexeme, TokenKind kind,
+Token::Token(std::string&& lexeme, TokenKind kind,
              SourcePos source_pos)
     : lexeme_(std::move(lexeme)),
       kind_(kind),
