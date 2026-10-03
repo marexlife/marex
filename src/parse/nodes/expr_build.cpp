@@ -1,6 +1,7 @@
 #include "expr_build.h"
 
 #include <cstddef>
+#include <format>
 #include <iterator>
 #include <list>
 #include <memory>
@@ -63,10 +64,18 @@ std::unique_ptr<parse::Expr> parse::build_expr(
 namespace parse {
 OperationProcessor& OperationProcessor::create_op_nodes(
     TokenStream& stream, lex::TokenKind until_token_kind) {
-    stream.run_until(until_token_kind, [&](const lex::Token& token) {
-        op_nodes_.emplace_back(
-            OpFactory::create_op_node(lex::Token(token)));
-    });
+    try {
+        stream.run_until(
+            until_token_kind, [&](const lex::Token& token) {
+                op_nodes_.emplace_back(
+                    OpFactory::create_op_node(lex::Token(token)));
+            });
+    } catch (std::out_of_range& out_of_range_exception) {
+        core::log_error(
+            std::format("Last was not {}", *until_token_kind));
+    } catch (...) {
+        throw std::runtime_error("unkown error");
+    }
 
     core::log_info("completed run_until");
 
@@ -148,7 +157,6 @@ void OperationProcessor::handle_in_between_iter(
         case marex::parse::OpNodeKind::MonoOp:
             throw std::runtime_error(
                 "mono op is not implemented yet");
-
         case marex::parse::OpNodeKind::Operand:
             previous_operand_ = op_node->cast<Operand>();
             break;
