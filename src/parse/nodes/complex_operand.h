@@ -2,6 +2,7 @@
 #define MAREX_PARSE_COMPLEXOPERAND_H
 #include <functional>
 #include <memory>
+#include <string>
 
 #include "nodes/operand.h"
 #include "token.h"
@@ -18,6 +19,8 @@ class ComplexOperand final : public Operand {
     get_operator() const {
         return *operator_;
     }
+
+    [[nodiscard]] std::string as_c() override;
 
    private:
     std::shared_ptr<Operator> operator_;

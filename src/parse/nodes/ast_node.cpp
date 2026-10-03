@@ -5,6 +5,5 @@
 #include "token.h"
 
 namespace marex::parse {
-AstNode::AstNode(lex::Token&& token)
-    : token(std::move(token)) {}
+AstNode::AstNode(lex::Token&& token) : token_(std::move(token)) {}
 }  // namespace marex::parse

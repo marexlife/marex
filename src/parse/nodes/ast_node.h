@@ -25,28 +25,28 @@ class AstNode {
 
     // deliberately not = 0;
     [[nodiscard]] virtual std::string as_c() {
-        throw std::runtime_error("this shouldn't have been called.");
+        return std::string{token_.get_lexeme_or_throw()};
     }
 
     [[nodiscard]] const lex::Token& get_token() const {
-        return token;
+        return token_;
     }
 
     [[nodiscard]] std::optional<lex::BindingPower> get_binding_power()
         const {
-        return token.get_binding_power();
+        return token_.get_binding_power();
     }
 
     [[nodiscard]] lex::TokenKind get_kind() const {
-        return token.get_kind();
+        return token_.get_kind();
     }
 
     [[nodiscard]] std::string_view get_lexeme() const {
-        return token.get_lexeme_or_throw();
+        return token_.get_lexeme_or_throw();
     }
 
    private:
-    lex::Token token;
+    lex::Token token_;
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_ASTNODE_H
