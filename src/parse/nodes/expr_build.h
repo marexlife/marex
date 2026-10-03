@@ -7,6 +7,6 @@
 
 namespace marex::parse {
 [[nodiscard]] std::unique_ptr<Expr> build_expr(
-    TokenStream& stream);
+    TokenStream& stream, lex::TokenKind until_token_kind);
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_STATEMENTBUILDER_H

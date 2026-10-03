@@ -37,8 +37,10 @@ void ReturnNode::parse(TokenStream& stream) {
         return;
     }
 
-    value_ = build_expr(stream);
+    constexpr auto end = lex::TokenKind::StatementEnd;
 
-    stream.advance_if_matches_or_throw(lex::TokenKind::StatementEnd);
+    value_ = build_expr(stream, end);
+
+    stream.advance_if_matches_or_throw(end);
 }
 }  // namespace marex::parse

@@ -16,6 +16,7 @@
 #include "nodes/operand.h"
 #include "nodes/operator.h"
 #include "token.h"
+#include "token_kind.h"
 #include "token_stream.h"
 
 namespace marex {
@@ -25,7 +26,7 @@ class OperationProcessor final {
     OperationProcessor() = default;
 
     [[nodiscard]] OperationProcessor& create_op_nodes(
-        TokenStream& stream);
+        TokenStream& stream, lex::TokenKind until_token_kind);
 
     [[nodiscard]] std::unique_ptr<parse::Expr> process_op_nodes();
 
@@ -51,16 +52,17 @@ class OperationProcessor final {
 };
 }  // namespace parse
 
-std::unique_ptr<parse::Expr> parse::build_expr(TokenStream& stream) {
+std::unique_ptr<parse::Expr> parse::build_expr(
+    TokenStream& stream, lex::TokenKind until_token_kind) {
     return OperationProcessor{}
-        .create_op_nodes(stream)
+        .create_op_nodes(stream, until_token_kind)
         .process_op_nodes();
 }
 
 namespace parse {
 OperationProcessor& OperationProcessor::create_op_nodes(
-    TokenStream& stream) {
-    stream.run_until_stmt_end([&](const lex::Token& token) {
+    TokenStream& stream, lex::TokenKind until_token_kind) {
+    stream.run_until(until_token_kind, [&](const lex::Token& token) {
         op_nodes_.emplace_back(
             OpFactory::create_op_node(lex::Token(token)));
     });

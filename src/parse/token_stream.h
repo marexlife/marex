@@ -16,8 +16,8 @@
 namespace marex::parse {
 class TokenStream final {
    public:
-    TokenStream(std::vector<lex::Token>&& token_stream = {},
-                bool is_in_lint_mode = false);
+    explicit TokenStream(std::vector<lex::Token>&& token_stream = {},
+                         bool is_in_lint_mode = false);
 
     using ProgressType = std::size_t;
 
@@ -33,9 +33,9 @@ class TokenStream final {
 
     template <typename F>
         requires std::is_invocable_v<F, const lex::Token&>
-    void run_until_stmt_end(F iter) const {
-        for (std::size_t i = 0;
-             token_kind_at(i) != lex::TokenKind::StatementEnd; ++i) {
+    void run_until(lex::TokenKind token_kind, F iter) const {
+        for (std::size_t i = progress_;
+             token_kind_at(i) != token_kind; ++i) {
             std::invoke(iter, borrow_token_at(i));
         }
     }
