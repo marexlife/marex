@@ -1,7 +1,7 @@
 #ifndef MAREX_CORE_LOGGER_H
 #define MAREX_CORE_LOGGER_H
 #include <format>
-#include <print>
+#include <iostream>
 #include <source_location>
 #include <string>
 #include <utility>
@@ -17,7 +17,8 @@ template <typename... Ts>
 constexpr void log_info(std::format_string<Ts...> message,
                         Ts... args) {
     if (detail::log_infos) {
-        std::println(message, std::forward<Ts>(args)...);
+        std::cerr << std::format(message, std::forward<Ts>(args)...)
+                  << "\n";
     }
 }
 
