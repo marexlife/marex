@@ -33,10 +33,9 @@ class TokenStream final {
 
     template <typename F>
         requires std::is_invocable_v<F, const lex::Token&>
-    void run_until(lex::TokenKind token_kind, F iter) const {
-        for (std::size_t i = progress_;
-             token_kind_at(i) != token_kind; ++i) {
-            std::invoke(iter, borrow_token_at(i));
+    void run_until(lex::TokenKind token_kind, F iter) {
+        for (; token_kind_at(progress_) != token_kind; ++progress_) {
+            std::invoke(iter, borrow_token_at(progress_));
         }
     }
 

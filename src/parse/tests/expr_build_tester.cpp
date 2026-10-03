@@ -1,7 +1,5 @@
 #include "expr_build_tester.h"
 
-#include <memory>
-
 #include "nodes/expr_build.h"
 #include "token.h"
 #include "token_kind.h"
@@ -15,6 +13,7 @@ bool ExprBuildTester::test_expr_build() {
         lex::Token{lex::TokenKind::IntLiteral},
         lex::Token{lex::TokenKind::OpMul},
         lex::Token{lex::TokenKind::IntLiteral},
+        lex::Token{lex::TokenKind::StatementEnd},
     }};
 
     auto result =

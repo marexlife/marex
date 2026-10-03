@@ -15,6 +15,7 @@ void core::log_error(std::string&& message,
         merge_message_with_source_location(message, source_location);
 
     std::cerr << std::format("{}\n", format_result);
+    std::cerr.flush();
 }
 
 void core::log_fatal_error(std::string&& message,

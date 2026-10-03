@@ -18,7 +18,7 @@ class ReturnNode final : public AstNode {
     void parse(TokenStream& stream) override;
 
    private:
-    std::optional<std::unique_ptr<Expr>> value_;
+    std::optional<std::shared_ptr<Expr>> value_;
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_RETRUNNODE_H

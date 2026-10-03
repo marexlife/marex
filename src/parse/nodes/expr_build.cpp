@@ -30,7 +30,7 @@ class OperationProcessor final {
     [[nodiscard]] OperationProcessor& create_op_nodes(
         TokenStream& stream, lex::TokenKind until_token_kind);
 
-    [[nodiscard]] std::unique_ptr<parse::Expr> process_op_nodes();
+    [[nodiscard]] std::shared_ptr<parse::Expr> process_op_nodes();
 
    private:
     [[nodiscard]] bool was_previous_more_powerful(
@@ -54,7 +54,7 @@ class OperationProcessor final {
 };
 }  // namespace parse
 
-std::unique_ptr<parse::Expr> parse::build_expr(
+std::shared_ptr<parse::Expr> parse::build_expr(
     TokenStream& stream, lex::TokenKind until_token_kind) {
     return OperationProcessor{}
         .create_op_nodes(stream, until_token_kind)
@@ -71,7 +71,7 @@ OperationProcessor& OperationProcessor::create_op_nodes(
                     OpFactory::create_op_node(lex::Token(token)));
             });
     } catch (std::out_of_range& out_of_range_exception) {
-        core::log_error(
+        throw std::runtime_error(
             std::format("Last was not {}", *until_token_kind));
     } catch (...) {
         throw std::runtime_error("unkown error");
@@ -82,7 +82,7 @@ OperationProcessor& OperationProcessor::create_op_nodes(
     return *this;
 }
 
-std::unique_ptr<Expr> OperationProcessor::process_op_nodes() {
+std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
     while (op_nodes_.size() > 1) {
         core::Defer end_while_iter = [&] {
             previous_operator_ = std::nullopt;
@@ -97,7 +97,7 @@ std::unique_ptr<Expr> OperationProcessor::process_op_nodes() {
         }
     }
 
-    throw std::runtime_error("not implemented yet");
+    return op_nodes_.front();
 }
 
 void OperationProcessor::op_node_iter(

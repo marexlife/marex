@@ -5,7 +5,6 @@
 #include <string>
 #include <utility>
 
-#include "defer.h"
 #include "expr_kind.h"
 #include "logging.h"
 #include "nodes/ast_node.h"
@@ -27,9 +26,6 @@ std::string ReturnNode::as_c() {
 
 void ReturnNode::parse(TokenStream& stream) {
     core::log_info("pre parse return");
-    core::Defer log_post_return = [&] {
-        core::log_info("post parse return");
-    };
 
     stream.advance_if_matches_or_throw(lex::TokenKind::Return);
 
@@ -42,5 +38,7 @@ void ReturnNode::parse(TokenStream& stream) {
     value_ = build_expr(stream, end);
 
     stream.advance_if_matches_or_throw(end);
+
+    core::log_info("post parse return");
 }
 }  // namespace marex::parse

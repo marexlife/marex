@@ -18,7 +18,3 @@ add_compile_definitions(${PROJECT_NAME}
 )
 
 add_test(${PROJECT_NAME} ${PROJECT_NAME})
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ctest $<TARGET_FILE:${PROJECT_NAME}> --output-on-failure
-)

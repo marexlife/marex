@@ -16,10 +16,14 @@ void flush();
 template <typename... Ts>
 constexpr void log_info(std::format_string<Ts...> message,
                         Ts... args) {
-    if (detail::log_infos) {
-        std::cerr << std::format(message, std::forward<Ts>(args)...)
-                  << "\n";
+    if (!detail::log_infos) {
+        return;
     }
+
+    std::cerr << std::format(message, std::forward<Ts>(args)...)
+              << "\n";
+
+    std::cerr.flush();
 }
 
 void log_error(std::string&& message,

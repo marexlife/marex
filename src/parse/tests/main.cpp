@@ -1,7 +1,12 @@
+#include <print>
+
 #include "expr_build_tester.h"
 
 int main() {
-    return marex::parse::tests::ExprBuildTester::test_expr_build()
-               ? 0
-               : -1;
+    auto result =
+        marex::parse::tests::ExprBuildTester::test_expr_build();
+
+    std::println("Parser test: success = {}", result);
+
+    return result ? 0 : -1;
 }
