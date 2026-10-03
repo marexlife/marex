@@ -20,10 +20,9 @@ class AstNode {
     virtual ~AstNode() = default;
 
     virtual void parse([[maybe_unused]] TokenStream& stream) {
-        throw std::runtime_error("this shouldn't have been called.");
+        throw std::runtime_error("Parse unimplemented for AstNode");
     }
 
-    // deliberately not = 0;
     [[nodiscard]] virtual std::string as_c() {
         return std::string{token_.get_lexeme_or_throw()};
     }
