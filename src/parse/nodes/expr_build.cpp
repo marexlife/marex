@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "defer.h"
+#include "logging.h"
 #include "nodes/binary_op.h"
 #include "nodes/expr.h"
 #include "nodes/op_factory.h"
@@ -62,6 +63,10 @@ std::unique_ptr<parse::Expr> parse::build_expr(
 namespace parse {
 OperationProcessor& OperationProcessor::create_op_nodes(
     TokenStream& stream, lex::TokenKind until_token_kind) {
+    core::Defer defer_log = [&] {
+        core::log_info("completed run_until");
+    };
+
     stream.run_until(until_token_kind, [&](const lex::Token& token) {
         op_nodes_.emplace_back(
             OpFactory::create_op_node(lex::Token(token)));
