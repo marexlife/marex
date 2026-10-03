@@ -8,9 +8,10 @@
 
 namespace marex::parse::tests {
 int ExprBuildTester::test_expr_build() {
-    TokenStream token_stream;
+    TokenStream token_stream{};
 
-    auto result = build_expr(token_stream);
+    auto result =
+        build_expr(token_stream, lex::TokenKind::StatementEnd);
 
     return result->get_kind() == lex::TokenKind::OpMul ? 0 : -1;
 }
