@@ -1,8 +1,7 @@
-// #include "expr_build_tester.h"
+#include "expr_build_tester.h"
 
 int main() {
-    // Not finished yet
-    // return marex::parse::tests::ExprBuildTester::test_expr_build();
-
-    return 0;
+    return marex::parse::tests::ExprBuildTester::test_expr_build()
+               ? 0
+               : -1;
 }
