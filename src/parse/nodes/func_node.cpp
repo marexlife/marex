@@ -96,14 +96,15 @@ void FuncNode::parse_func_body(TokenStream& stream) {
         auto node = std::invoke([&] -> std::unique_ptr<AstNode> {
             switch (stream.get_kind()) {
                 case lex::TokenKind::Identifier: {
-                    if (stream.matches(lex::TokenKind::OpenBracket)) {
+                    if (stream.matches_next(
+                            lex::TokenKind::OpenBracket)) {
                         core::log_info("function call");
 
                         return std::make_unique<FuncCall>(
                             stream.copy_out_token());
                     }
 
-                    if (stream.matches(lex::TokenKind::Colon)) {
+                    if (stream.matches_next(lex::TokenKind::Colon)) {
                         core::log_info("var decl");
 
                         return std::make_unique<VarDecl>(

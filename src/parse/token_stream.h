@@ -81,6 +81,10 @@ class TokenStream final {
         return get_kind() == token_kind;
     }
 
+    [[nodiscard]] bool matches_next(lex::TokenKind token_kind) const {
+        return get_next_kind() == token_kind;
+    }
+
     [[nodiscard]] const lex::Token& borrow_previous() const {
         return tokens_.at(progress_ - 1);
     }
