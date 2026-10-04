@@ -55,6 +55,12 @@ class OperationProcessor final {
     void handle_end(std::shared_ptr<OpNode>& op_node);
     void swap_to_complex_operator();
 
+    [[nodiscard]] bool is_last_iter() const;
+
+    [[nodiscard]] std::size_t list_size() const {
+        return op_nodes_.size();
+    }
+
     std::list<std::shared_ptr<OpNode>> op_nodes_;
 
     std::optional<PreviousOpNodeData<Operator>> previous_operator_ =
@@ -62,17 +68,8 @@ class OperationProcessor final {
     std::optional<PreviousOpNodeData<Operand>> previous_operand_ =
         std::nullopt;
 
-    [[nodiscard]] bool is_last_iter() const {
-        if (op_nodes_.empty()) [[unlikely]] {
-            return true;
-        }
-
-        return index_ == op_nodes_.size() - 1;
-    }
-
     std::size_t walk_through_iter_{};
     std::size_t index_{};
-    bool is_last_iter_{};
 };
 }  // namespace parse
 
@@ -112,7 +109,8 @@ std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
             previous_operator_ = std::nullopt;
         };
 
-        core::log_info("start walk through:");
+        core::log_info("start walk through with list size {}:",
+                       op_nodes_.size());
 
         for (index_ = {}; auto& op_node : op_nodes_) {
             core::log_info(
@@ -130,6 +128,14 @@ std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
     return op_nodes_.front();
 }
 
+[[nodiscard]] bool OperationProcessor::is_last_iter() const {
+    if (op_nodes_.empty()) [[unlikely]] {
+        return true;
+    }
+
+    return index_ == op_nodes_.size() - 1;
+}
+
 void OperationProcessor::op_node_iter(
     std::shared_ptr<OpNode>& op_node) {
     core::log_info("previous_operand: {}, previous_operator: {}",
@@ -141,7 +147,7 @@ void OperationProcessor::op_node_iter(
         return;
     }
 
-    if (is_last_iter_) {
+    if (is_last_iter()) {
         handle_end(op_node);
         return;
     }
