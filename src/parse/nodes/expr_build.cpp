@@ -49,6 +49,8 @@ class OperationProcessor final {
         std::nullopt;
     std::optional<std::shared_ptr<Operand>> previous_operand_ =
         std::nullopt;
+
+    std::size_t walk_through_iter_{};
     std::size_t index_{};
     bool is_last_iter_{};
 };
@@ -83,12 +85,17 @@ OperationProcessor& OperationProcessor::create_op_nodes(
 }
 
 std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
-    while (op_nodes_.size() > 1) {
+    walk_through_iter_ = {};
+
+    for (; op_nodes_.size() > 1; ++walk_through_iter_) {
         core::Defer end_while_iter = [&] {
             previous_operator_ = std::nullopt;
         };
 
         for (index_ = {}; auto& op_node : op_nodes_) {
+            core::log_info("index: {}, walk through iter: {}", index_,
+                           walk_through_iter_);
+
             is_last_iter_ = index_ == op_nodes_.size() - 1;
 
             core::Defer increment_index = [&] { ++index_; };
