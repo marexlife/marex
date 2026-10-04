@@ -2,6 +2,7 @@
 
 #include <concepts>
 #include <cstddef>
+#include <exception>
 #include <format>
 #include <iterator>
 #include <list>
@@ -92,8 +93,10 @@ OperationProcessor& OperationProcessor::create_op_nodes(
     } catch (std::out_of_range& out_of_range_exception) {
         throw std::runtime_error(
             std::format("Last was not {}", *until_token_kind));
+    } catch (const std::exception& exception) {
+        throw exception;
     } catch (...) {
-        throw std::runtime_error("unkown error");
+        throw std::runtime_error("unkown error from create_op_nodes");
     }
 
     core::log_info("completed run_until");
