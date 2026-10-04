@@ -87,9 +87,12 @@ OperationProcessor& OperationProcessor::create_op_nodes(
     try {
         stream.run_until(
             until_token_kind, [&](const lex::Token& token) {
-                op_nodes_.emplace_back(
-                    OpFactory::create_op_node(lex::Token(token)));
+                auto op_node =
+                    OpFactory::create_op_node(lex::Token(token));
+
+                op_nodes_.emplace_back(std::move(op_node));
             });
+
     } catch (std::out_of_range& out_of_range_exception) {
         throw std::runtime_error(
             std::format("Last was not {}", *until_token_kind));

@@ -7,6 +7,7 @@
 
 #include "binding_power.h"
 #include "exceptions/invalid_token_exception.h"
+#include "logging.h"
 #include "nodes/binary_op.h"
 #include "nodes/identifier.h"
 #include "nodes/literal.h"
@@ -19,9 +20,16 @@
 namespace marex::parse {
 std::unique_ptr<OpNode> OpFactory::create_op_node(
     lex::Token&& token) {
+    core::input_break("in op factory");
+
     if (auto binding_power = token.get_binding_power()) {
+        core::input_break("in op factory with binding power, for {}",
+                          token.to_string());
+
         return create_operator(std::move(token), *binding_power);
     }
+
+    core::input_break("in op factory with no binding power");
 
     return create_operand(std::move(token));
 }

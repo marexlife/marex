@@ -1,6 +1,8 @@
 #include "token.h"
 
+#include <format>
 #include <optional>
+#include <string>
 #include <string_view>
 #include <utility>
 
@@ -16,13 +18,18 @@ Token::Token(std::string&& lexeme, TokenKind kind,
       kind_(kind),
       source_pos_(source_pos) {}
 
-[[nodiscard]] std::string_view Token::get_lexeme_or_throw() const {
+std::string_view Token::get_lexeme_or_throw() const {
     if (!lexeme_) [[unlikely]] {
         core::log_fatal_internal_error(
             "trying to get lexeme when none is there");
     }
 
     return *lexeme_;
+}
+
+std::string Token::to_string() const {
+    return std::format("{} with '{}'", *get_kind(),
+                       get_lexeme_or_empty_if_none());
 }
 
 std::string_view Token::get_lexeme_or_empty_if_none() const {

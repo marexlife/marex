@@ -23,6 +23,8 @@ class [[nodiscard]] Token final {
     Token(std::string&& lexeme, TokenKind kind)
         : lexeme_(std::move(lexeme)), kind_(kind) {}
 
+    [[nodiscard]] std::string to_string() const;
+
     [[nodiscard]] std::string_view get_lexeme_or_throw() const;
 
     [[nodiscard]] std::string_view get_lexeme_or_empty_if_none()
