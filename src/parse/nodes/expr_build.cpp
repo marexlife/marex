@@ -53,7 +53,7 @@ class OperationProcessor final {
     void handle_in_between_bin_op(
         std::shared_ptr<BinaryOp>&& op_node);
     void handle_end(std::shared_ptr<OpNode>& op_node);
-    void swap_to_complex_operator();
+    void swap_bin_op_to_complex_operator();
 
     [[nodiscard]] bool is_last_iter() const;
 
@@ -239,7 +239,7 @@ void OperationProcessor::handle_in_between_bin_op(
                 previous_operand_.value().op_node);
 
             if (previous_bin_op->is_finished()) {
-                swap_to_complex_operator();
+                swap_bin_op_to_complex_operator();
             }
         } break;
         case marex::parse::OpNodeKind::MonoOp:
@@ -253,11 +253,14 @@ void OperationProcessor::handle_in_between_bin_op(
     }
 }
 
-void OperationProcessor::swap_to_complex_operator() {
+void OperationProcessor::swap_bin_op_to_complex_operator() {
     core::log_info("swap_to_complex_operator");
 
     auto previous_operator_node_index =
         previous_operator_.value().index;
+
+    core::log_info("previous_operator_node_index: {}",
+                   previous_operator_node_index);
 
     auto op_nodes_begin_iter = op_nodes_.begin();
     auto op_nodes_erase_end_iter = op_nodes_.begin();
@@ -266,6 +269,10 @@ void OperationProcessor::swap_to_complex_operator() {
         throw std::runtime_error(
             "internal error: index is too low in erasing "
             "from the node list");
+    }
+
+    if (previous_operator_node_index < 1) [[unlikely]] {
+        throw std::runtime_error("swap tot bin op, index is too low");
     }
 
     std::advance(op_nodes_begin_iter,
@@ -296,7 +303,7 @@ void OperationProcessor::handle_end(
 
             previous_bin_op->set_rhs(op_node);
 
-            swap_to_complex_operator();
+            swap_bin_op_to_complex_operator();
         } break;
         case OpNodeKind::MonoOp:
             throw std::runtime_error("mono ops not supported yet");
