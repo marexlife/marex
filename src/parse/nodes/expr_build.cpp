@@ -52,7 +52,7 @@ class OperationProcessor final {
     void handle_in_between_iter(std::shared_ptr<OpNode>& op_node);
     void handle_in_between_bin_op(
         std::shared_ptr<BinaryOp>&& op_node);
-    void handle_last_op_node(std::shared_ptr<OpNode>& op_node);
+    void handle_end(std::shared_ptr<OpNode>& op_node);
     void swap_to_complex_operator();
 
     std::list<std::shared_ptr<OpNode>> op_nodes_;
@@ -126,13 +126,17 @@ std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
 
 void OperationProcessor::op_node_iter(
     std::shared_ptr<OpNode>& op_node) {
-    if (!previous_operator_ || !previous_operand_) {
+    core::log_info("previous_operand: {}, previous_operator: {}",
+                   previous_operand_.has_value(),
+                   previous_operator_.has_value());
+
+    if (!previous_operator_) {
         handle_start(op_node);
         return;
     }
 
     if (is_last_iter_) {
-        handle_last_op_node(op_node);
+        handle_end(op_node);
         return;
     }
 
@@ -237,6 +241,8 @@ void OperationProcessor::handle_in_between_bin_op(
 }
 
 void OperationProcessor::swap_to_complex_operator() {
+    core::log_info("swap_to_complex_operator");
+
     auto previous_operator_node_index =
         previous_operator_.value().index;
 
@@ -262,14 +268,16 @@ void OperationProcessor::swap_to_complex_operator() {
     op_nodes_.insert(op_nodes_begin_iter, complex_operand);
 }
 
-void OperationProcessor::handle_last_op_node(
+void OperationProcessor::handle_end(
     std::shared_ptr<OpNode>& op_node) {
-    core::log_info("handle_last_op_node");
+    core::log_info("handle_end");
 
     auto previous_operator_node = previous_operator_.value().op_node;
 
     switch (previous_operator_node->get_op_node_kind()) {
         case OpNodeKind::BinaryOp: {
+            core::log_info("handle_end: BinaryOp");
+
             auto previous_bin_op =
                 previous_operator_node->cast<BinaryOp>();
 
