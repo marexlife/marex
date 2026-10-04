@@ -1,4 +1,4 @@
-square(y: int32): int32 {
+square(y: int): int {
     return y * y;
 }
 

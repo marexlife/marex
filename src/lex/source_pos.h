@@ -18,7 +18,7 @@ struct SourcePos final {
 
    private:
     std::uintmax_t line = 1;
-    std::uintmax_t column = 1;
+    std::uintmax_t column = 0;
     std::optional<std::string_view> filename = std::nullopt;
 };
 }  // namespace marex::lex
