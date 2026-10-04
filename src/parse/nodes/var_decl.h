@@ -4,7 +4,9 @@
 
 #include "expr_kind.h"
 #include "nodes/ast_node.h"
+#include "nodes/expr.h"
 #include "token.h"
+#include <memory>
 
 namespace marex::parse {
 class VarDecl final : public AstNode {
@@ -18,8 +20,8 @@ class VarDecl final : public AstNode {
 
    private:
     std::string name_;
-    ExprKind type_kind_{};
-    std::string value_;
+    TypeKind type_kind_{};
+    std::shared_ptr<Expr> value_;
 };
 }  // namespace marex::parse
 #endif  // MAREX_PARSE_VAR_NODE_H

@@ -143,7 +143,7 @@ void FuncNode::parse_func_signature(TokenStream& stream) {
     parse_func_args(stream);
 
     if (stream.advance_if_matches(lex::TokenKind::OpenBrace)) {
-        return_type_ = ExprKind::EmptyType;
+        return_type_ = TypeKind::EmptyType;
         return;
     }
 

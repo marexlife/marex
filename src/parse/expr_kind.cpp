@@ -8,64 +8,59 @@
 #include "token_stream.h"
 
 namespace marex {
-[[nodiscard]] std::string_view parse::operator*(
-    ExprKind token_kind) {
+[[nodiscard]] std::string_view parse::operator*(TypeKind token_kind) {
     switch (token_kind) {
-        case ExprKind::EmptyType:
+        case TypeKind::EmptyType:
             return "void";
-        case ExprKind::IntType:
+        case TypeKind::IntType:
             return "int32_t";
-        case ExprKind::FloatType:
+        case TypeKind::FloatType:
             return "float";
-        case ExprKind::BoolType:
+        case TypeKind::BoolType:
             return "bool";
-        case marex::parse::ExprKind::StringType:
+        case marex::parse::TypeKind::StringType:
             return "str";
-        case ExprKind::Identifier:
+        case TypeKind::Identifier:
             return "identifier";
-        case ExprKind::None:
+        case TypeKind::None:
             break;
     }
 
     throw std::out_of_range("Not a valid TypeKind");
 }
 
-parse::ExprKind
-parse::expression_kind_from_decl_or_throw(
+parse::TypeKind parse::expression_kind_from_decl_or_throw(
     const parse::TokenStream& pack,
     std::source_location cpp_source_location) {
     switch (pack.get_kind()) {
         case marex::lex::TokenKind::Int32Decl:
-            return ExprKind::IntType;
+            return TypeKind::IntType;
         case marex::lex::TokenKind::BoolDecl:
-            return ExprKind::BoolType;
+            return TypeKind::BoolType;
         case marex::lex::TokenKind::FloatDecl:
-            return ExprKind::FloatType;
+            return TypeKind::FloatType;
         default:
             throw InvalidTokenException(
-                pack.get_pos(), pack.get_kind(),
-                "expected a type",
+                pack.get_pos(), pack.get_kind(), "expected a type",
                 cpp_source_location);
     }
 }
 
-parse::ExprKind
-parse::expression_kind_from_literal_or_throw(
+parse::TypeKind parse::expression_kind_from_literal_or_throw(
     const parse::TokenStream& pack,
     std::source_location cpp_source_location) {
     switch (pack.get_kind()) {
         case marex::lex::TokenKind::IntLiteral:
-            return ExprKind::IntType;
+            return TypeKind::IntType;
         case marex::lex::TokenKind::BoolLiteral:
-            return ExprKind::BoolType;
+            return TypeKind::BoolType;
         case marex::lex::TokenKind::FloatLiteral:
-            return ExprKind::FloatType;
+            return TypeKind::FloatType;
         case marex::lex::TokenKind::StringLiteral:
-            return ExprKind::StringType;
+            return TypeKind::StringType;
         default:
             throw InvalidTokenException(
-                pack.get_pos(), pack.get_kind(),
-                "expected a type",
+                pack.get_pos(), pack.get_kind(), "expected a type",
                 cpp_source_location);
     }
 }
