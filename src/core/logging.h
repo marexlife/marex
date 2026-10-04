@@ -14,7 +14,7 @@ inline const bool log_infos = true;
 void flush();
 
 template <typename... Ts>
-constexpr void log_info(std::format_string<Ts...> message,
+constexpr void log_info(std::format_string<Ts...> message = "",
                         Ts... args) {
     if (!detail::log_infos) {
         return;

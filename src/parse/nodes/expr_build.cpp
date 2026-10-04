@@ -1,5 +1,6 @@
 #include "expr_build.h"
 
+#include <concepts>
 #include <cstddef>
 #include <format>
 #include <iterator>
@@ -23,6 +24,15 @@
 
 namespace marex {
 namespace parse {
+template <std::derived_from<OpNode> T>
+struct PreviousOpNodeData final {
+    PreviousOpNodeData(std::shared_ptr<T> op_node, std::size_t index)
+        : op_node(std::move(op_node)), index(index) {}
+
+    std::shared_ptr<T> op_node;
+    std::size_t index{};
+};
+
 class OperationProcessor final {
    public:
     OperationProcessor() = default;
@@ -38,16 +48,18 @@ class OperationProcessor final {
 
     void op_node_iter(std::shared_ptr<OpNode>& op_node);
 
-    void handle_first_time_iter(std::shared_ptr<OpNode>& op_node);
+    void handle_start(std::shared_ptr<OpNode>& op_node);
     void handle_in_between_iter(std::shared_ptr<OpNode>& op_node);
     void handle_in_between_bin_op(
         std::shared_ptr<BinaryOp>&& op_node);
     void handle_last_op_node(std::shared_ptr<OpNode>& op_node);
+    void swap_to_complex_operator();
 
     std::list<std::shared_ptr<OpNode>> op_nodes_;
-    std::optional<std::shared_ptr<Operator>> previous_operator_ =
+
+    std::optional<PreviousOpNodeData<Operator>> previous_operator_ =
         std::nullopt;
-    std::optional<std::shared_ptr<Operand>> previous_operand_ =
+    std::optional<PreviousOpNodeData<Operand>> previous_operand_ =
         std::nullopt;
 
     std::size_t walk_through_iter_{};
@@ -92,9 +104,12 @@ std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
             previous_operator_ = std::nullopt;
         };
 
+        core::log_info("start walk through:");
+
         for (index_ = {}; auto& op_node : op_nodes_) {
-            core::log_info("index: {}, walk through iter: {}", index_,
-                           walk_through_iter_);
+            core::log_info(
+                "expr build: index: {}, walk through iter: {}",
+                index_, walk_through_iter_);
 
             is_last_iter_ = index_ == op_nodes_.size() - 1;
 
@@ -102,6 +117,8 @@ std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
 
             op_node_iter(op_node);
         }
+
+        core::log_info();
     }
 
     return op_nodes_.front();
@@ -110,7 +127,7 @@ std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
 void OperationProcessor::op_node_iter(
     std::shared_ptr<OpNode>& op_node) {
     if (!previous_operator_ || !previous_operand_) {
-        handle_first_time_iter(op_node);
+        handle_start(op_node);
         return;
     }
 
@@ -122,22 +139,29 @@ void OperationProcessor::op_node_iter(
     handle_in_between_iter(op_node);
 }
 
-void OperationProcessor::handle_first_time_iter(
+void OperationProcessor::handle_start(
     std::shared_ptr<OpNode>& op_node) {
+    core::log_info("handle_start");
+
     switch (op_node->get_op_node_kind()) {
         case marex::parse::OpNodeKind::BinaryOp: {
+            core::log_info("handle_start: BinaryOp");
+
             auto bin_operator = op_node->cast<BinaryOp>();
             core::Defer set_to_false = [&] {
-                previous_operator_ = bin_operator;
+                PreviousOpNodeData(bin_operator, index_);
             };
 
-            bin_operator->set_lhs(previous_operand_.value());
+            bin_operator->set_lhs(previous_operand_.value().op_node);
         } break;
         case marex::parse::OpNodeKind::MonoOp:
             throw std::runtime_error(
                 "mono ops are not implemented yet");
         case marex::parse::OpNodeKind::Operand:
-            previous_operand_ = op_node->cast<Operand>();
+            core::log_info("handle_start: Operand");
+
+            previous_operand_ =
+                PreviousOpNodeData(op_node->cast<Operand>(), index_);
             break;
         case marex::parse::OpNodeKind::None:
             [[fallthrough]];
@@ -149,7 +173,7 @@ void OperationProcessor::handle_first_time_iter(
 bool OperationProcessor::was_previous_more_powerful(
     const Operator& this_op_node) const {
     auto previous_binding_power =
-        previous_operator_.value()->get_binding_power();
+        previous_operator_.value().op_node->get_binding_power();
     auto this_binding_power = this_op_node.get_binding_power();
 
     return previous_binding_power > this_binding_power;
@@ -157,6 +181,8 @@ bool OperationProcessor::was_previous_more_powerful(
 
 void OperationProcessor::handle_in_between_iter(
     std::shared_ptr<OpNode>& op_node) {
+    core::log_info("handle_in_between_iter");
+
     switch (op_node->get_op_node_kind()) {
         case marex::parse::OpNodeKind::BinaryOp:
             handle_in_between_bin_op(op_node->cast<BinaryOp>());
@@ -165,7 +191,8 @@ void OperationProcessor::handle_in_between_iter(
             throw std::runtime_error(
                 "mono op is not implemented yet");
         case marex::parse::OpNodeKind::Operand:
-            previous_operand_ = op_node->cast<Operand>();
+            previous_operand_ =
+                PreviousOpNodeData(op_node->cast<Operand>(), index_);
             break;
         case marex::parse::OpNodeKind::None:
             [[fallthrough]];
@@ -176,42 +203,26 @@ void OperationProcessor::handle_in_between_iter(
 
 void OperationProcessor::handle_in_between_bin_op(
     std::shared_ptr<BinaryOp>&& op_node) {
+    core::log_info("handle_in_between_bin_op");
+
     if (!was_previous_more_powerful(*op_node)) {
-        op_node->set_lhs(previous_operand_.value());
+        op_node->set_lhs(previous_operand_.value().op_node);
 
         return;
     }
 
-    auto& previous_operator_value = previous_operator_.value();
+    auto& previous_operator_node = previous_operator_.value().op_node;
 
-    switch (previous_operator_value->get_op_node_kind()) {
+    switch (previous_operator_node->get_op_node_kind()) {
         case marex::parse::OpNodeKind::BinaryOp: {
             auto previous_bin_op =
-                previous_operator_value->cast<BinaryOp>();
+                previous_operator_node->cast<BinaryOp>();
 
-            previous_bin_op->set_rhs(previous_operand_.value());
+            previous_bin_op->set_rhs(
+                previous_operand_.value().op_node);
 
             if (previous_bin_op->is_finished()) {
-                auto op_nodes_begin_iter = op_nodes_.begin();
-                auto op_nodes_erase_end_iter = op_nodes_.begin();
-
-                if (index_ == 0) [[unlikely]] {
-                    throw std::runtime_error(
-                        "internal error: index is too low in erasing "
-                        "from the node list");
-                }
-
-                std::advance(op_nodes_begin_iter, index_ - 1);
-                std::advance(op_nodes_erase_end_iter, index_ + 1);
-
-                op_nodes_.erase(op_nodes_begin_iter,
-                                op_nodes_erase_end_iter);
-
-                auto complex_operand =
-                    previous_bin_op->to_complex_operand();
-
-                op_nodes_.insert(op_nodes_begin_iter,
-                                 complex_operand);
+                swap_to_complex_operator();
             }
         } break;
         case marex::parse::OpNodeKind::MonoOp:
@@ -225,16 +236,46 @@ void OperationProcessor::handle_in_between_bin_op(
     }
 }
 
+void OperationProcessor::swap_to_complex_operator() {
+    auto previous_operator_node_index =
+        previous_operator_.value().index;
+
+    auto op_nodes_begin_iter = op_nodes_.begin();
+    auto op_nodes_erase_end_iter = op_nodes_.begin();
+
+    if (index_ == 0) [[unlikely]] {
+        throw std::runtime_error(
+            "internal error: index is too low in erasing "
+            "from the node list");
+    }
+
+    std::advance(op_nodes_begin_iter,
+                 previous_operator_node_index - 1);
+    std::advance(op_nodes_erase_end_iter,
+                 previous_operator_node_index + 1);
+
+    op_nodes_.erase(op_nodes_begin_iter, op_nodes_erase_end_iter);
+
+    auto complex_operand =
+        previous_operator_->op_node->to_complex_operand();
+
+    op_nodes_.insert(op_nodes_begin_iter, complex_operand);
+}
+
 void OperationProcessor::handle_last_op_node(
     std::shared_ptr<OpNode>& op_node) {
-    auto previous_operator_value = previous_operator_.value();
+    core::log_info("handle_last_op_node");
 
-    switch (previous_operator_value->get_op_node_kind()) {
+    auto previous_operator_node = previous_operator_.value().op_node;
+
+    switch (previous_operator_node->get_op_node_kind()) {
         case OpNodeKind::BinaryOp: {
             auto previous_bin_op =
-                previous_operator_value->cast<BinaryOp>();
+                previous_operator_node->cast<BinaryOp>();
 
             previous_bin_op->set_rhs(op_node);
+
+            swap_to_complex_operator();
         } break;
         case OpNodeKind::MonoOp:
             throw std::runtime_error("mono ops not supported yet");
