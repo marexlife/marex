@@ -16,7 +16,6 @@ std::string VarDecl::as_c() {
 }
 
 void VarDecl::parse(TokenStream& stream) {
-    stream.advance_if_matches_or_throw(lex::TokenKind::Var);
     name_ = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 

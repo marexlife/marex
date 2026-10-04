@@ -1,3 +1,9 @@
 square(y: int32): int32 {
     return y * y;
 }
+
+run() {
+    x: int = 1;
+
+    square(x);
+}
