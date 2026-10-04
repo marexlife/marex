@@ -282,10 +282,13 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
     std::advance(op_nodes_erase_end_iter,
                  previous_operator_node_index + 1);
 
+    core::log_info("erase nodes");
     op_nodes_.erase(op_nodes_begin_iter, op_nodes_erase_end_iter);
 
     auto complex_operand =
         previous_operator_->op_node->to_complex_operand();
+
+    core::log_info("put in complex operand");
 
     op_nodes_.insert(op_nodes_begin_iter, complex_operand);
 }
