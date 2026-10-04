@@ -58,7 +58,9 @@ std::string_view TokenStream::get_kind_string() const {
 std::string TokenStream::value_advance_if_matches_or_throw(
     lex::TokenKind token_kind,
     std::source_location cpp_source_location) {
-    advance_if_matches_or_throw(token_kind, cpp_source_location);
+    throw_on_non_match(token_kind, cpp_source_location);
+
+    advance();
 
     return borrow_token().move_out_lexeme();
 }
