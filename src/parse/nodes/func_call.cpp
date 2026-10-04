@@ -10,16 +10,15 @@
 #include "token_kind.h"
 
 namespace marex::parse {
-FuncCall::FuncCall(lex::Token&& token)
-    : Expr(std::move(token)) {}
+FuncCall::FuncCall(lex::Token&& token) : Expr(std::move(token)) {}
 
 std::string FuncCall::as_c() {
     std::string result;
     std::uintmax_t count{};
 
-    for (auto& [name, expression_kind] : args) {
+    for (auto& arg : args) {
         core::Defer increment_count = [&] { ++count; };
-        result += name;
+        result += arg.name;
 
         if (count != args.size() - 1) {
             result += ", ";
@@ -33,30 +32,23 @@ void FuncCall::parse(TokenStream& stream) {
     func_name = stream.advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
-    stream.advance_if_matches_or_throw(
-        lex::TokenKind::OpenBracket);
+    stream.advance_if_matches_or_throw(lex::TokenKind::OpenBracket);
 
-    if (stream.advance_if_matches(
-            lex::TokenKind::CloseBracket)) {
+    if (stream.advance_if_matches(lex::TokenKind::CloseBracket)) {
         return;
     }
 
     do {
-        auto lexeme = stream.get_lexeme();
-        auto expression_kind =
-            expression_kind_from_literal_or_throw(
-                stream);
-
-        stream.advance();
+        auto lexeme = stream.advance_if_matches_or_throw(
+            lex::TokenKind::Identifier);
 
         args.emplace_back(CallArg{
             .name = std::string{lexeme},
-            .expression_kind = expression_kind,
         });
-    } while (stream.advance_if_matches(
-        lex::TokenKind::Comma));
+    } while (stream.advance_if_matches(lex::TokenKind::Comma));
 
-    stream.advance_if_matches_or_throw(
-        lex::TokenKind::CloseBracket);
+    stream.advance_if_matches_or_throw(lex::TokenKind::CloseBracket);
+
+    stream.advance_if_matches_or_throw(lex::TokenKind::StatementEnd);
 }
 }  // namespace marex::parse

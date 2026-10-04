@@ -10,7 +10,6 @@
 namespace marex::parse {
 struct CallArg final {
     std::string name;
-    ExprKind expression_kind{};
 };
 
 class FuncCall final : public Expr {
