@@ -62,6 +62,14 @@ class OperationProcessor final {
     std::optional<PreviousOpNodeData<Operand>> previous_operand_ =
         std::nullopt;
 
+    [[nodiscard]] bool is_last_iter() const {
+        if (op_nodes_.empty()) [[unlikely]] {
+            return true;
+        }
+
+        return index_ == op_nodes_.size() - 1;
+    }
+
     std::size_t walk_through_iter_{};
     std::size_t index_{};
     bool is_last_iter_{};
@@ -111,8 +119,6 @@ std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
                 "expr build: index: {}, walk through iter: {}",
                 index_, walk_through_iter_);
 
-            is_last_iter_ = index_ == op_nodes_.size() - 1;
-
             core::Defer increment_index = [&] { ++index_; };
 
             op_node_iter(op_node);
@@ -153,7 +159,8 @@ void OperationProcessor::handle_start(
 
             auto bin_operator = op_node->cast<BinaryOp>();
             core::Defer set_to_false = [&] {
-                PreviousOpNodeData(bin_operator, index_);
+                previous_operator_ = PreviousOpNodeData<Operator>(
+                    bin_operator, index_);
             };
 
             bin_operator->set_lhs(previous_operand_.value().op_node);
