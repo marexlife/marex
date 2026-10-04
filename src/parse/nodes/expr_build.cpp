@@ -254,22 +254,16 @@ void OperationProcessor::handle_in_between_bin_op(
 }
 
 void OperationProcessor::swap_bin_op_to_complex_operator() {
-    core::log_info("swap_to_complex_operator");
-
-    auto previous_operator_node_index =
-        previous_operator_.value().index;
-
-    core::log_info("previous_operator_node_index: {}",
-                   previous_operator_node_index);
-
-    auto op_nodes_begin_iter = op_nodes_.begin();
-    auto op_nodes_erase_end_iter = op_nodes_.begin();
-
     if (index_ == 0) [[unlikely]] {
         throw std::runtime_error(
             "internal error: index is too low in erasing "
             "from the node list");
     }
+
+    core::log_info("swap_to_complex_operator");
+
+    auto previous_operator_node_index =
+        previous_operator_.value().index;
 
     if (previous_operator_node_index < 1) [[unlikely]] {
         throw std::runtime_error(
@@ -277,20 +271,39 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
             "low");
     }
 
-    std::advance(op_nodes_begin_iter,
-                 previous_operator_node_index - 1);
-    std::advance(op_nodes_erase_end_iter,
-                 previous_operator_node_index + 1);
+    core::log_info("previous_operator_node_index: {}",
+                   previous_operator_node_index);
+
+    auto front_iter_index = previous_operator_node_index - 1;
+    auto front_iter = op_nodes_.begin();
+
+    auto middle_iter_index = previous_operator_node_index;
+    auto middle_iter = op_nodes_.begin();
+
+    auto end_iter_index = previous_operator_node_index + 1;
+    auto end_iter = op_nodes_.begin();
+
+    std::advance(front_iter, front_iter_index);
+    std::advance(middle_iter, middle_iter_index);
+    std::advance(end_iter, end_iter_index);
 
     core::log_info("erase nodes");
-    op_nodes_.erase(op_nodes_begin_iter, op_nodes_erase_end_iter);
+    op_nodes_.erase(front_iter);
+    op_nodes_.erase(middle_iter);
+    op_nodes_.erase(end_iter);
 
     auto complex_operand =
         previous_operator_->op_node->to_complex_operand();
 
-    core::log_info("put in complex operand");
+    if (op_nodes_.empty()) {
+        op_nodes_.emplace_back(complex_operand);
 
-    op_nodes_.insert(op_nodes_begin_iter, complex_operand);
+        return;
+    }
+
+    core::log_info("emplace complex operand at {}", front_iter_index);
+
+    op_nodes_.emplace(front_iter, complex_operand);
 }
 
 void OperationProcessor::handle_end(
