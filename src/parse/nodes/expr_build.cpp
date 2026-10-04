@@ -272,7 +272,9 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
     }
 
     if (previous_operator_node_index < 1) [[unlikely]] {
-        throw std::runtime_error("swap tot bin op, index is too low");
+        throw std::runtime_error(
+            "swap to bin op: previous_operator_node_index is too "
+            "low");
     }
 
     std::advance(op_nodes_begin_iter,
