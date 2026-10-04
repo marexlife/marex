@@ -29,7 +29,8 @@ std::unique_ptr<OpNode> OpFactory::create_op_node(
         return create_operator(std::move(token), *binding_power);
     }
 
-    core::input_break("in op factory with no binding power");
+    core::input_break("in op factory with no binding power, for {}",
+                      token.to_string());
 
     return create_operand(std::move(token));
 }
