@@ -30,7 +30,7 @@ class [[nodiscard]] Token final {
     [[nodiscard]] std::string_view get_lexeme_or_empty_if_none()
         const;
 
-    [[nodiscard]] std::pmr::string move_out_lexeme();
+    [[nodiscard]] std::string move_out_lexeme();
 
     [[nodiscard]] TokenKind get_kind() const { return kind_; }
 
@@ -48,7 +48,7 @@ class [[nodiscard]] Token final {
     [[nodiscard]] SourcePos get_pos() const { return source_pos_; }
 
    private:
-    std::optional<std::pmr::string> lexeme_ = std::nullopt;
+    std::optional<std::string> lexeme_ = std::nullopt;
     TokenKind kind_{};
     SourcePos source_pos_;
 };

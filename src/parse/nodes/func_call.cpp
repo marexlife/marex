@@ -29,7 +29,7 @@ std::string FuncCall::as_c() {
 }
 
 void FuncCall::parse(TokenStream& stream) {
-    func_name = stream.advance_if_matches_or_throw(
+    func_name = stream.value_advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
     stream.advance_if_matches_or_throw(lex::TokenKind::OpenBracket);
@@ -39,7 +39,7 @@ void FuncCall::parse(TokenStream& stream) {
     }
 
     do {
-        auto lexeme = stream.advance_if_matches_or_throw(
+        auto lexeme = stream.value_advance_if_matches_or_throw(
             lex::TokenKind::Identifier);
 
         args.emplace_back(CallArg{

@@ -97,11 +97,20 @@ class TokenStream final {
         return tokens_.at(progress_ - 1);
     }
 
-    /* NOT [[nodiscard]] */ std::pmr::string
-    advance_if_matches_or_throw(
+    [[nodiscard]] std::string value_advance_if_matches_or_throw(
         lex::TokenKind token_kind,
         std::source_location cpp_source_location =
             std::source_location::current());
+
+    void advance_if_matches_or_throw(
+        lex::TokenKind token_kind,
+        std::source_location cpp_source_location =
+            std::source_location::current());
+
+    void throw_on_non_match(
+        lex::TokenKind token_kind,
+        std::source_location cpp_source_location =
+            std::source_location::current()) const;
 
     [[nodiscard]] lex::TokenKind get_kind() const {
         return borrow_token().get_kind();
@@ -122,6 +131,10 @@ class TokenStream final {
     }
 
     [[nodiscard]] const lex::Token& borrow_token() const {
+        return tokens_.at(progress_);
+    }
+
+    [[nodiscard]] lex::Token& borrow_token() {
         return tokens_.at(progress_);
     }
 

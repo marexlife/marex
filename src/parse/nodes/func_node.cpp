@@ -137,7 +137,7 @@ void FuncNode::parse(TokenStream& stream) {
 }
 
 void FuncNode::parse_func_signature(TokenStream& stream) {
-    func_name_ = stream.advance_if_matches_or_throw(
+    func_name_ = stream.value_advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
     parse_func_args(stream);
@@ -172,16 +172,13 @@ void FuncNode::parse_func_args(TokenStream& stream) {
         core::log_info("arg count: {}", arg_count);
 
         auto func_arg = std::invoke([&] -> FuncArg {
-            auto name = stream.advance_if_matches_or_throw(
+            auto name = stream.value_advance_if_matches_or_throw(
                 lex::TokenKind::Identifier);
             stream.advance_if_matches_or_throw(lex::TokenKind::Colon);
             auto type = expression_kind_from_decl_or_throw(stream);
             stream.advance();
 
-            return FuncArg{
-                .arg_name = name,
-                .arg_type = type,
-            };
+            return FuncArg(std::move(name), type);
         });
 
         args_.emplace_back(std::move(func_arg));

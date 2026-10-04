@@ -15,7 +15,10 @@ namespace marex::parse {
 class ReturnNode;
 
 struct FuncArg final {
-    std::pmr::string arg_name;
+    FuncArg(std::string&& arg_name, TypeKind type_kind)
+        : arg_name(std::move(arg_name)), arg_type(type_kind) {}
+
+    std::string arg_name;
     TypeKind arg_type{};
 };
 

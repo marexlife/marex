@@ -59,7 +59,7 @@ std::optional<BindingPower> Token::get_binding_power() const {
     }
 }
 
-[[nodiscard]] std::pmr::string Token::move_out_lexeme() {
+[[nodiscard]] std::string Token::move_out_lexeme() {
     if (!lexeme_) [[unlikely]] {
         core::log_fatal_internal_error(
             "trying to move out a lexeme when none "

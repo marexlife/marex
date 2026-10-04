@@ -4,6 +4,9 @@ square(y: int): int {
 
 run() {
     x: int = 1;
+    y: int = x * x;
 
-    square(x);
+    square(y);
+
+    printf(y);
 }

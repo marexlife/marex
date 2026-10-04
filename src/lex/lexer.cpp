@@ -13,6 +13,7 @@ std::vector<Token> Lexer::run(
     std::string&& source_text,
     std::optional<std::string_view> filename) {
     std::vector<Token> result;
+    std::optional<char> previous_source_char = std::nullopt;
 
     SourcePos source_pos{filename};
 
@@ -36,6 +37,11 @@ std::vector<Token> Lexer::run(
 
         source_pos.advance_column();
 
+        if (previous_source_char && *previous_source_char == '\\' &&
+            source_text_char == '0') [[unlikely]] {
+            
+        }
+
         switch (source_text_char) {
             case ' ': {
                 flush_without_add(result, source_pos);
@@ -46,9 +52,6 @@ std::vector<Token> Lexer::run(
                 flush_without_add(result, source_pos);
                 source_pos.advance_line();
             } break;
-            case '\0':
-                /* ignore */
-                break;
             case '{':
                 [[fallthrough]];
             case '}':
@@ -70,6 +73,10 @@ std::vector<Token> Lexer::run(
             case '*':
                 [[fallthrough]];
             case '/':
+                [[fallthrough]];
+            case '\'':
+                [[fallthrough]];
+            case '\"':
                 [[fallthrough]];
             case ';': {
                 if (is_flushable()) {

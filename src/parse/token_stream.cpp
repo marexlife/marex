@@ -13,9 +13,8 @@
 #include "token_kind.h"
 
 namespace marex::parse {
-TokenStream::TokenStream(
-    std::vector<lex::Token>&& token_stream,
-    bool is_in_lint_mode)
+TokenStream::TokenStream(std::vector<lex::Token>&& token_stream,
+                         bool is_in_lint_mode)
     : tokens_(std::move(token_stream)),
       progress_(),
       is_in_lint_mode_(is_in_lint_mode) {}
@@ -25,8 +24,7 @@ lex::TokenKind TokenStream::get_next_kind(
     try {
         return tokens_.at(progress_ + 1).get_kind();
     } catch (const std::exception& exception) {
-        throw std::runtime_error(
-            error_message_on_failure.data());
+        throw std::runtime_error(error_message_on_failure.data());
     } catch (...) {
         throw std::runtime_error(
             "unkown error when trying to reach for "
@@ -34,13 +32,11 @@ lex::TokenKind TokenStream::get_next_kind(
     }
 }
 
-bool TokenStream::previous_was(
-    lex::TokenKind token_kind) const {
+bool TokenStream::previous_was(lex::TokenKind token_kind) const {
     return borrow_previous().get_kind() == token_kind;
 }
 
-bool TokenStream::next_is(
-    lex::TokenKind token_kind) const {
+bool TokenStream::next_is(lex::TokenKind token_kind) const {
     return borrow_next().get_kind() == token_kind;
 }
 
@@ -59,27 +55,31 @@ std::string_view TokenStream::get_kind_string() const {
     return does_match;
 }
 
-std::pmr::string
-TokenStream::advance_if_matches_or_throw(
+std::string TokenStream::value_advance_if_matches_or_throw(
     lex::TokenKind token_kind,
     std::source_location cpp_source_location) {
-    auto pre_increment_token_borrow = borrow_token();
-    const auto got_token_kind =
-        pre_increment_token_borrow.get_kind();
+    advance_if_matches_or_throw(token_kind, cpp_source_location);
 
-    if (got_token_kind == token_kind) {
-        advance();
+    return borrow_token().move_out_lexeme();
+}
 
-        core::log_info("TokenKind {} matched",
-                       *token_kind);
+void TokenStream::advance_if_matches_or_throw(
+    lex::TokenKind token_kind,
+    std::source_location cpp_source_location) {
+    throw_on_non_match(token_kind, cpp_source_location);
 
-        return pre_increment_token_borrow
-            .move_out_lexeme();
+    advance();
+}
+
+void TokenStream::throw_on_non_match(
+    lex::TokenKind token_kind,
+    std::source_location cpp_source_location) const {
+    if (get_kind() != token_kind) [[unlikely]] {
+        throw InvalidTokenException(get_pos(), token_kind, get_kind(),
+                                    cpp_source_location);
     }
 
-    throw InvalidTokenException(get_pos(), token_kind,
-                                got_token_kind,
-                                cpp_source_location);
+    core::log_info("TokenKind {} matched", *token_kind);
 }
 
 lex::Token TokenStream::copy_out_token_and_advance() {
@@ -90,8 +90,7 @@ lex::Token TokenStream::copy_out_token_and_advance() {
     return token;
 }
 
-std::string_view
-TokenStream::get_lexeme_and_advance() {
+std::string_view TokenStream::get_lexeme_and_advance() {
     const auto lexeme = get_lexeme();
 
     advance();
@@ -99,8 +98,7 @@ TokenStream::get_lexeme_and_advance() {
     return lexeme;
 }
 
-[[nodiscard]] lex::TokenKind
-TokenStream::get_kind_and_advance() {
+[[nodiscard]] lex::TokenKind TokenStream::get_kind_and_advance() {
     const auto kind = get_kind();
 
     advance();
@@ -109,16 +107,13 @@ TokenStream::get_kind_and_advance() {
 }
 
 bool TokenStream::is_at_end() const {
-    const auto is_finished =
-        tokens_.size() <= progress_;
+    const auto is_finished = tokens_.size() <= progress_;
 
     return is_finished;
 }
 
-[[nodiscard]] std::string
-TokenStream::get_error_message() const {
-    return std::format("invalid Token: '{}' at '{}'",
-                       *get_kind(),
+[[nodiscard]] std::string TokenStream::get_error_message() const {
+    return std::format("invalid Token: '{}' at '{}'", *get_kind(),
                        get_pos().as_string());
 }
 }  // namespace marex::parse

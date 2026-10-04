@@ -18,7 +18,7 @@ std::string VarDecl::as_c() {
 }
 
 void VarDecl::parse(TokenStream& stream) {
-    name_ = stream.advance_if_matches_or_throw(
+    name_ = stream.value_advance_if_matches_or_throw(
         lex::TokenKind::Identifier);
 
     stream.advance_if_matches_or_throw(lex::TokenKind::Colon);
@@ -26,9 +26,6 @@ void VarDecl::parse(TokenStream& stream) {
     stream.advance();
 
     stream.advance_if_matches_or_throw(lex::TokenKind::Assignment);
-
-    [[maybe_unused]] auto not_needed =
-        expression_kind_from_literal_or_throw(stream);
 
     value_ = build_expr(stream, lex::TokenKind::StatementEnd);
 
