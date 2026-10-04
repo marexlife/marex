@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "binding_power.h"
+#include "logging.h"
 #include "source_pos.h"
 #include "token.h"
 #include "token_kind.h"
@@ -35,6 +36,8 @@ class TokenStream final {
         requires std::is_invocable_v<F, const lex::Token&>
     void run_until(lex::TokenKind token_kind, F iter) {
         for (; token_kind_at(progress_) != token_kind; ++progress_) {
+            core::input_break("run_until before lambda");
+
             std::invoke(iter, borrow_token_at(progress_));
         }
     }
