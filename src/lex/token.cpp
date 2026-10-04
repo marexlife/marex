@@ -51,7 +51,7 @@ std::optional<BindingPower> Token::get_binding_power() const {
         case lex::TokenKind::OpDiv:
             return std::optional<BindingPower>(BindingPower::MulDiv);
         case lex::TokenKind::Identifier:
-            return BindingPower::Invalid;
+            return std::nullopt;
         case TokenKind::None:
             core::log_fatal_error("TokenKind is none");
         default:
