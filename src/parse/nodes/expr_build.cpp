@@ -283,33 +283,24 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
     auto front_iter_index = previous_operator_node_index - 1;
     auto front_iter = op_nodes_.begin();
 
-    auto middle_iter_index = previous_operator_node_index;
-    auto middle_iter = op_nodes_.begin();
-
     auto end_iter_index = previous_operator_node_index + 1;
     auto end_iter = op_nodes_.begin();
 
     std::advance(front_iter, front_iter_index);
-    std::advance(middle_iter, middle_iter_index);
     std::advance(end_iter, end_iter_index);
 
     core::log_info("erase nodes");
-    op_nodes_.erase(front_iter);
-    op_nodes_.erase(middle_iter);
-    op_nodes_.erase(end_iter);
+    op_nodes_.erase(front_iter, end_iter);
 
     auto complex_operand =
         previous_operator_->op_node->to_complex_operand();
 
-    if (op_nodes_.empty()) {
-        op_nodes_.emplace_back(complex_operand);
-
-        return;
-    }
-
     core::log_info("emplace complex operand at {}", front_iter_index);
 
-    op_nodes_.emplace(front_iter, complex_operand);
+    auto new_insert_iter = op_nodes_.begin();
+    std::advance(new_insert_iter, previous_operator_node_index);
+
+    op_nodes_.emplace(new_insert_iter, complex_operand);
 }
 
 void OperationProcessor::handle_end(

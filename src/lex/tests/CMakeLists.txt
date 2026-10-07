@@ -18,3 +18,4 @@ add_compile_definitions(${PROJECT_NAME}
 )
 
 add_test(${PROJECT_NAME} ${PROJECT_NAME})
+
