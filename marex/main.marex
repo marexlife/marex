@@ -1,5 +1,5 @@
 square(y: int): int {
-    return y * y;
+    return y * y / y;
 }
 
 run() {
