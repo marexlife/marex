@@ -38,7 +38,7 @@ class BinaryOp final : public Operator {
     }
 
     [[nodiscard]] std::string as_c() override {
-        return std::format("{} {} {}", lhs_.value()->as_c(),
+        return std::format("({} {} {})", lhs_.value()->as_c(),
                            to_c(binary_op_kind_),
                            rhs_.value()->as_c());
     }
