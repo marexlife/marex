@@ -92,7 +92,6 @@ OperationProcessor& OperationProcessor::create_op_nodes(
 
                 op_nodes_.emplace_back(std::move(op_node));
             });
-
     } catch (std::out_of_range& out_of_range_exception) {
         throw std::runtime_error(
             std::format("Last was not {}", *until_token_kind));
@@ -283,28 +282,24 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
     auto front_iter_index = previous_operator_node_index - 1;
     auto front_iter = op_nodes_.begin();
 
-    auto middle_iter_index = previous_operator_node_index;
-    auto middle_iter = op_nodes_.begin();
-
     auto end_iter_index = previous_operator_node_index + 1;
     auto end_iter = op_nodes_.begin();
 
     std::advance(front_iter, front_iter_index);
-    std::advance(middle_iter, middle_iter_index);
     std::advance(end_iter, end_iter_index);
 
     core::log_info("erase nodes");
-    op_nodes_.erase(front_iter);
-    op_nodes_.erase(middle_iter);
-    op_nodes_.erase(end_iter);
+    op_nodes_.erase(front_iter, end_iter);
 
     auto complex_operand =
         previous_operator_->op_node->to_complex_operand();
 
-    core::log_info("emplace complex operand at {}", front_iter_index);
-
     auto new_insert_iter = op_nodes_.begin();
-    std::advance(new_insert_iter, previous_operator_node_index - 1);
+    auto insert_iter_index = previous_operator_node_index - 1;
+    std::advance(new_insert_iter, insert_iter_index);
+
+    core::log_info("emplace complex operand at {}",
+                   insert_iter_index);
 
     op_nodes_.emplace(new_insert_iter, complex_operand);
 }
