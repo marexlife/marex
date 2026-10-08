@@ -1,6 +1,7 @@
 #ifndef MAREX_PARSE_FUNCCALL_H
 #define MAREX_PARSE_FUNCCALL_H
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "expr_kind.h"
@@ -9,6 +10,8 @@
 
 namespace marex::parse {
 struct CallArg final {
+    explicit CallArg(std::string name) : name(std::move(name)) {}
+
     std::string name;
 };
 

@@ -42,9 +42,7 @@ void FuncCall::parse(TokenStream& stream) {
         auto lexeme = stream.value_advance_if_matches_or_throw(
             lex::TokenKind::Identifier);
 
-        args.emplace_back(CallArg{
-            .name = std::string{lexeme},
-        });
+        args.emplace_back(CallArg(std::move(lexeme)));
     } while (stream.advance_if_matches(lex::TokenKind::Comma));
 
     stream.advance_if_matches_or_throw(lex::TokenKind::CloseBracket);
