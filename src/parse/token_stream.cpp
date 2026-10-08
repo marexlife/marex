@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "error_format.h"
 #include "logging.h"
 #include "nodes/exceptions/invalid_token_exception.h"
 #include "token_kind.h"
@@ -32,6 +33,17 @@ lex::TokenKind TokenStream::get_next_kind(
     }
 }
 
+void TokenStream::advance(std::source_location source_location) {
+    core::log_info("got advanced from: {}",
+                   core::source_location_to_string(source_location));
+
+    ++progress_;
+}
+
+void TokenStream::log_current_token() {
+    core::log_info("current token: {}", borrow_token().to_string());
+}
+
 bool TokenStream::previous_was(lex::TokenKind token_kind) const {
     return borrow_previous().get_kind() == token_kind;
 }
@@ -45,11 +57,12 @@ std::string_view TokenStream::get_kind_string() const {
 }
 
 [[nodiscard]] bool TokenStream::advance_if_matches(
-    lex::TokenKind token_kind) {
+    lex::TokenKind token_kind,
+    std::source_location cpp_source_location) {
     const auto does_match = matches(token_kind);
 
     if (does_match) {
-        advance();
+        advance(cpp_source_location);
     }
 
     return does_match;
@@ -60,9 +73,13 @@ std::string TokenStream::value_advance_if_matches_or_throw(
     std::source_location cpp_source_location) {
     throw_on_non_match(token_kind, cpp_source_location);
 
-    advance();
+    core::log_info("advance");
 
-    return borrow_token().move_out_lexeme();
+    auto pre_advance = borrow_token().move_out_lexeme();
+
+    advance(cpp_source_location);
+
+    return pre_advance;
 }
 
 void TokenStream::advance_if_matches_or_throw(

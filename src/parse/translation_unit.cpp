@@ -15,8 +15,7 @@ TranslationUnit TranslationUnit::compile(
     std::vector<std::unique_ptr<AstNode>> file_items;
 
     while (!stream.is_at_end()) {
-        std::unique_ptr<AstNode> file_item =
-            create_file_item(stream);
+        std::unique_ptr<AstNode> file_item = create_file_item(stream);
 
         file_item->parse(stream);
 
@@ -50,13 +49,11 @@ int main(void) {
     return result;
 }
 
-std::unique_ptr<AstNode>
-TranslationUnit::create_file_item(
+std::unique_ptr<AstNode> TranslationUnit::create_file_item(
     TokenStream& stream) {
     switch (stream.get_kind()) {
         case lex::TokenKind::Identifier:
-            if (stream.next_is(
-                    lex::TokenKind::OpenBracket)) {
+            if (stream.next_is(lex::TokenKind::OpenBracket)) {
                 return std::make_unique<FuncNode>(
                     stream.copy_out_token());
             }
@@ -67,11 +64,10 @@ TranslationUnit::create_file_item(
                 "call is not allowed");
         case lex::TokenKind::Var:
             throw InvalidTokenException(
-                stream.get_pos(),
-                "no global variables allowed");
+                stream.get_pos(), "no global variables allowed");
         default:
-            throw InvalidTokenException(
-                stream.get_pos(), stream.get_kind());
+            throw InvalidTokenException(stream.get_pos(),
+                                        stream.get_kind());
     }
 }
 }  // namespace marex::parse

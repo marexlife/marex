@@ -22,7 +22,10 @@ class TokenStream final {
 
     using ProgressType = std::size_t;
 
-    void advance() { ++progress_; }
+    void advance(std::source_location source_location =
+                     std::source_location::current());
+
+    void log_current_token();
 
     [[nodiscard]] bool previous_was(lex::TokenKind token_kind) const;
     [[nodiscard]] bool next_is(lex::TokenKind token_kind) const;
@@ -75,7 +78,10 @@ class TokenStream final {
 
     [[nodiscard]] std::string_view get_kind_string() const;
 
-    [[nodiscard]] bool advance_if_matches(lex::TokenKind token_kind);
+    [[nodiscard]] bool advance_if_matches(
+        lex::TokenKind token_kind,
+        std::source_location cpp_source_location =
+            std::source_location::current());
 
     [[nodiscard]] bool matches(lex::TokenKind token_kind) const {
         return get_kind() == token_kind;
