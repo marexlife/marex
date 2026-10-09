@@ -33,10 +33,11 @@ class [[nodiscard]] Lexer final {
     void push_token(std::vector<Token>& result,
                     SourcePos& source_pos);
     void reset(SourcePos& source_pos);
-    void push_current(std::vector<Token>& result, char current,
-                      SourcePos& source_pos);
+    void push_current(std::vector<Token>& result,
+                      std::string&& current, SourcePos& source_pos);
     void push_token_and_current(std::vector<Token>& result,
-                                char current, SourcePos& source_pos);
+                                std::string&& current,
+                                SourcePos& source_pos);
 
     void flush_without_add(std::vector<Token>& result,
                            SourcePos& source_pos);

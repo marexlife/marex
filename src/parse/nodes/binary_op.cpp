@@ -10,7 +10,7 @@ namespace marex::parse {
 BinaryOp::BinaryOp(lex::Token&& token,
                    lex::BindingPower binding_power,
                    BinaryOpKind binary_op_kind)
-    : Operator(std::move(token), OpNodeKind::BinaryOp, binding_power),
+    : Operator(std::move(token), binding_power),
       binary_op_kind_(binary_op_kind) {}
 
 void BinaryOp::set(std::shared_ptr<OpNode> lhs,

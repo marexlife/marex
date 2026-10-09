@@ -10,7 +10,7 @@ namespace marex {
 namespace core {
 namespace detail {
 inline const bool log_infos = true;
-inline const bool input_breaks = false;
+inline const bool input_breaks = true;
 }  // namespace detail
 
 void flush();

@@ -2,6 +2,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "defer.h"
 #include "logging.h"
@@ -33,13 +34,28 @@ std::vector<Token> Lexer::run(
         core::Defer defer_iter_end = [&] {
             last_char_optional_ = source_text_char;
             last_char_kind_ = this_char_kind;
+            previous_source_char = source_text_char;
         };
 
         source_pos.advance_column();
 
         if (previous_source_char && *previous_source_char == '\\' &&
             source_text_char == '0') [[unlikely]] {
-            
+            if (is_flushable()) {
+                push_token_and_current(result,
+                                       std::string{
+                                           *previous_source_char,
+                                           source_text_char,
+                                       },
+                                       source_pos);
+            } else {
+                push_current(result,
+                             std::string{
+                                 *previous_source_char,
+                                 source_text_char,
+                             },
+                             source_pos);
+            }
         }
 
         switch (source_text_char) {
@@ -80,10 +96,12 @@ std::vector<Token> Lexer::run(
                 [[fallthrough]];
             case ';': {
                 if (is_flushable()) {
-                    push_token_and_current(result, source_text_char,
-                                           source_pos);
+                    push_token_and_current(
+                        result, std::string{source_text_char},
+                        source_pos);
                 } else {
-                    push_current(result, source_text_char,
+                    push_current(result,
+                                 std::string{source_text_char},
                                  source_pos);
                 }
             } break;
@@ -121,20 +139,21 @@ void Lexer::push_token(std::vector<Token>& result,
     last_word_.clear();
 }
 
-void Lexer::push_current(std::vector<Token>& result, char current,
+void Lexer::push_current(std::vector<Token>& result,
+                         std::string&& current,
                          SourcePos& source_pos) {
     core::log_info("Lexer: push_current");
 
-    result.emplace_back(token_factory_.create_token(
-        std::string{current}, source_pos));
+    result.emplace_back(
+        token_factory_.create_token(std::move(current), source_pos));
 }
 
 void Lexer::push_token_and_current(std::vector<Token>& result,
-                                   char current,
+                                   std::string&& current,
                                    SourcePos& source_pos) {
     core::log_info("Lexer: push_token_and_current");
 
     push_token(result, source_pos);
-    push_current(result, current, source_pos);
+    push_current(result, std::move(current), source_pos);
 }
 }  // namespace marex::lex

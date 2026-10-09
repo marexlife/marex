@@ -12,8 +12,7 @@ class ComplexOperand;
 
 class Operator : public OpNode {
    public:
-    Operator(lex::Token&& token, OpNodeKind op_node_kind,
-             lex::BindingPower binding_power);
+    Operator(lex::Token&& token, lex::BindingPower binding_power);
 
     [[nodiscard]] lex::BindingPower get_binding_power() const {
         return binding_power_;

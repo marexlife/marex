@@ -7,5 +7,5 @@
 
 namespace marex::parse {
 Operand::Operand(lex::Token&& token)
-    : OpNode(std::move(token), OpNodeKind::Operand) {}
+    : OpNode(std::move(token)) {}
 }  // namespace marex::parse

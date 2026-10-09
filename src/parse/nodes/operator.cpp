@@ -5,9 +5,9 @@
 #include "nodes/op_node.h"
 
 namespace marex::parse {
-Operator::Operator(lex::Token&& token, OpNodeKind op_node_kind,
+Operator::Operator(lex::Token&& token,
                    lex::BindingPower binding_power)
-    : OpNode(std::move(token), op_node_kind),
+    : OpNode(std::move(token)),
       binding_power_(binding_power) {}
 
 std::shared_ptr<ComplexOperand> Operator::to_complex_operand() {
