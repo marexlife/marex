@@ -25,7 +25,7 @@ class BinaryOp final : public Operator {
         return binary_op_kind_;
     }
 
-    [[nodiscard]] bool is_finished() const override {
+    [[nodiscard]] bool completed() const override {
         return lhs_finished() && rhs_finished();
     }
 

@@ -243,7 +243,7 @@ void OperationProcessor::handle_in_between_bin_op(
             previous_bin_op->set_rhs(
                 previous_operand_.value().op_node);
 
-            if (previous_bin_op->is_finished()) {
+            if (previous_bin_op->completed()) {
                 swap_bin_op_to_complex_operator();
             }
         } break;
@@ -267,13 +267,18 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
 
     core::log_info("swap_to_complex_operator");
 
-    auto previous_operator_node_index =
-        previous_operator_.value().index;
+    auto previous_operator_value = previous_operator_.value();
+    auto previous_operator_node_index = previous_operator_value.index;
 
     if (previous_operator_node_index < 1) [[unlikely]] {
         throw std::runtime_error(
             "swap to bin op: previous_operator_node_index is too "
             "low");
+    }
+
+    if (!previous_operator_value.op_node->completed()) [[unlikely]] {
+        throw std::runtime_error(
+            "swap bin op shouldn't have been called");
     }
 
     core::log_info("previous_operator_node_index: {}",

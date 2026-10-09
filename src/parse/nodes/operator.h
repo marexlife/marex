@@ -22,7 +22,7 @@ class Operator : public OpNode {
     [[nodiscard]] std::shared_ptr<ComplexOperand>
     to_complex_operand();
 
-    [[nodiscard]] virtual bool is_finished() const = 0;
+    [[nodiscard]] virtual bool completed() const = 0;
 
    private:
     lex::BindingPower binding_power_{};
