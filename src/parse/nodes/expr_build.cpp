@@ -178,7 +178,8 @@ log nodes:
 op_nodes:)");
 
     for (auto& op_node : op_nodes_) {
-        core::log_info("op_node: {},", *op_node->get_kind());
+        core::log_info("op_node: {} with {}", *op_node->get_kind(),
+                       op_node->get_lexeme());
     }
 }
 
