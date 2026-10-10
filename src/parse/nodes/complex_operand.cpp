@@ -5,11 +5,13 @@
 #include <utility>
 
 #include "nodes/operator.h"
+#include "token.h"
+#include "token_kind.h"
 
 namespace marex::parse {
-ComplexOperand::ComplexOperand(lex::Token&& token,
-                               std::shared_ptr<Operator>&& operand)
-    : Operand(std::move(token)), operator_(std::move(operand)) {}
+ComplexOperand::ComplexOperand(std::shared_ptr<Operator>&& operand)
+    : Operand(lex::Token("complex", lex::TokenKind::Complex)),
+      operator_(std::move(operand)) {}
 
 std::string ComplexOperand::as_c() { return operator_->as_c(); }
 }  // namespace marex::parse

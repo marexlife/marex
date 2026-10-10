@@ -55,6 +55,8 @@ class OperationProcessor final {
     void handle_end(std::shared_ptr<OpNode>& op_node);
     void swap_bin_op_to_complex_operator();
 
+    void log_nodes();
+
     [[nodiscard]] bool is_last_iter() const;
 
     [[nodiscard]] std::size_t list_size() const {
@@ -128,6 +130,8 @@ start walk through with list size {}:)",
                 "expr build: index: {}, walk through iter: {}",
                 index_, walk_through_iter_);
 
+            log_nodes();
+
             core::Defer increment_index = [&] { ++index_; };
 
             op_node_iter(op_node);
@@ -139,7 +143,7 @@ start walk through with list size {}:)",
     return op_nodes_.front();
 }
 
-[[nodiscard]] bool OperationProcessor::is_last_iter() const {
+bool OperationProcessor::is_last_iter() const {
     if (op_nodes_.empty()) [[unlikely]] {
         return true;
     }
@@ -164,6 +168,18 @@ void OperationProcessor::op_node_iter(
     }
 
     handle_in_between_iter(op_node);
+}
+
+void OperationProcessor::log_nodes() {
+    core::log_info(R"(
+
+log nodes: 
+
+op_nodes:)");
+
+    for (auto& op_node : op_nodes_) {
+        core::log_info("op_node: {},", *op_node->get_kind());
+    }
 }
 
 void OperationProcessor::handle_start(

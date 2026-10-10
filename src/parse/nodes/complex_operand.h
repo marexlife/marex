@@ -5,15 +5,13 @@
 #include <string>
 
 #include "nodes/operand.h"
-#include "token.h"
 
 namespace marex::parse {
 class Operator;
 
 class ComplexOperand final : public Operand {
    public:
-    explicit ComplexOperand(lex::Token&& token,
-                            std::shared_ptr<Operator>&& operand);
+    explicit ComplexOperand(std::shared_ptr<Operator>&& operand);
 
     [[nodiscard]] std::reference_wrapper<const Operator>
     get_operator() const {

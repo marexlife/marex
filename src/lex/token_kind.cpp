@@ -19,6 +19,9 @@ namespace marex {
         case TokenKind::OpDiv:
             return "OpDiv";
 
+        case TokenKind::Complex:
+            return "Complex";
+
         case TokenKind::OpAddAssign:
             return "OpAddAssign";
         case TokenKind::OpSubAssign:

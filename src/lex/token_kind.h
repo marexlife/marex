@@ -47,6 +47,8 @@ enum struct [[nodiscard]] TokenKind : std::uint8_t {
 
     OpenBracket,
     CloseBracket,
+
+    Complex,
 };
 
 [[nodiscard]] std::string_view operator*(TokenKind token_kind);
