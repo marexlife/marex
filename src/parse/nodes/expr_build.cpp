@@ -2,6 +2,7 @@
 
 #include <concepts>
 #include <cstddef>
+#include <cstdlib>
 #include <exception>
 #include <format>
 #include <iterator>
@@ -25,6 +26,8 @@
 #include "token_stream.h"
 
 #define SWAP_BIN_OP 0
+#define SWAP_UNARY_OP 0
+#define SWAP SWAP_BIN_OP&& SWAP_UNARY_OP
 
 namespace marex {
 namespace parse {
@@ -140,6 +143,10 @@ start walk through with list size {}:)",
             op_node_iter(op_node);
         }
 
+        if constexpr (not SWAP) {
+            exit(EXIT_SUCCESS);
+        }
+
         core::log_info();
     }
 
@@ -160,7 +167,7 @@ void OperationProcessor::op_node_iter(
                    previous_operand_.has_value(),
                    previous_operator_.has_value());
 
-    if (!previous_operator_) {
+    if (not previous_operator_) {
         handle_start(op_node);
         return;
     }
@@ -210,7 +217,7 @@ op_nodes:)");
 
         if (auto operand =
                 std::dynamic_pointer_cast<Operand>(op_node)) {
-            core::log_info("op_node: complex_operand: {} with {}",
+            core::log_info("op_node: simple operand: {} with {}",
                            *op_node->get_kind(),
                            op_node->get_lexeme());
 
@@ -278,7 +285,7 @@ void OperationProcessor::handle_in_between_bin_op(
     std::shared_ptr<BinaryOp>& op_node) {
     core::log_info("handle_in_between_bin_op");
 
-    if (!was_previous_more_or_equal_powerful(*op_node)) {
+    if (not was_previous_more_or_equal_powerful(*op_node)) {
         op_node->set_lhs(previous_operand_.value().op_node);
 
         return;
@@ -317,7 +324,8 @@ void OperationProcessor::swap_bin_op_to_complex_operator(
             "low");
     }
 
-    if (!previous_operator_value.op_node->completed()) [[unlikely]] {
+    if (not previous_operator_value.op_node->completed())
+        [[unlikely]] {
         throw std::runtime_error(
             "swap bin op shouldn't have been called");
     }
