@@ -25,8 +25,8 @@
 #include "token_kind.h"
 #include "token_stream.h"
 
-#define SWAP_BIN_OP 0
-#define SWAP_UNARY_OP 0
+#define SWAP_BIN_OP 1
+#define SWAP_UNARY_OP 1
 #define SWAP SWAP_BIN_OP&& SWAP_UNARY_OP
 
 namespace marex {
@@ -346,7 +346,8 @@ void OperationProcessor::swap_bin_op_to_complex_operator(
     if (not previous_operator_value.op_node->completed())
         [[unlikely]] {
         throw std::runtime_error(
-            "swap bin op shouldn't have been called");
+            "swap bin op shouldn't have been called, previous "
+            "operator not completed");
     }
 
     if (const auto* opera = dynamic_cast<const BinaryOp*>(&op_node)) {
