@@ -134,11 +134,30 @@ start walk through with list size {}:)",
         log_nodes();
 
         for (index_ = {}; auto& op_node : op_nodes_) {
+            core::Defer iter_end = [&] {
+                core::Defer increment = [&] { ++index_; };
+
+                if (auto current_operator =
+                        std::dynamic_pointer_cast<Operator>(
+                            op_node)) {
+                    previous_operator_ =
+                        PreviousOpNodeData(current_operator, index_);
+
+                    return;
+                }
+
+                if (auto current_operand =
+                        std::dynamic_pointer_cast<Operand>(op_node)) {
+                    previous_operand_ =
+                        PreviousOpNodeData(current_operand, index_);
+
+                    return;
+                }
+            };
+
             core::input_break(
                 "expr build: index: {}, walk through iter: {}",
                 index_, walk_through_iter_);
-
-            core::Defer increment_index = [&] { ++index_; };
 
             op_node_iter(op_node);
         }
@@ -373,6 +392,8 @@ void OperationProcessor::handle_end(
 
     if (auto previous_bin_op = std::dynamic_pointer_cast<BinaryOp>(
             previous_operator_node)) {
+        core::log_info("set rhs at index: {}",
+                       previous_operator_->index);
         previous_bin_op->set_rhs(op_node);
 
 #if SWAP_BIN_OP
