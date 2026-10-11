@@ -27,7 +27,7 @@ class FuncNode final : public Expr {
     explicit FuncNode(lex::Token&& token);
 
    protected:
-    [[nodiscard]] std::string as_c() override;
+    [[nodiscard]] std::string as_c() const override;
     void parse(TokenStream& stream) override;
 
    private:

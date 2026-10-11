@@ -14,6 +14,7 @@
 #include "defer.h"
 #include "logging.h"
 #include "nodes/binary_op.h"
+#include "nodes/complex_operand.h"
 #include "nodes/expr.h"
 #include "nodes/op_factory.h"
 #include "nodes/op_node.h"
@@ -162,10 +163,10 @@ void OperationProcessor::op_node_iter(
         return;
     }
 
-    // if (is_last_iter()) {
-    //    handle_end(op_node);
-    //    return;
-    // }
+    if (is_last_iter()) {
+        handle_end(op_node);
+        return;
+    }
 
     handle_in_between_iter(op_node);
 }
@@ -181,9 +182,20 @@ op_nodes:)");
         if (auto bin_op =
                 std::dynamic_pointer_cast<BinaryOp>(op_node)) {
             core::log_info(
-                "op_node: {} with {}. lhs {}, rhs {}",
+                "op_node: {} with {}: lhs {}, rhs {}",
                 *op_node->get_kind(), op_node->get_lexeme(),
                 bin_op->lhs_finished(), bin_op->rhs_finished());
+
+            continue;
+        }
+
+        if (auto operand =
+                std::dynamic_pointer_cast<ComplexOperand>(op_node)) {
+            core::log_info("op_node: complex operand: {} with {}",
+                           *op_node->get_kind(),
+                           op_node->get_lexeme(), operand->get_operator().get().as_c());
+
+            continue;
         }
     }
 }
@@ -290,7 +302,7 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
     std::advance(end_iter, end_iter_index);
 
     core::log_info("erase nodes");
-    op_nodes_.erase(front_iter, end_iter);
+    // op_nodes_.erase(front_iter, end_iter);
 
     auto complex_operand =
         previous_operator_->op_node->to_complex_operand();

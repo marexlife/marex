@@ -13,5 +13,5 @@ ComplexOperand::ComplexOperand(std::shared_ptr<Operator>&& operand)
     : Operand(lex::Token("complex", lex::TokenKind::Complex)),
       operator_(std::move(operand)) {}
 
-std::string ComplexOperand::as_c() { return operator_->as_c(); }
+std::string ComplexOperand::as_c() const { return operator_->as_c(); }
 }  // namespace marex::parse

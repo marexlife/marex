@@ -12,11 +12,11 @@
 namespace marex::parse {
 FuncCall::FuncCall(lex::Token&& token) : Expr(std::move(token)) {}
 
-std::string FuncCall::as_c() {
+std::string FuncCall::as_c() const {
     std::string result;
     std::uintmax_t count{};
 
-    for (auto& arg : args) {
+    for (const auto& arg : args) {
         core::Defer increment_count = [&] { ++count; };
         result += arg.name;
 

@@ -1,12 +1,12 @@
 #ifndef MAREX_PARSE_VAR_NODE_H
 #define MAREX_PARSE_VAR_NODE_H
+#include <memory>
 #include <string>
 
 #include "expr_kind.h"
 #include "nodes/ast_node.h"
 #include "nodes/expr.h"
 #include "token.h"
-#include <memory>
 
 namespace marex::parse {
 class VarDecl final : public AstNode {
@@ -14,7 +14,7 @@ class VarDecl final : public AstNode {
     explicit VarDecl(lex::Token&& token);
 
    protected:
-    [[nodiscard]] std::string as_c() override;
+    [[nodiscard]] std::string as_c() const override;
 
     void parse(TokenStream& stream) override;
 

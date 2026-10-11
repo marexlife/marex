@@ -13,7 +13,7 @@ class ReturnNode final : public AstNode {
    public:
     explicit ReturnNode(lex::Token&& token);
 
-    [[nodiscard]] std::string as_c() override;
+    [[nodiscard]] std::string as_c() const override;
 
     void parse(TokenStream& stream) override;
 

@@ -18,7 +18,7 @@ class ComplexOperand final : public Operand {
         return *operator_;
     }
 
-    [[nodiscard]] std::string as_c() override;
+    [[nodiscard]] std::string as_c() const override;
 
    private:
     std::shared_ptr<Operator> operator_;

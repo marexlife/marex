@@ -21,13 +21,13 @@
 namespace marex::parse {
 FuncNode::FuncNode(lex::Token&& token) : Expr(std::move(token)) {}
 
-[[nodiscard]] std::string FuncNode::as_c() {
+[[nodiscard]] std::string FuncNode::as_c() const {
     auto get_func_args = [&] -> std::string {
         std::string func_args_string;
 
         std::size_t count{};
 
-        for (auto& [arg_name, arg_type] : args_) {
+        for (const auto& [arg_name, arg_type] : args_) {
             core::Defer iter_end = [&] { ++count; };
 
             func_args_string += *arg_type;
@@ -49,7 +49,7 @@ FuncNode::FuncNode(lex::Token&& token) : Expr(std::move(token)) {}
     auto get_func_code = [&] -> std::string {
         std::string func_content_string;
 
-        for (auto& func_item : func_items_) {
+        for (const auto& func_item : func_items_) {
             func_content_string +=
                 std::format("    {}", func_item->as_c());
         }

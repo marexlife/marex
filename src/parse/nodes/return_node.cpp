@@ -16,7 +16,7 @@ namespace marex::parse {
 ReturnNode::ReturnNode(lex::Token&& token)
     : AstNode(std::move(token)) {}
 
-std::string ReturnNode::as_c() {
+std::string ReturnNode::as_c() const {
     if (!value_) {
         throw std::runtime_error("no value in return node");
     }

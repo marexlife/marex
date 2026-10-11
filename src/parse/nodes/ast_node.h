@@ -23,7 +23,7 @@ class AstNode {
         throw std::runtime_error("Parse unimplemented for AstNode");
     }
 
-    [[nodiscard]] virtual std::string as_c() {
+    [[nodiscard]] virtual std::string as_c() const {
         return std::string{token_.get_lexeme_or_throw()};
     }
 

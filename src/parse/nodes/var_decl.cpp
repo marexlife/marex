@@ -12,7 +12,7 @@
 namespace marex::parse {
 VarDecl::VarDecl(lex::Token&& token) : AstNode(std::move(token)) {}
 
-std::string VarDecl::as_c() {
+std::string VarDecl::as_c() const {
     return std::format("{} {} = {};\n", *type_kind_, name_,
                        value_->as_c());
 }
