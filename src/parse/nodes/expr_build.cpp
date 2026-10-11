@@ -247,11 +247,19 @@ void OperationProcessor::handle_start(
 
 bool OperationProcessor::was_previous_more_powerful(
     const Operator& this_op_node) const {
-    auto previous_binding_power =
-        previous_operator_.value().op_node->get_binding_power();
+    const auto& previous_op = previous_operator_.value().op_node;
+    auto previous_binding_power = previous_op->get_binding_power();
     auto this_binding_power = this_op_node.get_binding_power();
 
-    return previous_binding_power > this_binding_power;
+    auto was_more_powerful =
+        previous_binding_power >= this_binding_power;
+
+    core::log_info(
+        "was previous more powerful: {}, current: {}, previous: {}",
+        was_more_powerful, *this_op_node.get_kind(),
+        *previous_op->get_kind());
+
+    return was_more_powerful;
 }
 
 void OperationProcessor::handle_in_between_iter(
