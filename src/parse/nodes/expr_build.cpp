@@ -162,10 +162,10 @@ void OperationProcessor::op_node_iter(
         return;
     }
 
-    if (is_last_iter()) {
-        handle_end(op_node);
-        return;
-    }
+    // if (is_last_iter()) {
+    //    handle_end(op_node);
+    //    return;
+    // }
 
     handle_in_between_iter(op_node);
 }
@@ -177,9 +177,14 @@ log nodes:
 
 op_nodes:)");
 
-    for (auto& op_node : op_nodes_) {
-        core::log_info("op_node: {} with {}", *op_node->get_kind(),
-                       op_node->get_lexeme());
+    for (std::shared_ptr<OpNode>& op_node : op_nodes_) {
+        if (auto bin_op =
+                std::dynamic_pointer_cast<BinaryOp>(op_node)) {
+            core::log_info(
+                "op_node: {} with {}. lhs {}, rhs {}",
+                *op_node->get_kind(), op_node->get_lexeme(),
+                bin_op->lhs_finished(), bin_op->rhs_finished());
+        }
     }
 }
 
@@ -302,7 +307,7 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
 
 void OperationProcessor::handle_end(
     std::shared_ptr<OpNode>& op_node) {
-    core::log_info("handle_end");
+    core::log_info("HANDLE END!!!!!!!!!!!!!!!!!!!!!!!");
 
     auto previous_operator_node = previous_operator_.value().op_node;
 
