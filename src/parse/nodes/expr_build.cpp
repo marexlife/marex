@@ -47,7 +47,7 @@ class OperationProcessor final {
     [[nodiscard]] std::shared_ptr<parse::Expr> process_op_nodes();
 
    private:
-    [[nodiscard]] bool was_previous_more_powerful(
+    [[nodiscard]] bool was_previous_more_or_equal_powerful(
         const Operator& this_op_node) const;
 
     void op_node_iter(std::shared_ptr<OpNode>& op_node);
@@ -245,7 +245,7 @@ void OperationProcessor::handle_start(
     }
 }
 
-bool OperationProcessor::was_previous_more_powerful(
+bool OperationProcessor::was_previous_more_or_equal_powerful(
     const Operator& this_op_node) const {
     const auto& previous_op = previous_operator_.value().op_node;
     auto previous_binding_power = previous_op->get_binding_power();
@@ -278,7 +278,7 @@ void OperationProcessor::handle_in_between_bin_op(
     std::shared_ptr<BinaryOp>& op_node) {
     core::log_info("handle_in_between_bin_op");
 
-    if (!was_previous_more_powerful(*op_node)) {
+    if (!was_previous_more_or_equal_powerful(*op_node)) {
         op_node->set_lhs(previous_operand_.value().op_node);
 
         return;
