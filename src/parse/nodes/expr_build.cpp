@@ -24,6 +24,8 @@
 #include "token_kind.h"
 #include "token_stream.h"
 
+#define SWAP_BIN_OP 0
+
 namespace marex {
 namespace parse {
 template <std::derived_from<OpNode> T>
@@ -54,7 +56,7 @@ class OperationProcessor final {
     void handle_in_between_iter(std::shared_ptr<OpNode>& op_node);
     void handle_in_between_bin_op(std::shared_ptr<BinaryOp>& op_node);
     void handle_end(std::shared_ptr<OpNode>& op_node);
-    void swap_bin_op_to_complex_operator();
+    void swap_bin_op_to_complex_operator(const OpNode& op_node);
 
     void log_nodes();
 
@@ -281,12 +283,15 @@ void OperationProcessor::handle_in_between_bin_op(
         previous_bin_op->set_rhs(previous_operand_.value().op_node);
 
         if (previous_bin_op->completed()) {
-            swap_bin_op_to_complex_operator();
+#if SWAP_BIN_OP
+            swap_bin_op_to_complex_operator(*op_node.get());
+#endif
         }
     }
 }
 
-void OperationProcessor::swap_bin_op_to_complex_operator() {
+void OperationProcessor::swap_bin_op_to_complex_operator(
+    const OpNode& op_node) {
     if (index_ == 0) [[unlikely]] {
         throw std::runtime_error(
             "internal error: index is too low in erasing "
@@ -309,6 +314,13 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
             "swap bin op shouldn't have been called");
     }
 
+    if (const auto* opera = dynamic_cast<const BinaryOp*>(&op_node)) {
+        if (!opera->completed()) {
+            throw std::runtime_error(
+                "swap bin op shouldn't have been called");
+        }
+    }
+
     core::log_info("previous_operator_node_index: {}",
                    previous_operator_node_index);
 
@@ -322,7 +334,7 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
     std::advance(end_iter, end_iter_index);
 
     core::log_info("erase nodes");
-    // op_nodes_.erase(front_iter, end_iter);
+    op_nodes_.erase(front_iter, end_iter);
 
     auto complex_operand =
         previous_operator_->op_node->to_complex_operand();
@@ -347,7 +359,9 @@ void OperationProcessor::handle_end(
             previous_operator_node)) {
         previous_bin_op->set_rhs(op_node);
 
-        swap_bin_op_to_complex_operator();
+#if SWAP_BIN_OP
+        swap_bin_op_to_complex_operator(*op_node);
+#endif
     }
 }
 }  // namespace parse
