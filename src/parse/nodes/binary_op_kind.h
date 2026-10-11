@@ -13,7 +13,7 @@ enum struct [[nodiscard]] BinaryOpKind : std::uint8_t {
     Div,
 };
 
-inline std::string_view to_c(BinaryOpKind binary_op_kind) {
+inline std::string_view operator*(BinaryOpKind binary_op_kind) {
     switch (binary_op_kind) {
         case marex::parse::BinaryOpKind::Add:
             return "+";

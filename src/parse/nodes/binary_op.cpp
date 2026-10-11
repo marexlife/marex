@@ -17,7 +17,7 @@ BinaryOp::BinaryOp(lex::Token&& token,
 
 void BinaryOp::set_lhs(std::shared_ptr<OpNode> lhs,
                        std::source_location source_location) {
-    core::log_info("set lhs from: ",
+    core::log_info("set lhs in {} from: {}", *binary_op_kind_,
                    core::source_location_to_string(source_location));
 
     lhs_ = std::move(lhs);
@@ -25,7 +25,7 @@ void BinaryOp::set_lhs(std::shared_ptr<OpNode> lhs,
 
 void BinaryOp::set_rhs(std::shared_ptr<OpNode> rhs,
                        std::source_location source_location) {
-    core::log_info("set rhs from: ",
+    core::log_info("set rhs in {} from: {}", *binary_op_kind_,
                    core::source_location_to_string(source_location));
 
     rhs_ = std::move(rhs);
