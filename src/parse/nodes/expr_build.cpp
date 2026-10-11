@@ -59,7 +59,7 @@ class OperationProcessor final {
     void handle_in_between_iter(std::shared_ptr<OpNode>& op_node);
     void handle_in_between_bin_op(std::shared_ptr<BinaryOp>& op_node);
     void handle_end(std::shared_ptr<OpNode>& op_node);
-    void swap_bin_op_to_complex_operator(const OpNode& op_node);
+    void swap_bin_op_to_complex_operator();
 
     void log_nodes();
 
@@ -226,9 +226,10 @@ op_nodes:)");
                 core::log_info(
                     "op_node: complex_operand: {} with {} (lhs "
                     "finished "
-                    "{}, rhs finished {})",
+                    "{}, rhs finished {}), as c: {}",
                     *op_node->get_kind(), op_node->get_lexeme(),
-                    bin_op->lhs_finished(), bin_op->rhs_finished());
+                    bin_op->lhs_finished(), bin_op->rhs_finished(),
+                    bin_op->as_c());
             }
 
             continue;
@@ -318,14 +319,13 @@ void OperationProcessor::handle_in_between_bin_op(
 
         if (previous_bin_op->completed()) {
 #if SWAP_BIN_OP
-            swap_bin_op_to_complex_operator(*op_node.get());
+            swap_bin_op_to_complex_operator();
 #endif
         }
     }
 }
 
-void OperationProcessor::swap_bin_op_to_complex_operator(
-    const OpNode& op_node) {
+void OperationProcessor::swap_bin_op_to_complex_operator() {
     if (index_ == 0) [[unlikely]] {
         throw std::runtime_error(
             "internal error: index is too low in erasing "
@@ -350,20 +350,13 @@ void OperationProcessor::swap_bin_op_to_complex_operator(
             "operator not completed");
     }
 
-    if (const auto* opera = dynamic_cast<const BinaryOp*>(&op_node)) {
-        if (!opera->completed()) {
-            throw std::runtime_error(
-                "swap bin op shouldn't have been called, current not completed");
-        }
-    }
-
     core::log_info("previous_operator_node_index: {}",
                    previous_operator_node_index);
 
     auto front_iter_index = previous_operator_node_index - 1;
     auto front_iter = op_nodes_.begin();
 
-    auto end_iter_index = previous_operator_node_index + 1;
+    auto end_iter_index = index_;
     auto end_iter = op_nodes_.begin();
 
     std::advance(front_iter, front_iter_index);
@@ -398,7 +391,7 @@ void OperationProcessor::handle_end(
         previous_bin_op->set_rhs(op_node);
 
 #if SWAP_BIN_OP
-        swap_bin_op_to_complex_operator(*op_node);
+        swap_bin_op_to_complex_operator();
 #endif
     }
 }
