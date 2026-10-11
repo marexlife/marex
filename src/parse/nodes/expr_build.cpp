@@ -128,12 +128,12 @@ std::shared_ptr<Expr> OperationProcessor::process_op_nodes() {
 start walk through with list size {}:)",
                        op_nodes_.size());
 
+        log_nodes();
+
         for (index_ = {}; auto& op_node : op_nodes_) {
             core::input_break(
                 "expr build: index: {}, walk through iter: {}",
                 index_, walk_through_iter_);
-
-            log_nodes();
 
             core::Defer increment_index = [&] { ++index_; };
 
