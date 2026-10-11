@@ -2,6 +2,7 @@
 #define MAREX_PARSE_BINARYOP_H
 #include <memory>
 #include <optional>
+#include <source_location>
 
 #include "binary_op_kind.h"
 #include "binding_power.h"
@@ -16,10 +17,12 @@ class BinaryOp final : public Operator {
                       lex::BindingPower binding_power,
                       BinaryOpKind binary_op_kind);
 
-    void set(std::shared_ptr<OpNode> lhs,
-             std::shared_ptr<OpNode> rhs);
-    void set_lhs(std::shared_ptr<OpNode> lhs);
-    void set_rhs(std::shared_ptr<OpNode> rhs);
+    void set_lhs(std::shared_ptr<OpNode> lhs,
+                 std::source_location source_location =
+                     std::source_location::current());
+    void set_rhs(std::shared_ptr<OpNode> rhs,
+                 std::source_location source_location =
+                     std::source_location::current());
 
     [[nodiscard]] BinaryOpKind get_binary_op() const {
         return binary_op_kind_;

@@ -3,6 +3,8 @@
 #include <memory>
 #include <utility>
 
+#include "error_format.h"
+#include "logging.h"
 #include "nodes/op_node.h"
 #include "nodes/operator.h"
 
@@ -13,17 +15,19 @@ BinaryOp::BinaryOp(lex::Token&& token,
     : Operator(std::move(token), binding_power),
       binary_op_kind_(binary_op_kind) {}
 
-void BinaryOp::set(std::shared_ptr<OpNode> lhs,
-                   std::shared_ptr<OpNode> rhs) {
-    set_lhs(std::move(lhs));
-    set_rhs(std::move(rhs));
-}
+void BinaryOp::set_lhs(std::shared_ptr<OpNode> lhs,
+                       std::source_location source_location) {
+    core::log_info("set lhs from: ",
+                   core::source_location_to_string(source_location));
 
-void BinaryOp::set_lhs(std::shared_ptr<OpNode> lhs) {
     lhs_ = std::move(lhs);
 }
 
-void BinaryOp::set_rhs(std::shared_ptr<OpNode> rhs) {
+void BinaryOp::set_rhs(std::shared_ptr<OpNode> rhs,
+                       std::source_location source_location) {
+    core::log_info("set rhs from: ",
+                   core::source_location_to_string(source_location));
+
     rhs_ = std::move(rhs);
 }
 }  // namespace marex::parse
