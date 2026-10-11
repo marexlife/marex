@@ -353,7 +353,7 @@ void OperationProcessor::swap_bin_op_to_complex_operator(
     if (const auto* opera = dynamic_cast<const BinaryOp*>(&op_node)) {
         if (!opera->completed()) {
             throw std::runtime_error(
-                "swap bin op shouldn't have been called");
+                "swap bin op shouldn't have been called, current not completed");
         }
     }
 
