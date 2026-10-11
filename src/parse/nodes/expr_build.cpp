@@ -191,9 +191,26 @@ op_nodes:)");
 
         if (auto operand =
                 std::dynamic_pointer_cast<ComplexOperand>(op_node)) {
-            core::log_info("op_node: complex operand: {} with {}",
+            const auto& inner = operand->get_operator().get();
+
+            if (const auto* bin_op =
+                    dynamic_cast<const BinaryOp*>(&inner)) {
+                core::log_info(
+                    "op_node: complex_operand: {} with {} (lhs "
+                    "finished "
+                    "{}, rhs finished {})",
+                    *op_node->get_kind(), op_node->get_lexeme(),
+                    bin_op->lhs_finished(), bin_op->rhs_finished());
+            }
+
+            continue;
+        }
+
+        if (auto operand =
+                std::dynamic_pointer_cast<Operand>(op_node)) {
+            core::log_info("op_node: complex_operand: {} with {}",
                            *op_node->get_kind(),
-                           op_node->get_lexeme(), operand->get_operator().get().as_c());
+                           op_node->get_lexeme());
 
             continue;
         }
@@ -214,8 +231,11 @@ void OperationProcessor::handle_start(
         };
 
         bin_operator->set_lhs(previous_operand_.value().op_node);
-    } else if (auto operand =
-                   std::dynamic_pointer_cast<Operand>(op_node)) {
+
+        return;
+    }
+
+    if (auto operand = std::dynamic_pointer_cast<Operand>(op_node)) {
         core::log_info("handle_start: Operand {}",
                        *op_node->get_kind());
 
