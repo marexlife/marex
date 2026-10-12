@@ -6,11 +6,11 @@
 #include <exception>
 #include <format>
 #include <iterator>
-#include <list>
 #include <memory>
 #include <optional>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 #include "defer.h"
 #include "logging.h"
@@ -69,7 +69,7 @@ class OperationProcessor final {
         return op_nodes_.size();
     }
 
-    std::list<std::shared_ptr<OpNode>> op_nodes_;
+    std::vector<std::shared_ptr<OpNode>> op_nodes_;
 
     std::optional<PreviousOpNodeData<Operator>> previous_operator_ =
         std::nullopt;
