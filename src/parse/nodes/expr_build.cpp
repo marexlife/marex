@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <exception>
 #include <format>
+#include <functional>
 #include <iterator>
 #include <memory>
 #include <optional>
@@ -59,7 +60,7 @@ class OperationProcessor final {
     void handle_in_between_iter(std::shared_ptr<OpNode>& op_node);
     void handle_in_between_bin_op(std::shared_ptr<BinaryOp>& op_node);
     void handle_end(std::shared_ptr<OpNode>& op_node);
-    void swap_bin_op_to_complex_operator();
+    void swap_bin_op_to_complex_operator(std::size_t target_index);
 
     void log_nodes();
 
@@ -319,13 +320,14 @@ void OperationProcessor::handle_in_between_bin_op(
 
         if (previous_bin_op->completed()) {
 #if SWAP_BIN_OP
-            swap_bin_op_to_complex_operator();
+            swap_bin_op_to_complex_operator(index_);
 #endif
         }
     }
 }
 
-void OperationProcessor::swap_bin_op_to_complex_operator() {
+void OperationProcessor::swap_bin_op_to_complex_operator(
+    std::size_t target_index) {
     if (index_ == 0) [[unlikely]] {
         throw std::runtime_error(
             "internal error: index is too low in erasing "
@@ -356,7 +358,7 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
     auto front_iter_index = previous_operator_node_index - 1;
     auto front_iter = op_nodes_.begin();
 
-    auto end_iter_index = index_;
+    auto end_iter_index = target_index;
     auto end_iter = op_nodes_.begin();
 
     std::advance(front_iter, front_iter_index);
@@ -394,7 +396,7 @@ void OperationProcessor::handle_end(
         previous_bin_op->set_rhs(op_node);
 
 #if SWAP_BIN_OP
-        swap_bin_op_to_complex_operator();
+        swap_bin_op_to_complex_operator(index_ + 1);
 #endif
     }
 }
