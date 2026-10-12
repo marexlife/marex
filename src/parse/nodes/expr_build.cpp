@@ -336,8 +336,8 @@ void OperationProcessor::swap_bin_op_to_complex_operator(
 
     core::log_info("swap_to_complex_operator");
 
-    auto previous_operator_value = previous_operator_.value();
-    auto previous_operator_node_index = previous_operator_value.index;
+    auto previous_operator_node_index =
+        previous_operator_.value().index;
 
     if (previous_operator_node_index < 1) [[unlikely]] {
         throw std::runtime_error(
@@ -345,7 +345,7 @@ void OperationProcessor::swap_bin_op_to_complex_operator(
             "low");
     }
 
-    if (not previous_operator_value.op_node->completed())
+    if (not previous_operator_.value().op_node->completed())
         [[unlikely]] {
         throw std::runtime_error(
             "swap bin op shouldn't have been called, previous "
