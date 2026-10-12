@@ -362,7 +362,9 @@ void OperationProcessor::swap_bin_op_to_complex_operator() {
     std::advance(front_iter, front_iter_index);
     std::advance(end_iter, end_iter_index);
 
-    core::log_info("erase nodes");
+    core::input_break("erase nodes from {} to {}, size is {}",
+                      front_iter_index, end_iter_index,
+                      op_nodes_.size());
     op_nodes_.erase(front_iter, end_iter);
 
     auto complex_operand =
@@ -388,6 +390,7 @@ void OperationProcessor::handle_end(
             previous_operator_node)) {
         core::log_info("set rhs at index: {}",
                        previous_operator_->index);
+        core::input_break("current index: {}", index_);
         previous_bin_op->set_rhs(op_node);
 
 #if SWAP_BIN_OP
